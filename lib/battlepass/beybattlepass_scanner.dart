@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 class BeyBattlePassScanner extends GetxController {
   static const HEADER_BYTE = 0x51;
   static const GET_DATA_BYTE = 0x74;
+  static const CLEAR_DATA_BYTE = 0x75;
 
   static BluetoothDevice? battlepass;
   static BluetoothCharacteristic? read_charactistic;
