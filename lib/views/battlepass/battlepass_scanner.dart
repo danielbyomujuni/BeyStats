@@ -2,6 +2,7 @@ import 'package:bey_combat_logger/battlepass/beybattlepass_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class BattlepassScanner extends StatefulWidget {
   const BattlepassScanner({super.key});
@@ -10,6 +11,19 @@ class BattlepassScanner extends StatefulWidget {
 }
 
 class _BattlepassScannerState extends State<BattlepassScanner> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    BeyBattlePassScanner.scanForBattlePass();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    BeyBattlePassScanner.endScanForBattlePass();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<BeyBattlePassScanner>(
@@ -22,7 +36,7 @@ class _BattlepassScannerState extends State<BattlepassScanner> {
               StreamBuilder<List<ScanResult>>(
                   stream: controller.scanResult,
                   builder: (context, snapshot) {
-                    if (snapshot.hasData) {
+                    if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                       return Expanded(
                           child: Scrollbar(
                         child: ListView.builder(
@@ -60,20 +74,14 @@ class _BattlepassScannerState extends State<BattlepassScanner> {
                             }),
                       ));
                     } else {
-                      return const Center(
-                        child: Text("No Device Found"),
+                      return Center(
+                        child: LoadingAnimationWidget.threeArchedCircle(
+                          color: Theme.of(context).indicatorColor,
+                          size: 200,
+                        ),
                       );
                     }
-                  }),
-              const SizedBox(
-                height: 10,
-              ),
-              ElevatedButton(
-                  onPressed: () async {
-                    await controller.scanForBattlePass();
-                    // await controller.disconnectDevice();
-                  },
-                  child: Text("SCAN")),
+                  })
             ],
           ),
         );

@@ -17,7 +17,7 @@ class BeyBattlePassScanner extends GetxController {
 
   static Completer<void> read_lock = Completer();
 
-  Future scanForBattlePass() async {
+  static Future scanForBattlePass() async {
     try {
       print("scanning");
 
@@ -35,12 +35,15 @@ class BeyBattlePassScanner extends GetxController {
       await FlutterBluePlus.adapterState
           .where((val) => val == BluetoothAdapterState.on)
           .first;
-      await FlutterBluePlus.startScan(
-          withNames: ["BEYBLADE_TOOL01"], timeout: const Duration(seconds: 10));
+      await FlutterBluePlus.startScan(withNames: ["BEYBLADE_TOOL01"]);
       print("scanning done");
     } catch (err) {
       print("Scanning Error");
     }
+  }
+
+  static Future endScanForBattlePass() async {
+    await FlutterBluePlus.stopScan();
   }
 
   Stream<List<ScanResult>> get scanResult => FlutterBluePlus.scanResults;
