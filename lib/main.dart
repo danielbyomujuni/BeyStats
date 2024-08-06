@@ -1,7 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:bey_combat_logger/battlepass/beybattlepass_scanner.dart';
-import 'package:bey_combat_logger/views/battlepass_modal.dart';
-import 'package:bey_combat_logger/views/battlepass_scanner.dart';
+import 'package:bey_combat_logger/views/battlepass/battlepass_modal.dart';
+import 'package:bey_combat_logger/views/battlepass/battlepass_scanner.dart';
 import 'package:bey_combat_logger/views/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';

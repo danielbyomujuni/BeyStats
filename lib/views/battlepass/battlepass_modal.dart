@@ -1,4 +1,5 @@
-import 'package:bey_combat_logger/views/battlepass_scanner.dart';
+import 'package:bey_combat_logger/views/battlepass/battlepass_onboarding.dart';
+import 'package:bey_combat_logger/views/battlepass/battlepass_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
@@ -19,11 +20,9 @@ class BattlepassModal extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        const Expanded(child: BattlepassScanner()),
-                        ElevatedButton(
-                          child: const Text('Close BottomSheet'),
-                          onPressed: () => Navigator.pop(context),
-                        ),
+                        Expanded(
+                            child: BattlepassOnboarding(
+                                () => Navigator.pop(context)))
                       ],
                     ),
                   ),
