@@ -61,7 +61,7 @@ class _BattlepassScannerState extends State<BattlepassScanner> {
                                     print(
                                         "Launch Scores: ${results!.launches}");
                                     print(
-                                        "Launches: ${results.header.launch_count}");
+                                        "Launches: ${results.header.launchCount}");
                                     print(
                                         "Highscore: ${results.header.maxLaunchSpeed}");
 
