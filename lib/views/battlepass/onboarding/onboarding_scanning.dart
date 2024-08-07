@@ -14,24 +14,12 @@ class OnboardingScanning extends StatelessWidget {
     return Column(
       children: [
         const Text("Scanning", style: TextStyle(fontSize: 20.0)),
-        const Expanded(child: BattlepassScanner()),
-        Row(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                _goNext();
-              },
-              child: const Text('OK'),
-            ),
-            const Spacer(),
-            ElevatedButton(
-              onPressed: () {
-                _cancel();
-              },
-              child: const Text('Cancel'),
-            )
-          ],
-        )
+        Expanded(child: BattlepassScanner(_goNext)),
+        ElevatedButton(
+            onPressed: () {
+              _cancel();
+            },
+            child: const Text('Cancel'))
       ],
     );
   }

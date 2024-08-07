@@ -43,6 +43,8 @@ dependencies:
   fl_chart: ^0.68.0
   percent_indicator: ^4.2.3
   loading_animation_widget: ^1.2.1
+  sqflite: ^2.3.3+1
+  syncfusion_flutter_gauges: ^26.2.8
 
 dev_dependencies:
   flutter_test:
