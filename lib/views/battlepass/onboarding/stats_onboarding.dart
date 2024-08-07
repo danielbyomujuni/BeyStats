@@ -55,6 +55,8 @@ class _StatsOnboardingState extends State<StatsOnboarding> {
               return Column(
                 children: [
                   SfRadialGauge(
+                    enableLoadingAnimation: true,
+                    animationDuration: 4500,
                     axes: <RadialAxis>[
                       RadialAxis(
                         showTicks: false,
