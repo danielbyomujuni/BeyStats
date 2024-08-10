@@ -16,23 +16,23 @@ class OnboardingPairing extends StatelessWidget {
         const Text(
             "Press the button on the Bey Battlepass for about 1 second."),
         const Text("The LED will then flash Green and Orange in Sequence"),
-        Row(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                _goNext();
-              },
-              child: const Text('OK'),
-            ),
-            const Spacer(),
-            ElevatedButton(
-              onPressed: () {
-                _cancel();
-              },
-              child: const Text('Cancel'),
-            )
-          ],
-        )
+        Row(children: [
+          Expanded(
+              child: FilledButton(
+            onPressed: () async {
+              _goNext();
+            },
+            child: const Text('OK'),
+          )),
+          const SizedBox(width: 15.0),
+          Expanded(
+              child: OutlinedButton(
+            onPressed: () {
+              _cancel();
+            },
+            child: const Text('Cancel'),
+          ))
+        ])
       ],
     );
   }

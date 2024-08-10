@@ -1,3 +1,4 @@
+import 'package:bey_combat_logger/views/blank_view.dart';
 import 'package:bey_combat_logger/views/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:bey_combat_logger/views/battlepass/battlepass_modal.dart';
@@ -11,7 +12,7 @@ class Root extends StatefulWidget {
 
 class _RootState extends State<Root> {
   int pageIndex = 0;
-  List<Widget> pages = [HomeView(), HomeView(), HomeView(), ProfileView()];
+  List<Widget> pages = [HomeView(), BlankView(), BlankView(), ProfileView()];
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +25,12 @@ class _RootState extends State<Root> {
   }
 
   Widget getBody() {
-    return IndexedStack(
-      index: pageIndex,
-      children: pages,
-    );
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(10, 50, 10, 10),
+        child: IndexedStack(
+          index: pageIndex,
+          children: pages,
+        ));
   }
 
   void selectedTab(int index) {

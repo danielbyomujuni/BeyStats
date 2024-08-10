@@ -15,23 +15,23 @@ class OnboardingRemoveBey extends StatelessWidget {
             style: TextStyle(fontSize: 20.0)),
         const Spacer(),
         const Text("Communication is unavailable when a bey is attach"),
-        Row(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                _goNext();
-              },
-              child: const Text('OK'),
-            ),
-            const Spacer(),
-            ElevatedButton(
-              onPressed: () {
-                _cancel();
-              },
-              child: const Text('Cancel'),
-            )
-          ],
-        )
+        Row(children: [
+          Expanded(
+              child: FilledButton(
+            onPressed: () async {
+              _goNext();
+            },
+            child: const Text('OK'),
+          )),
+          const SizedBox(width: 15.0),
+          Expanded(
+              child: OutlinedButton(
+            onPressed: () {
+              _cancel();
+            },
+            child: const Text('Cancel'),
+          ))
+        ])
       ],
     );
   }

@@ -15,11 +15,13 @@ class OnboardingScanning extends StatelessWidget {
       children: [
         const Text("Scanning", style: TextStyle(fontSize: 20.0)),
         Expanded(child: BattlepassScanner(_goNext)),
-        ElevatedButton(
-            onPressed: () {
-              _cancel();
-            },
-            child: const Text('Cancel'))
+        SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+                onPressed: () {
+                  _cancel();
+                },
+                child: const Text('Cancel')))
       ],
     );
   }

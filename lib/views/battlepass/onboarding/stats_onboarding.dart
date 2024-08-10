@@ -89,7 +89,8 @@ class _StatsOnboardingState extends State<StatsOnboarding> {
                           showTicks: false,
                           showLabels: false,
                           startAngle: 150,
-                          endAngle: 150 + min(1.0, speed_percentage) * 240,
+                          endAngle:
+                              150 + (min(1.0, speed_percentage) + 0.01) * 240,
                           radiusFactor: 0.9,
                           annotations: <GaugeAnnotation>[
                             const GaugeAnnotation(
@@ -133,7 +134,7 @@ class _StatsOnboardingState extends State<StatsOnboarding> {
                     ),
                     Row(children: [
                       Expanded(
-                          child: ElevatedButton(
+                          child: FilledButton(
                         onPressed: () async {
                           var db = await DatabaseInstance.getInstance();
                           await db.saveLaunches(snapshot.data!.launches);
@@ -147,9 +148,9 @@ class _StatsOnboardingState extends State<StatsOnboarding> {
                         },
                         child: const Text('SAVE'),
                       )),
-                      const SizedBox(width: 5.0),
+                      const SizedBox(width: 15.0),
                       Expanded(
-                          child: ElevatedButton(
+                          child: OutlinedButton(
                         onPressed: () {
                           widget.cancel();
                         },
