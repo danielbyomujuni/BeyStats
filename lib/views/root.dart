@@ -1,3 +1,4 @@
+import 'package:bey_combat_logger/views/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:bey_combat_logger/views/battlepass/battlepass_modal.dart';
 import 'home_view.dart';
@@ -10,13 +11,7 @@ class Root extends StatefulWidget {
 
 class _RootState extends State<Root> {
   int pageIndex = 0;
-  List<Widget> pages = [
-    HomeView(),
-    HomeView(),
-    HomeView(),
-    HomeView(),
-    HomeView(),
-  ];
+  List<Widget> pages = [HomeView(), HomeView(), HomeView(), ProfileView()];
 
   @override
   Widget build(BuildContext context) {

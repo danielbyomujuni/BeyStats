@@ -13,8 +13,8 @@ class BattlepassModal extends StatelessWidget {
               context: context,
               builder: (BuildContext context) {
                 return Container(
-                  height: 700,
-                  padding: const EdgeInsets.all(14),
+                  height: 900,
+                  padding: const EdgeInsets.fromLTRB(20, 13, 20, 28),
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

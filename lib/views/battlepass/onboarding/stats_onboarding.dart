@@ -1,8 +1,13 @@
+import 'dart:math';
+
 import 'package:bey_combat_logger/battlepass/battlepass_models.dart';
 import 'package:bey_combat_logger/battlepass/beybattlepass_scanner.dart';
+import 'package:bey_combat_logger/battlepass/database_instance.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
+
+const HIGH_SCORE = 10000;
 
 class StatsOnboarding extends StatefulWidget {
   final VoidCallback goNext;
@@ -35,73 +40,127 @@ class _StatsOnboardingState extends State<StatsOnboarding> {
       children: [
         const Text("Results", style: TextStyle(fontSize: 20.0)),
         Expanded(
-          child: FutureBuilder<BattlePassLaunchData?>(
-            future: _launchDataFuture,
-            builder: (BuildContext context,
-                AsyncSnapshot<BattlePassLaunchData?> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return LoadingAnimationWidget.threeArchedCircle(
-                  color: Theme.of(context).indicatorColor,
-                  size: 200,
-                );
-              } else if (snapshot.hasError ||
-                  !snapshot.hasData ||
-                  snapshot.data == null) {
-                return const Text("Unable to get Data from Battlepass");
-              }
-              print(snapshot.data!.header.maxLaunchSpeed);
-              print(snapshot.data!.header.launchCount);
+          child: FutureBuilder<int>(future: () async {
+            var data =
+                await (await DatabaseInstance.getInstance()).getAllTimeMax();
+            return data;
+          }(), builder:
+              (BuildContext context, AsyncSnapshot<int> scoreSnapshot) {
+            return FutureBuilder<BattlePassLaunchData?>(
+              future: _launchDataFuture,
+              builder: (BuildContext context,
+                  AsyncSnapshot<BattlePassLaunchData?> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return LoadingAnimationWidget.threeArchedCircle(
+                    color: Theme.of(context).indicatorColor,
+                    size: 200,
+                  );
+                } else if (snapshot.hasError ||
+                    !snapshot.hasData ||
+                    scoreSnapshot.hasError ||
+                    !scoreSnapshot.hasData ||
+                    snapshot.data == null ||
+                    scoreSnapshot.data == null) {
+                  return const Text("Unable to get Data from Battlepass");
+                }
 
-              return Column(
-                children: [
-                  SfRadialGauge(
-                    enableLoadingAnimation: true,
-                    animationDuration: 4500,
-                    axes: <RadialAxis>[
-                      RadialAxis(
-                        showTicks: false,
-                        showLabels: false,
-                        startAngle: 180,
-                        endAngle: 180,
-                        radiusFactor: 0.9,
-                        axisLineStyle: const AxisLineStyle(
-                            // Dash array not supported in web
-                            thickness: 30,
-                            dashArray: <double>[8, 10]),
-                      ),
-                      RadialAxis(
+                var speed_percentage = snapshot.data!.header.maxLaunchSpeed /
+                    (scoreSnapshot.data! + 1);
+
+                print(min(1.0, speed_percentage));
+                return Column(
+                  children: [
+                    SfRadialGauge(
+                      enableLoadingAnimation: true,
+                      animationDuration: 3000,
+                      axes: <RadialAxis>[
+                        RadialAxis(
                           showTicks: false,
                           showLabels: false,
-                          startAngle: 180,
+                          startAngle: 150,
+                          endAngle: 30,
                           radiusFactor: 0.9,
-                          annotations: const <GaugeAnnotation>[
+                          axisLineStyle: const AxisLineStyle(
+                              // Dash array not supported in web
+                              thickness: 30,
+                              dashArray: <double>[8, 10]),
+                        ),
+                        RadialAxis(
+                          showTicks: false,
+                          showLabels: false,
+                          startAngle: 150,
+                          endAngle: 150 + min(1.0, speed_percentage) * 240,
+                          radiusFactor: 0.9,
+                          annotations: <GaugeAnnotation>[
+                            const GaugeAnnotation(
+                                angle: 270,
+                                positionFactor: 0.18,
+                                verticalAlignment: GaugeAlignment.far,
+                                widget: Text('Max Launch Power:',
+                                    style: TextStyle(fontSize: 19))),
                             GaugeAnnotation(
                                 angle: 270,
-                                verticalAlignment: GaugeAlignment.far,
-                                widget: Text(' 63%',
+                                positionFactor: 0.1,
+                                verticalAlignment: GaugeAlignment.center,
+                                widget: Text(
+                                    '${snapshot.data!.header.maxLaunchSpeed}',
+                                    style: const TextStyle(fontSize: 19))),
+                            GaugeAnnotation(
+                                angle: 270,
+                                positionFactor: 0,
+                                verticalAlignment: GaugeAlignment.near,
+                                widget: Text(
+                                    'Launch Count: ${snapshot.data!.header.launchCount}',
                                     style: TextStyle(
-                                        fontStyle: FontStyle.italic,
-                                        fontFamily: 'Times',
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 25)))
+                                        fontSize: 15,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .outline))),
                           ],
-                          axisLineStyle: const AxisLineStyle(
-                              color: Color(0xFF00A8B5),
+                          axisLineStyle: AxisLineStyle(
+                              color: Theme.of(context).canvasColor,
                               gradient: SweepGradient(colors: <Color>[
-                                Color(0xFF06974A),
-                                Color(0xFFF2E41F)
-                              ], stops: <double>[
+                                Theme.of(context).colorScheme.primary,
+                                Theme.of(context).colorScheme.tertiary
+                              ], stops: const <double>[
                                 0.25,
                                 0.75
                               ]),
                               thickness: 30,
-                              dashArray: <double>[8, 10]))
-                    ],
-                  )
-                ],
-              );
-            },
-          ),
+                              dashArray: const <double>[8, 10]),
+                        ),
+                      ],
+                    ),
+                    Row(children: [
+                      Expanded(
+                          child: ElevatedButton(
+                        onPressed: () async {
+                          var db = await DatabaseInstance.getInstance();
+                          await db.saveLaunches(snapshot.data!.launches);
+                          print(await db.getLaunches());
+                          print(await db.getSessionTimeMax());
+                          print(await db.getAllTimeMax());
+
+                          await BeyBattlePassScanner.clearBattlePassData();
+                          // clear
+                          widget.cancel();
+                        },
+                        child: const Text('SAVE'),
+                      )),
+                      const SizedBox(width: 5.0),
+                      Expanded(
+                          child: ElevatedButton(
+                        onPressed: () {
+                          widget.cancel();
+                        },
+                        child: const Text('Cancel'),
+                      ))
+                    ])
+                  ],
+                );
+              },
+            );
+          }),
         ),
       ],
     );

@@ -6,14 +6,14 @@ void main() {
     theme: ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xff40C4FF),
+        seedColor: const Color(0xff009688),
         brightness: Brightness.light,
       ),
     ),
     darkTheme: ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xff40C4FF),
+        seedColor: const Color(0xff009688),
         brightness: Brightness.dark,
       ),
     ),

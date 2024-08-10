@@ -38,6 +38,7 @@ class BeyBattlePassScanner extends GetxController {
       print("Scanning done");
     } catch (err) {
       print("Scanning Error");
+      throw err;
     }
   }
 
@@ -66,6 +67,7 @@ class BeyBattlePassScanner extends GetxController {
       final subscription = BeyBattlePassScanner
           .readCharacteristic!.onValueReceived
           .listen((value) {
+        //print(convertIntListToHexString(value));
         readBuffer.add(convertIntListToHexString(value));
       });
 
@@ -108,6 +110,8 @@ class BeyBattlePassScanner extends GetxController {
     var launchCount = int.parse(getBytes(header, 18, 2), radix: 16);
     var pageCount = getBytes(header, 22, 1);
 
+    //print(pageCount);
+
     return BattlePassHeader(maxLaunchSpeed, launchCount, pageCount);
   }
 
@@ -132,6 +136,18 @@ class BeyBattlePassScanner extends GetxController {
         .toList();
 
     return BattlePassLaunchData(header, launchPoints);
+  }
+
+  static Future<void> clearBattlePassData() async {
+    await BeyBattlePassScanner.writeCharacteristic!
+        .write([CLEAR_DATA_BYTE], withoutResponse: true);
+
+    await waitWhile(() => readBuffer.length < 2);
+    //print(readBuffer[1]);
+    var pageCount = getBytes(readBuffer[1], 22, 1);
+    await waitWhile(() => !readBuffer.last.startsWith(pageCount));
+
+    readBuffer.clear();
   }
 
   Stream<List<ScanResult>> get scanResult => FlutterBluePlus.scanResults;

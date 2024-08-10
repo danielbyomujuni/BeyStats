@@ -37,26 +37,24 @@ class _BattlepassScannerState extends State<BattlepassScanner> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               StreamBuilder<List<ScanResult>>(
-                stream: controller.scanResult,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                    return Expanded(
-                      child: Scrollbar(
-                        child: ScanResultList(
-                            scanResults: snapshot.data!,
-                            onPair: widget._onPair),
-                      ),
-                    );
-                  } else {
-                    return Center(
-                      child: LoadingAnimationWidget.threeArchedCircle(
-                        color: Theme.of(context).indicatorColor,
-                        size: 200,
-                      ),
-                    );
-                  }
-                },
-              ),
+                  stream: controller.scanResult,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                      return Expanded(
+                        child: Scrollbar(
+                          child: ScanResultList(
+                              scanResults: snapshot.data!,
+                              onPair: widget._onPair),
+                        ),
+                      );
+                    }
+                    return SizedBox.shrink();
+                  }),
+              Center(
+                  child: LoadingAnimationWidget.threeArchedCircle(
+                color: Theme.of(context).indicatorColor,
+                size: 150,
+              ))
             ],
           ),
         );
