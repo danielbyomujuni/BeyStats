@@ -1,9 +1,9 @@
-import 'package:bey_combat_logger/views/battlepass/battlepass_scanner.dart';
-import 'package:bey_combat_logger/views/battlepass/onboarding/onboarding_pairing.dart';
-import 'package:bey_combat_logger/views/battlepass/onboarding/onboarding_remove_bey.dart';
-import 'package:bey_combat_logger/views/battlepass/onboarding/onboarding_scanning.dart';
-import 'package:bey_combat_logger/views/battlepass/onboarding/onboarding_turnon.dart';
-import 'package:bey_combat_logger/views/battlepass/onboarding/stats_onboarding.dart';
+import 'package:bey_stats/views/battlepass/battlepass_scanner.dart';
+import 'package:bey_stats/views/battlepass/onboarding/onboarding_pairing.dart';
+import 'package:bey_stats/views/battlepass/onboarding/onboarding_remove_bey.dart';
+import 'package:bey_stats/views/battlepass/onboarding/onboarding_scanning.dart';
+import 'package:bey_stats/views/battlepass/onboarding/onboarding_turnon.dart';
+import 'package:bey_stats/views/battlepass/onboarding/stats_onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

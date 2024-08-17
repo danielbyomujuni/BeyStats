@@ -1,23 +1,24 @@
-import 'package:bey_combat_logger/views/root.dart';
+import 'package:bey_stats/colourSchemes/base_color.dart';
+import 'package:bey_stats/colourSchemes/catppuccin_mocha.dart';
+import 'package:bey_stats/colourSchemes/x_colorscheme.dart';
+import 'package:bey_stats/views/root.dart';
+import 'package:catppuccin_flutter/catppuccin_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(MaterialApp(
     theme: ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xff009688),
-        brightness: Brightness.light,
-      ),
+      fontFamily: 'Orbitron',
+      colorScheme: BaseColor(),
     ),
     darkTheme: ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xff009688),
-        brightness: Brightness.dark,
-      ),
+      fontFamily: 'Orbitron',
+      colorScheme: BaseColor(),
     ),
-    themeMode: ThemeMode.system,
+    themeMode: ThemeMode.dark,
     debugShowCheckedModeBanner: false,
     home: Root(),
   ));

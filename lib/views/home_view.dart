@@ -1,48 +1,78 @@
+import 'package:bey_stats/battlepass/database_observer.dart';
+import 'package:bey_stats/views/blank_view.dart';
+import 'package:bey_stats/widgets/format_date_time.dart';
+import 'package:bey_stats/widgets/info_card.dart';
+import 'package:bey_stats/widgets/launch_list.dart';
+import 'package:bey_stats/widgets/number_display.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeView extends StatelessWidget {
-  // This widget is the root of your application.
+  const HomeView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Column(
-      children: [
-        const Text("Beycombat Logger", style: TextStyle(fontSize: 25)),
-        Card(
-          clipBehavior: Clip.hardEdge,
-          child: InkWell(
-            splashColor: Theme.of(context).splashColor,
-            onTap: () {
-              debugPrint('Card tapped.');
-            },
-            child: SizedBox(
-              width: 300,
-              height: 120,
-              child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('All Time Max',
-                            style: TextStyle(fontSize: 18)),
-                        Text('Launch Power',
-                            style: TextStyle(
-                                fontSize: 13,
-                                color: Theme.of(context).colorScheme.outline)),
-                        const Spacer(),
-                        Align(
-                            alignment: Alignment.bottomRight,
-                            child: Text('1000LP',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color:
-                                        Theme.of(context).colorScheme.primary)))
-                      ])),
+    DatabaseObserver().updateMaxValues();
+
+    return ChangeNotifierProvider(
+      create: (context) => DatabaseObserver(),
+      child: Consumer<DatabaseObserver>(
+        builder: (context, notifier, _) {
+          return Scrollbar(
+              child: SingleChildScrollView(
+                  child: Column(children: [
+            GridView.count(
+                shrinkWrap: true,
+                childAspectRatio: 1.5,
+                crossAxisCount: 2,
+                primary: false,
+                children: [
+                  InfoCard(
+                    title: 'All Time',
+                    subtitle: 'Launch Power',
+                    unit: ' LP',
+                    value: notifier.allTimeMax,
+                  ),
+                  InfoCard(
+                    title: 'Last Session',
+                    subtitle: 'Launch Power',
+                    unit: ' LP',
+                    value: notifier.sessionMax,
+                  ),
+                  InfoCard(
+                    title: 'Launch Count',
+                    subtitle: 'Total Launches',
+                    unit: ' Launches',
+                    value: notifier.launchCount,
+                  ),
+                  InfoCard(
+                    title: 'Session Count',
+                    subtitle: 'Total Sessions',
+                    unit: ' Sessions',
+                    value: notifier.sessionCount,
+                  ),
+                ]),
+            const SizedBox(
+              height: 10,
             ),
-          ),
-        ),
-        const Spacer()
-      ],
-    ));
+            Container(
+                clipBehavior: Clip.hardEdge,
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(25))),
+                color: Theme.of(context).colorScheme.primaryContainer,
+                child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 30.0),
+                    child: Column(children: [
+                      const Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                              style: TextStyle(fontSize: 20),
+                              "Top 5 Launches")),
+                      LaunchList(launches: notifier.topFive)
+                    ])))
+          ])));
+        },
+      ),
+    );
   }
 }

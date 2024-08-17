@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:bey_combat_logger/battlepass/battlepass_models.dart';
-import 'package:bey_combat_logger/battlepass/beybattlepass_scanner.dart';
-import 'package:bey_combat_logger/battlepass/database_instance.dart';
+import 'package:bey_stats/battlepass/battlepass_models.dart';
+import 'package:bey_stats/battlepass/beybattlepass_scanner.dart';
+import 'package:bey_stats/battlepass/database_instance.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
@@ -61,6 +61,8 @@ class _StatsOnboardingState extends State<StatsOnboarding> {
                     !scoreSnapshot.hasData ||
                     snapshot.data == null ||
                     scoreSnapshot.data == null) {
+                  print(snapshot.error);
+                  print(scoreSnapshot.error);
                   return const Text("Unable to get Data from Battlepass");
                 }
 

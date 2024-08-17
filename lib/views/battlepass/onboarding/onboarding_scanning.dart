@@ -1,5 +1,5 @@
-import 'package:bey_combat_logger/battlepass/beybattlepass_scanner.dart';
-import 'package:bey_combat_logger/views/battlepass/battlepass_scanner.dart';
+import 'package:bey_stats/battlepass/beybattlepass_scanner.dart';
+import 'package:bey_stats/views/battlepass/battlepass_scanner.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingScanning extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:bey_combat_logger/battlepass/database_instance.dart';
+import 'package:bey_stats/battlepass/database_instance.dart';
 import 'package:flutter/material.dart';
 
 class ProfileView extends StatelessWidget {

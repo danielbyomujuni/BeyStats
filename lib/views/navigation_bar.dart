@@ -5,9 +5,9 @@ Widget getFooter(
     BuildContext context, int pageIndex, Function(int) selectedTab) {
   List<IconData> iconItems = [
     Icons.home,
-    Icons.calendar_month,
-    Icons.show_chart,
-    Icons.person,
+    Icons.analytics,
+    //Icons.show_chart,
+    //Icons.person,
   ];
 
   return AnimatedBottomNavigationBar(

@@ -1,6 +1,9 @@
 import 'dart:math';
 
+import 'package:bey_stats/battlepass/database_observer.dart';
+import 'package:bey_stats/structs/launch_data.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseInstance {
@@ -15,14 +18,7 @@ class DatabaseInstance {
 
       //create the tables
       await db.execute(
-          "CREATE TABLE IF NOT EXISTS 'standard_launches' (id INTEGER PRIMARY KEY, launch_power INTEGER, launch_date datetime default current_timestamp);");
-      await db.execute(
-          "CREATE TABLE IF NOT EXISTS 'general' (id TEXT PRIMARY KEY, value INTEGER);");
-      await db.execute(
-          "INSERT OR IGNORE INTO 'general' ('id', 'value') VALUES ('ALL_TIME_MAX', 0)");
-      await db.execute(
-          "INSERT OR IGNORE INTO 'general' ('id', 'value') VALUES ('SESSION_MAX', 0)");
-
+          "CREATE TABLE IF NOT EXISTS 'standard_launches' (id INTEGER PRIMARY KEY,session_number INTEGER, launch_power INTEGER, launch_date datetime default current_timestamp);");
       _instance = DatabaseInstance._(db);
     }
     return _instance!;
@@ -32,21 +28,19 @@ class DatabaseInstance {
     if (launches.isEmpty) {
       return;
     }
-    var query = "INSERT INTO 'standard_launches' ('launch_power') VALUES";
+    var query =
+        "INSERT INTO 'standard_launches' ('launch_power', 'session_number') VALUES";
     for (int launch in launches) {
-      query += "(${launch}),";
+      query +=
+          "(${launch}, (SELECT coalesce(MAX(session_number), -1) FROM standard_launches) + 1),";
     }
 
     query = query.substring(0, query.length - 1);
     query += ";";
-
     await _database.execute(query);
 
-    var max_launch = launches.reduce(max);
-    await _database.execute(
-        "UPDATE 'general' SET value = ${max_launch} WHERE id = 'SESSION_MAX';");
-    await _database.execute(
-        "UPDATE 'general' SET value = MAX(value, ${max_launch}) WHERE id = 'ALL_TIME_MAX';");
+    final obs = DatabaseObserver();
+    obs.updateMaxValues();
   }
 
   Future<List<int>> getLaunches() async {
@@ -58,25 +52,89 @@ class DatabaseInstance {
     return launches.toList();
   }
 
+  Future<List<LaunchData>> getLaunchData() async {
+    var result = await _database.rawQuery(
+        "SELECT launch_power, session_number,launch_date FROM 'standard_launches';");
+
+    var launches = result.map((res) {
+      return LaunchData(
+          res["session_number"] as int,
+          res["launch_power"] as int,
+          DateTime.parse(res["launch_date"] as String));
+    });
+    return launches.toList();
+  }
+
   Future<int> getAllTimeMax() async {
-    var result = await _database
-        .rawQuery("SELECT value FROM 'general' where id = 'ALL_TIME_MAX';");
+    var result = await _database.rawQuery(
+        "select coalesce(max(launch_power),0) as value FROM standard_launches;");
+    if (result.isEmpty ||
+        result[0]["value"] == Null ||
+        result[0]["value"] == null) {
+      return 0;
+    }
+
     return result[0]["value"] as int;
   }
 
   Future<int> getSessionTimeMax() async {
-    var result = await _database
-        .rawQuery("SELECT value FROM 'general' where id = 'SESSION_MAX';");
+    var result = await _database.rawQuery(
+        "select coalesce(max(launch_power),0) as value  FROM standard_launches WHERE session_number = (SELECT max(session_number) FROM standard_launches);");
+    if (result.isEmpty ||
+        result[0]["value"] == Null ||
+        result[0]["value"] == null) {
+      return 0;
+    }
+
     return result[0]["value"] as int;
   }
 
+  Future<int> getSessionCount() async {
+    var result = await _database.rawQuery(
+        "SELECT max(session_number) as value FROM standard_launches;");
+
+    if (result.isEmpty ||
+        result[0]["value"] == Null ||
+        result[0]["value"] == null) {
+      return 0;
+    }
+
+    return (result[0]["value"] as int) + 1;
+  }
+
+  Future<int> getLaunchCount() async {
+    var result = await _database
+        .rawQuery("SELECT count(*) as value FROM standard_launches;");
+    if (result.isEmpty ||
+        result[0]["value"] == Null ||
+        result[0]["value"] == null) {
+      return 0;
+    }
+    return result[0]["value"] as int;
+  }
+
+  Future<List<LaunchData>> getTopFive() async {
+    var result = await _database.rawQuery(
+        "SELECT launch_power, session_number,launch_date FROM 'standard_launches' ORDER BY launch_power DESC LIMIT 5;");
+
+    if (result.isEmpty) {
+      return [];
+    }
+
+    var launches = result.map((res) {
+      return LaunchData(
+          res["session_number"] as int,
+          res["launch_power"] as int,
+          DateTime.parse(res["launch_date"] as String));
+    });
+    return launches.toList();
+  }
+
   Future<void> clearDatabase() async {
-    await _database.execute("Delete from 'standard_launches';");
-    await _database.execute("Delete from 'general';");
+    await _database.execute("DROP TABLE 'standard_launches';");
     await _database.execute(
-        "INSERT OR IGNORE INTO 'general' ('id', 'value') VALUES ('ALL_TIME_MAX', 0)");
-    await _database.execute(
-        "INSERT OR IGNORE INTO 'general' ('id', 'value') VALUES ('SESSION_MAX', 0)");
+        "CREATE TABLE IF NOT EXISTS 'standard_launches' (id INTEGER PRIMARY KEY,session_number INTEGER, launch_power INTEGER, launch_date datetime default current_timestamp);");
+
     //await _database.execute(
     //    "UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'standard_launches';");
   }

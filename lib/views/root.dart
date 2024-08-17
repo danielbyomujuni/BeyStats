@@ -1,7 +1,9 @@
-import 'package:bey_combat_logger/views/blank_view.dart';
-import 'package:bey_combat_logger/views/profile_view.dart';
+import 'package:bey_stats/views/blank_view.dart';
+import 'package:bey_stats/views/profile_view.dart';
+import 'package:bey_stats/views/stats_view.dart';
+import 'package:bey_stats/widgets/launch_power_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:bey_combat_logger/views/battlepass/battlepass_modal.dart';
+import 'package:bey_stats/views/battlepass/battlepass_modal.dart';
 import 'home_view.dart';
 import 'navigation_bar.dart';
 
@@ -12,11 +14,19 @@ class Root extends StatefulWidget {
 
 class _RootState extends State<Root> {
   int pageIndex = 0;
-  List<Widget> pages = [HomeView(), BlankView(), BlankView(), ProfileView()];
+  List<Widget> pages = [
+    const HomeView(),
+    const StatsView(),
+    //const LaunchPowerChart(),
+    //ProfileView()
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Beycombat Logger'),
+      ),
       body: getBody(),
       bottomNavigationBar: getFooter(context, pageIndex, selectedTab),
       floatingActionButton: BattlepassModal(),
@@ -26,7 +36,7 @@ class _RootState extends State<Root> {
 
   Widget getBody() {
     return Padding(
-        padding: const EdgeInsets.fromLTRB(10, 50, 10, 10),
+        padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
         child: IndexedStack(
           index: pageIndex,
           children: pages,

@@ -24,7 +24,7 @@ class OnboardingTurnon extends StatelessWidget {
             },
             child: const Text('OK'),
           )),
-          const SizedBox(width: 5.0),
+          const SizedBox(width: 15.0),
           Expanded(
               child: OutlinedButton(
             onPressed: () {

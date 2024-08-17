@@ -1,8 +1,8 @@
-import 'package:bey_combat_logger/battlepass/beybattlepass_scanner.dart';
+import 'package:bey_stats/battlepass/beybattlepass_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
-import 'package:bey_combat_logger/widgets/scan_result_list.dart';
+import 'package:bey_stats/widgets/scan_result_list.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class BattlepassScanner extends StatefulWidget {
