@@ -1,9 +1,10 @@
 stages:
   - lint
   - test
+  - deploy
 
 lint:
-  image: mobiledevops/flutter-sdk-image:3.10.1
+  image: instrumentisto/flutter:3.24.0
   stage: lint
   script:
     - flutter analyze
@@ -11,8 +12,17 @@ lint:
 tests:
   needs:
     - lint
-  image: mobiledevops/flutter-sdk-image:3.19.4
+  image: instrumentisto/flutter:3.24.0
   stage: test
   script:
   - flutter test
+
+build-ios-ipa:
+  needs:
+    - tests
+    - lint
+  image: sickcodes/docker-osx:naked
+  stage: deploy
+  script:
+    - echo test
 
