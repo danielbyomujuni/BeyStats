@@ -59,7 +59,7 @@ void main() {
             subtitle: 'Test Subtitle',
             value: 42,
             unit: 'km',
-            key: const Key('infoCard'), // Adding a key for easy identification
+            key: Key('infoCard'), // Adding a key for easy identification
           ),
         ),
       ),
