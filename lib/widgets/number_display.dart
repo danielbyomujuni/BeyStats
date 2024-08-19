@@ -4,8 +4,7 @@ class NumberDisplay extends StatelessWidget {
   final int number;
   final TextStyle style;
 
-  NumberDisplay({required this.number, required this.style, Key? key})
-      : super(key: key);
+  const NumberDisplay({required this.number, required this.style, super.key});
 
   String _formatNumber(int number) {
     // Convert the number to a string and pad it with spaces to ensure it's 5 characters long

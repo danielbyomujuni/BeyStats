@@ -1,15 +1,18 @@
 import 'package:bey_stats/battlepass/beybattlepass_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:logger/logger.dart';
 
 class ScanResultList extends StatelessWidget {
-  VoidCallback onPair = () {};
+
+  final VoidCallback onPair;
   final List<ScanResult> scanResults;
 
-  ScanResultList({super.key, required this.scanResults, required this.onPair});
+  const ScanResultList({super.key, required this.scanResults, required this.onPair});
 
   @override
   Widget build(BuildContext context) {
+    var logger = Logger();
     return ListView.builder(
       shrinkWrap: true,
       itemCount: scanResults.length,
@@ -22,7 +25,7 @@ class ScanResultList extends StatelessWidget {
             subtitle: Text(data.device.remoteId.str),
             trailing: Text(data.rssi.toString()),
             onTap: () async {
-              print("Connect");
+              logger.i("Connect");
               await BeyBattlePassScanner.connectToBattlePass(data.device);
 
               //var results =

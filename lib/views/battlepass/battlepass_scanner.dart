@@ -6,9 +6,9 @@ import 'package:bey_stats/widgets/scan_result_list.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class BattlepassScanner extends StatefulWidget {
-  VoidCallback _onPair;
+  final VoidCallback _onPair;
 
-  BattlepassScanner(this._onPair, {super.key});
+  const BattlepassScanner(this._onPair, {super.key});
 
   @override
   State<BattlepassScanner> createState() => _BattlepassScannerState();
@@ -48,7 +48,7 @@ class _BattlepassScannerState extends State<BattlepassScanner> {
                         ),
                       );
                     }
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   }),
               Center(
                   child: LoadingAnimationWidget.threeArchedCircle(

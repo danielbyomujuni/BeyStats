@@ -1,0 +1,18 @@
+stages:
+  - lint
+  - test
+
+lint:
+  image: mobiledevops/flutter-sdk-image:3.10.1
+  stage: lint
+  script:
+    - flutter analyze
+
+tests:
+  needs:
+    - lint
+  image: mobiledevops/flutter-sdk-image:3.19.4
+  stage: test
+  script:
+  - flutter test
+

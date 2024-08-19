@@ -5,9 +5,8 @@ import 'package:bey_stats/battlepass/beybattlepass_scanner.dart';
 import 'package:bey_stats/battlepass/database_instance.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-
-const HIGH_SCORE = 10000;
 
 class StatsOnboarding extends StatefulWidget {
   final VoidCallback goNext;
@@ -16,10 +15,10 @@ class StatsOnboarding extends StatefulWidget {
   const StatsOnboarding(this.goNext, this.cancel, {super.key});
 
   @override
-  _StatsOnboardingState createState() => _StatsOnboardingState();
+  StatsOnboardingState createState() => StatsOnboardingState();
 }
 
-class _StatsOnboardingState extends State<StatsOnboarding> {
+class StatsOnboardingState extends State<StatsOnboarding> {
   late Future<BattlePassLaunchData?> _launchDataFuture;
 
   @override
@@ -36,6 +35,8 @@ class _StatsOnboardingState extends State<StatsOnboarding> {
 
   @override
   Widget build(BuildContext context) {
+    var logger = Logger();
+
     return Column(
       children: [
         const Text("Results", style: TextStyle(fontSize: 20.0)),
@@ -61,15 +62,16 @@ class _StatsOnboardingState extends State<StatsOnboarding> {
                     !scoreSnapshot.hasData ||
                     snapshot.data == null ||
                     scoreSnapshot.data == null) {
-                  print(snapshot.error);
-                  print(scoreSnapshot.error);
+                  
+                  logger.e(snapshot.error);
+                  logger.e(scoreSnapshot.error);
                   return const Text("Unable to get Data from Battlepass");
                 }
 
-                var speed_percentage = snapshot.data!.header.maxLaunchSpeed /
+                var speedPercentage = snapshot.data!.header.maxLaunchSpeed /
                     (scoreSnapshot.data! + 1);
 
-                print(min(1.0, speed_percentage));
+                logger.d(min(1.0, speedPercentage));
                 return Column(
                   children: [
                     SfRadialGauge(
@@ -92,7 +94,7 @@ class _StatsOnboardingState extends State<StatsOnboarding> {
                           showLabels: false,
                           startAngle: 150,
                           endAngle:
-                              150 + (min(1.0, speed_percentage) + 0.01) * 240,
+                              150 + (min(1.0, speedPercentage) + 0.01) * 240,
                           radiusFactor: 0.9,
                           annotations: <GaugeAnnotation>[
                             const GaugeAnnotation(
@@ -140,9 +142,9 @@ class _StatsOnboardingState extends State<StatsOnboarding> {
                         onPressed: () async {
                           var db = await DatabaseInstance.getInstance();
                           await db.saveLaunches(snapshot.data!.launches);
-                          print(await db.getLaunches());
-                          print(await db.getSessionTimeMax());
-                          print(await db.getAllTimeMax());
+                          logger.d(await db.getLaunches());
+                          logger.d(await db.getSessionTimeMax());
+                          logger.d(await db.getAllTimeMax());
 
                           await BeyBattlePassScanner.clearBattlePassData();
                           // clear

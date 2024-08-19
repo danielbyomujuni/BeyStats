@@ -1,4 +1,3 @@
-import 'package:catppuccin_flutter/catppuccin_flutter.dart';
 import 'package:flutter/material.dart';
 
 class InfoCard extends StatelessWidget {
@@ -8,12 +7,11 @@ class InfoCard extends StatelessWidget {
   final int value;
 
   const InfoCard(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.subtitle,
       required this.value,
-      required this.unit})
-      : super(key: key);
+      required this.unit});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +51,7 @@ class InfoCard extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 20,
                             color: Theme.of(context).colorScheme.primary)),
-                    Text('$unit',
+                    Text(unit,
                         style: TextStyle(
                             fontSize: 10,
                             color: Theme.of(context).colorScheme.primary)),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class OnboardingTurnon extends StatelessWidget {
-  VoidCallback _goNext;
-  VoidCallback _cancel;
+  final VoidCallback _goNext;
+  final VoidCallback _cancel;
 
-  OnboardingTurnon(this._goNext, this._cancel, {super.key});
+  const OnboardingTurnon(this._goNext, this._cancel, {super.key});
 
   // This widget is the root of your application.
   @override

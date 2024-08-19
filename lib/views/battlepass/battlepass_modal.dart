@@ -1,9 +1,9 @@
 import 'package:bey_stats/views/battlepass/onboarding/battlepass_onboarding.dart';
-import 'package:bey_stats/views/battlepass/battlepass_scanner.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 
 class BattlepassModal extends StatelessWidget {
+  const BattlepassModal({super.key});
+
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(

@@ -1,16 +1,12 @@
-import 'dart:math';
-
 import 'package:bey_stats/battlepass/database_observer.dart';
 import 'package:bey_stats/structs/launch_data.dart';
-import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseInstance {
   static DatabaseInstance? _instance;
-  Database _database;
+  final Database _database;
 
-  DatabaseInstance._(Database this._database);
+  DatabaseInstance._(this._database);
 
   static Future<DatabaseInstance> getInstance() async {
     if (_instance == null) {
@@ -32,7 +28,7 @@ class DatabaseInstance {
         "INSERT INTO 'standard_launches' ('launch_power', 'session_number') VALUES";
     for (int launch in launches) {
       query +=
-          "(${launch}, (SELECT coalesce(MAX(session_number), -1) FROM standard_launches) + 1),";
+          "($launch, (SELECT coalesce(MAX(session_number), -1) FROM standard_launches) + 1),";
     }
 
     query = query.substring(0, query.length - 1);

@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 class FormatDateTime extends StatelessWidget {
   final DateTime launchDate;
 
-  FormatDateTime({Key? key, required this.launchDate}) : super(key: key);
+  const FormatDateTime({super.key, required this.launchDate});
 
   String _formatDateTime(DateTime dateTime) {
     String daySuffix(int day) {
@@ -37,5 +37,3 @@ class FormatDateTime extends StatelessWidget {
     );
   }
 }
-
-// Usage example

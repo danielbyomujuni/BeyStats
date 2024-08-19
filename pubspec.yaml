@@ -50,6 +50,7 @@ dependencies:
   catppuccin_flutter: ^1.0.0
   google_fonts: ^6.2.1
   flutter_launcher_icons: ^0.13.1
+  logger: ^2.4.0
 
 dev_dependencies:
   flutter_test:

@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:logger/logger.dart';
 import 'battlepass_models.dart';
 import 'battlepass_utils.dart';
 
 class BeyBattlePassScanner extends GetxController {
-  static const HEADER_BYTE = 0x51;
-  static const GET_DATA_BYTE = 0x74;
-  static const CLEAR_DATA_BYTE = 0x75;
+  static const headerByte = 0x51;
+  static const getDataByte = 0x74;
+  static const clearDataByte = 0x75;
 
   static BluetoothDevice? battlepass;
   static BluetoothCharacteristic? readCharacteristic;
@@ -17,28 +18,28 @@ class BeyBattlePassScanner extends GetxController {
   static Completer<void> readLock = Completer<void>();
 
   static Future<void> scanForBattlePass() async {
+    var logger = Logger();
     try {
-      print("Scanning");
+      logger.i("Scanning");
 
       FlutterBluePlus.onScanResults.listen(
         (results) {
           if (results.isNotEmpty) {
             ScanResult r = results.last;
-            print(
-                '${r.device.remoteId}: "${r.advertisementData.advName}" found!');
+            logger.i('${r.device.remoteId}: "${r.advertisementData.advName}" found!');
           }
         },
-        onError: (e) => print(e),
+        onError: (e) => logger.e(e),
       );
 
       await FlutterBluePlus.adapterState
           .where((val) => val == BluetoothAdapterState.on)
           .first;
       await FlutterBluePlus.startScan(withNames: ["BEYBLADE_TOOL01"]);
-      print("Scanning done");
+      logger.i("Scanning done");
     } catch (err) {
-      print("Scanning Error");
-      throw err;
+      logger.i("Scanning Error");
+      rethrow;
     }
   }
 
@@ -100,7 +101,7 @@ class BeyBattlePassScanner extends GetxController {
     }
 
     await BeyBattlePassScanner.writeCharacteristic!
-        .write([HEADER_BYTE], withoutResponse: true);
+        .write([headerByte], withoutResponse: true);
     await waitWhile(() => readBuffer.length != 1);
 
     var header = readBuffer[0];
@@ -122,7 +123,7 @@ class BeyBattlePassScanner extends GetxController {
     }
 
     await BeyBattlePassScanner.writeCharacteristic!
-        .write([GET_DATA_BYTE], withoutResponse: true);
+        .write([getDataByte], withoutResponse: true);
 
     await waitWhile(() => readBuffer.isEmpty);
     await waitWhile(() => !readBuffer.last.startsWith(header.pageCount));
@@ -140,7 +141,7 @@ class BeyBattlePassScanner extends GetxController {
 
   static Future<void> clearBattlePassData() async {
     await BeyBattlePassScanner.writeCharacteristic!
-        .write([CLEAR_DATA_BYTE], withoutResponse: true);
+        .write([clearDataByte], withoutResponse: true);
 
     await waitWhile(() => readBuffer.length < 2);
     //print(readBuffer[1]);

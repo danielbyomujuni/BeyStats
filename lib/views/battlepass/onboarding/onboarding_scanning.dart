@@ -1,12 +1,11 @@
-import 'package:bey_stats/battlepass/beybattlepass_scanner.dart';
 import 'package:bey_stats/views/battlepass/battlepass_scanner.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingScanning extends StatelessWidget {
-  VoidCallback _goNext;
-  VoidCallback _cancel;
+  final VoidCallback _goNext;
+  final VoidCallback _cancel;
 
-  OnboardingScanning(this._goNext, this._cancel, {super.key});
+  const OnboardingScanning(this._goNext, this._cancel, {super.key});
 
   // This widget is the root of your application.
   @override

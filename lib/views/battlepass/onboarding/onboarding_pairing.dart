@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class OnboardingPairing extends StatelessWidget {
-  VoidCallback _goNext;
-  VoidCallback _cancel;
+  final VoidCallback _goNext;
+  final VoidCallback _cancel;
 
-  OnboardingPairing(this._goNext, this._cancel, {super.key});
+  const OnboardingPairing(this._goNext, this._cancel, {super.key});
 
   // This widget is the root of your application.
   @override
