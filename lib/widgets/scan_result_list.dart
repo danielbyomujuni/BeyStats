@@ -1,32 +1,34 @@
-import 'package:bey_stats/battlepass/beybattlepass_scanner.dart';
+
+import 'package:bey_stats/services/battle_pass_factory.dart';
+import 'package:bey_stats/structs/battlepass_ble_device.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:logger/logger.dart';
 
 class ScanResultList extends StatelessWidget {
 
   final VoidCallback onPair;
-  final List<ScanResult> scanResults;
+  final List<BattlepassBleDevice> battlepassItems;
+  final AbstractBattlePassFactory factory;
 
-  const ScanResultList({super.key, required this.scanResults, required this.onPair});
+  const ScanResultList({super.key, required this.battlepassItems, required this.onPair, required this.factory});
 
   @override
   Widget build(BuildContext context) {
     var logger = Logger();
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: scanResults.length,
+      itemCount: battlepassItems.length,
       itemBuilder: (context, index) {
-        final data = scanResults[index];
+        final btlpass = battlepassItems[index];
         return Card(
           elevation: 2,
           child: ListTile(
-            title: Text(data.device.platformName),
-            subtitle: Text(data.device.remoteId.str),
-            trailing: Text(data.rssi.toString()),
+            title: Text(btlpass.name),
+            subtitle: Text(btlpass.address),
+            trailing: Text(btlpass.rssi.toString()),
             onTap: () async {
               logger.i("Connect");
-              await BeyBattlePassScanner.connectToBattlePass(data.device);
+              await factory.connectToBattlePass(btlpass);
               onPair();
             },
           ),

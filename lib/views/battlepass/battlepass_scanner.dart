@@ -1,6 +1,6 @@
-import 'package:bey_stats/battlepass/beybattlepass_scanner.dart';
+import 'package:bey_stats/services/battle_pass_factory.dart';
+import 'package:bey_stats/structs/battlepass_ble_device.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
 import 'package:bey_stats/widgets/scan_result_list.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -17,33 +17,37 @@ class BattlepassScanner extends StatefulWidget {
 class _BattlepassScannerState extends State<BattlepassScanner> {
   @override
   void initState() {
-    BeyBattlePassScanner.scanForBattlePass();
+    BattlePassFactory().scanForBattlePass();
     super.initState();
   }
 
   @override
   void dispose() {
-    BeyBattlePassScanner.endScanForBattlePass();
+    BattlePassFactory().endScanForBattlePass();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<BeyBattlePassScanner>(
-      init: BeyBattlePassScanner(),
-      builder: (BeyBattlePassScanner controller) {
+    var factory = BattlePassFactory();
+
+
+    return GetBuilder<AbstractBattlePassFactory>(
+      init: factory,
+      builder: (AbstractBattlePassFactory controller) {
         return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              StreamBuilder<List<ScanResult>>(
-                  stream: controller.scanResult,
+              StreamBuilder<List<BattlepassBleDevice>>(
+                  stream: controller.getScanBattlePassResults(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                       return Expanded(
                         child: Scrollbar(
                           child: ScanResultList(
-                              scanResults: snapshot.data!,
+                              factory: factory,
+                              battlepassItems: snapshot.data!,
                               onPair: widget._onPair),
                         ),
                       );

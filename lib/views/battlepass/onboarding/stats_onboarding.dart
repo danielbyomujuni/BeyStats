@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:bey_stats/battlepass/battlepass_models.dart';
-import 'package:bey_stats/battlepass/beybattlepass_scanner.dart';
-import 'package:bey_stats/battlepass/database_instance.dart';
+import 'package:bey_stats/services/battle_pass.dart';
+import 'package:bey_stats/widgets/database_instance.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:logger/logger.dart';
@@ -24,12 +24,12 @@ class StatsOnboardingState extends State<StatsOnboarding> {
   @override
   void initState() {
     super.initState();
-    _launchDataFuture = BeyBattlePassScanner.getLaunchDataFromBattlePass();
+    _launchDataFuture = BattlePass().getLaunchDataFromBattlePass();
   }
 
   @override
   void dispose() {
-    BeyBattlePassScanner.disconnectFromBattlePass();
+    BattlePass().disconnectFromBattlePass();
     super.dispose();
   }
 
@@ -146,7 +146,7 @@ class StatsOnboardingState extends State<StatsOnboarding> {
                           logger.d(await db.getSessionTimeMax());
                           logger.d(await db.getAllTimeMax());
 
-                          await BeyBattlePassScanner.clearBattlePassData();
+                          await BattlePass().clearBattlePassData();
                           // clear
                           widget.cancel();
                         },
