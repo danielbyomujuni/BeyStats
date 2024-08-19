@@ -17,12 +17,3 @@ tests:
   script:
   - flutter test
 
-build-ios-ipa:
-  needs:
-    - tests
-    - lint
-  image: sickcodes/docker-osx:naked
-  stage: deploy
-  script:
-    - echo test
-
