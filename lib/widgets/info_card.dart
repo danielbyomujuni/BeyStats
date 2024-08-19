@@ -5,13 +5,15 @@ class InfoCard extends StatelessWidget {
   final String subtitle;
   final String unit;
   final int value;
+  final VoidCallback? onTap;
 
   const InfoCard(
       {super.key,
       required this.title,
       required this.subtitle,
       required this.value,
-      required this.unit});
+      required this.unit, 
+      this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class InfoCard extends StatelessWidget {
         splashColor: Theme.of(context).splashColor,
         onTap: () {
           debugPrint('Card tapped.');
+          if (onTap != null) {onTap!();}
         },
         child: Padding(
           padding: const EdgeInsets.all(10.0),

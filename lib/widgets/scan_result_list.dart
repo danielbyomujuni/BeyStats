@@ -27,17 +27,6 @@ class ScanResultList extends StatelessWidget {
             onTap: () async {
               logger.i("Connect");
               await BeyBattlePassScanner.connectToBattlePass(data.device);
-
-              //var results =
-              //await BeyBattlePassScanner.getLaunchDataFromBattlePass();
-
-              //print("Launch Scores: ${results!.launches}");
-              //print("Launches: ${results.header.launchCount}");
-              //print("Highscore: ${results.header.maxLaunchSpeed}");
-
-              //print("Navigate to page");
-              //await BeyBattlePassScanner.disconnectFromBattlePass();
-
               onPair();
             },
           ),

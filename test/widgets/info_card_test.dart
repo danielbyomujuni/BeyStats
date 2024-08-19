@@ -47,30 +47,53 @@ void main() {
     expect(valueText.style?.fontSize, 20);
     expect(unitText.style?.fontSize, 10);
   });
-/*
+
   testWidgets('InfoCard reacts to tap', (WidgetTester tester) async {
     bool tapped = false;
 
     await tester.pumpWidget(
-      MaterialApp(
+      const MaterialApp(
         home: Scaffold(
-          body: GestureDetector(
-            onTap: () {
-              tapped = true;
-            },
-            child: const InfoCard(
-              title: 'Test Title',
-              subtitle: 'Test Subtitle',
-              value: 42,
-              unit: 'km',
-            ),
+          body: InfoCard(
+            title: 'Test Title',
+            subtitle: 'Test Subtitle',
+            value: 42,
+            unit: 'km',
+            key: const Key('infoCard'), // Adding a key for easy identification
           ),
         ),
       ),
     );
 
-    await tester.tap(find.byType(InfoCard));
+    await tester.tap(find.byKey(const Key('infoCard')));
+    await tester.pump(); // Rebuild the widget tree after the tap
+
+    // Since the tap is inside InfoCard's InkWell, to test if the tap is recognized,
+    // you would need to check for the side effects. In this case, you can wrap the InfoCard
+    // with a custom widget that tracks the tap, or refactor InfoCard to accept a callback for taps.
+
+    // Assuming we modify InfoCard to accept an onTap callback:
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: InfoCard(
+            title: 'Test Title',
+            subtitle: 'Test Subtitle',
+            value: 42,
+            unit: 'km',
+            key: const Key('infoCard'),
+            onTap: () {
+              tapped = true;
+            },
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.byKey(const Key('infoCard')));
+    await tester.pump(); // Rebuild the widget tree after the tap
+
     expect(tapped, isTrue);
   });
-  */
+  
 }
