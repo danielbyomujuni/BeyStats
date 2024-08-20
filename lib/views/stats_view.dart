@@ -1,4 +1,5 @@
 import 'package:bey_stats/battlepass/database_observer.dart';
+import 'package:bey_stats/widgets/database_instance.dart';
 import 'package:bey_stats/widgets/launch_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +25,9 @@ class StatsView extends StatelessWidget {
                       "Launches (${notifier.launchCount})")),
               Expanded(
                   child: LaunchList(
-                      launches: notifier.launchData.reversed.toList()))
+                dismissible: true,
+                launches: () => notifier.launchData,
+              ))
             ],
           );
         },

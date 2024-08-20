@@ -11,12 +11,13 @@ abstract class AbstractBattlePassFactory extends GetxController {
   Future<void> endScanForBattlePass();
   Future<void> connectToBattlePass(BattlepassBleDevice device);
   Stream<List<BattlepassBleDevice>> getScanBattlePassResults();
+  List<BattlepassBleDevice> current_list = [];
 }
 
-class BattlePassFactory extends AbstractBattlePassFactory
-{
-  static StreamController<List<BattlepassBleDevice>> battlepassStream = StreamController<List<BattlepassBleDevice>>();
-  
+class BattlePassFactory extends AbstractBattlePassFactory {
+  static StreamController<List<BattlepassBleDevice>> battlepassStream =
+      StreamController<List<BattlepassBleDevice>>();
+
   @override
   Future<void> scanForBattlePass() async {
     var logger = Logger();
@@ -27,13 +28,11 @@ class BattlePassFactory extends AbstractBattlePassFactory
         (results) async {
           if (results.isNotEmpty) {
             ScanResult r = results.last;
-            var list = await battlepassStream.stream.last;
-            list.add(BattlepassBleDevice.fromScanResult(r));
-            battlepassStream.add(list);
+            current_list.add(BattlepassBleDevice.fromScanResult(r));
+            battlepassStream.add(current_list);
 
-
-
-            logger.i('${r.device.remoteId}: "${r.advertisementData.advName}" found!');
+            logger.i(
+                '${r.device.remoteId}: "${r.advertisementData.advName}" found!');
           }
         },
         onError: (e) => logger.e(e),
@@ -47,7 +46,7 @@ class BattlePassFactory extends AbstractBattlePassFactory
       logger.i("Scanning Error");
       rethrow;
     }
-}
+  }
 
   @override
   Future<void> endScanForBattlePass() async {
@@ -55,10 +54,11 @@ class BattlePassFactory extends AbstractBattlePassFactory
   }
 
   @override
-  Stream<List<BattlepassBleDevice>> getScanBattlePassResults() => battlepassStream.stream;
-  
+  Stream<List<BattlepassBleDevice>> getScanBattlePassResults() =>
+      battlepassStream.stream;
+
   @override
   Future<void> connectToBattlePass(BattlepassBleDevice device) async {
-      await BattlePass.connectToBattlePass(device);
+    await BattlePass.connectToBattlePass(device);
   }
 }

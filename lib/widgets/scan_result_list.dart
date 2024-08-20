@@ -1,16 +1,18 @@
-
 import 'package:bey_stats/services/battle_pass_factory.dart';
 import 'package:bey_stats/structs/battlepass_ble_device.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 class ScanResultList extends StatelessWidget {
-
   final VoidCallback onPair;
   final List<BattlepassBleDevice> battlepassItems;
   final AbstractBattlePassFactory factory;
 
-  const ScanResultList({super.key, required this.battlepassItems, required this.onPair, required this.factory});
+  const ScanResultList(
+      {super.key,
+      required this.battlepassItems,
+      required this.onPair,
+      required this.factory});
 
   @override
   Widget build(BuildContext context) {

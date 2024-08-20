@@ -1,4 +1,5 @@
 import 'package:bey_stats/battlepass/database_observer.dart';
+import 'package:bey_stats/widgets/database_instance.dart';
 import 'package:bey_stats/widgets/info_card.dart';
 import 'package:bey_stats/widgets/launch_list.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,9 @@ class HomeView extends StatelessWidget {
                           child: Text(
                               style: TextStyle(fontSize: 20),
                               "Top 5 Launches")),
-                      LaunchList(launches: notifier.topFive)
+                      LaunchList(
+                        launches: () => notifier.topFive,
+                      )
                     ])))
           ])));
         },

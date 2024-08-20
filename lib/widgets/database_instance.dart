@@ -50,14 +50,17 @@ class DatabaseInstance {
 
   Future<List<LaunchData>> getLaunchData() async {
     var result = await _database.rawQuery(
-        "SELECT launch_power, session_number,launch_date FROM 'standard_launches';");
+        "SELECT id, launch_power, session_number,launch_date FROM 'standard_launches' ORDER BY id DESC;");
 
     var launches = result.map((res) {
       return LaunchData(
+          res["id"] as int,
           res["session_number"] as int,
           res["launch_power"] as int,
           DateTime.parse(res["launch_date"] as String));
     });
+
+    //print(launches.map((e) => "${e.id}:${e.launchPower}").toList());
     return launches.toList();
   }
 
@@ -111,7 +114,7 @@ class DatabaseInstance {
 
   Future<List<LaunchData>> getTopFive() async {
     var result = await _database.rawQuery(
-        "SELECT launch_power, session_number,launch_date FROM 'standard_launches' ORDER BY launch_power DESC LIMIT 5;");
+        "SELECT id, launch_power, session_number,launch_date FROM 'standard_launches' ORDER BY launch_power DESC LIMIT 5;");
 
     if (result.isEmpty) {
       return [];
@@ -119,6 +122,7 @@ class DatabaseInstance {
 
     var launches = result.map((res) {
       return LaunchData(
+          res["id"] as int,
           res["session_number"] as int,
           res["launch_power"] as int,
           DateTime.parse(res["launch_date"] as String));
@@ -133,5 +137,13 @@ class DatabaseInstance {
 
     //await _database.execute(
     //    "UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'standard_launches';");
+  }
+
+  Future<void> deleteLaunchData(LaunchData launch) async {
+    await _database
+        .execute("DELETE FROM 'standard_launches' WHERE id = ${launch.id};");
+
+    final obs = DatabaseObserver();
+    obs.updateMaxValues();
   }
 }
