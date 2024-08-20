@@ -21,24 +21,21 @@ class LaunchList extends StatefulWidget {
 }
 
 class LaunchListState extends State<LaunchList> {
-  late List<LaunchData> _launches;
-  bool loading = true;
+  late List<LaunchData> _launches = [];
+  int deleted = 0;
 
   @override
   void initState() {
     super.initState();
     DatabaseObserver().addListener(() async {
-      setState(() {
-        loading = true;
-      });
-      _launches = await widget.launches();
-      Future.delayed(
-          const Duration(seconds: 1),
-          () => {
-                setState(() {
-                  loading = false;
-                })
-              });
+      final newLaunches = await widget.launches();
+      if (newLaunches.length >= _launches.length - deleted ||
+          !widget.dismissible) {
+        _launches = await widget.launches();
+        setState(() {
+          deleted = 0;
+        });
+      }
     });
   }
 
@@ -54,16 +51,6 @@ class LaunchListState extends State<LaunchList> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading) {
-      return Expanded(
-        child: LoadingAnimationWidget.twistingDots(
-          leftDotColor: const Color(0xFF1A1A3F),
-          rightDotColor: const Color(0xFFEA3799),
-          size: 200,
-        ),
-      );
-    }
-
     if (_launches.isEmpty) {
       return Center(
         child: Text(
@@ -84,10 +71,10 @@ class LaunchListState extends State<LaunchList> {
           launch: launch,
           dismissible: widget.dismissible,
           onDismissed: () async {
-            setState(() {
-              loading = true;
-            });
             await _removeLaunch(launch);
+            setState(() {
+              deleted += 1;
+            });
           },
         );
       }).toList(),

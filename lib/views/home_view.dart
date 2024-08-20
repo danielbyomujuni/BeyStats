@@ -22,7 +22,10 @@ class HomeView extends StatelessWidget {
             GridView.count(
                 shrinkWrap: true,
                 childAspectRatio: 1.5,
-                crossAxisCount: 2,
+                crossAxisCount:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 2
+                        : 4,
                 primary: false,
                 children: [
                   InfoCard(
@@ -55,9 +58,9 @@ class HomeView extends StatelessWidget {
             ),
             Container(
                 clipBehavior: Clip.hardEdge,
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(25))),
-                color: Theme.of(context).colorScheme.primaryContainer,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    borderRadius: const BorderRadius.all(Radius.circular(25))),
                 child: Padding(
                     padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 30.0),
                     child: Column(children: [

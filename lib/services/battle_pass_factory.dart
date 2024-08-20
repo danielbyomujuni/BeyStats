@@ -16,7 +16,7 @@ abstract class AbstractBattlePassFactory extends GetxController {
 
 class BattlePassFactory extends AbstractBattlePassFactory {
   static StreamController<List<BattlepassBleDevice>> battlepassStream =
-      StreamController<List<BattlepassBleDevice>>();
+      StreamController<List<BattlepassBleDevice>>.broadcast();
 
   @override
   Future<void> scanForBattlePass() async {
@@ -55,7 +55,7 @@ class BattlePassFactory extends AbstractBattlePassFactory {
 
   @override
   Stream<List<BattlepassBleDevice>> getScanBattlePassResults() =>
-      battlepassStream.stream;
+      battlepassStream.stream.asBroadcastStream();
 
   @override
   Future<void> connectToBattlePass(BattlepassBleDevice device) async {
