@@ -11,7 +11,7 @@ abstract class AbstractBattlePassFactory extends GetxController {
   Future<void> endScanForBattlePass();
   Future<void> connectToBattlePass(BattlepassBleDevice device);
   Stream<List<BattlepassBleDevice>> getScanBattlePassResults();
-  List<BattlepassBleDevice> current_list = [];
+  List<BattlepassBleDevice> currentList = [];
 }
 
 class BattlePassFactory extends AbstractBattlePassFactory {
@@ -28,8 +28,8 @@ class BattlePassFactory extends AbstractBattlePassFactory {
         (results) async {
           if (results.isNotEmpty) {
             ScanResult r = results.last;
-            current_list.add(BattlepassBleDevice.fromScanResult(r));
-            battlepassStream.add(current_list);
+            currentList.add(BattlepassBleDevice.fromScanResult(r));
+            battlepassStream.add(currentList);
 
             logger.i(
                 '${r.device.remoteId}: "${r.advertisementData.advName}" found!');

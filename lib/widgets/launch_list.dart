@@ -3,7 +3,6 @@ import 'package:bey_stats/structs/launch_data.dart';
 import 'package:bey_stats/widgets/database_instance.dart';
 import 'package:bey_stats/widgets/launch_power_card.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:logger/logger.dart';
 
 class LaunchList extends StatefulWidget {
@@ -28,10 +27,10 @@ class LaunchListState extends State<LaunchList> {
   void initState() {
     super.initState();
     DatabaseObserver().addListener(() async {
-      final newLaunches = await widget.launches();
+      final newLaunches = widget.launches();
       if (newLaunches.length >= _launches.length - deleted ||
           !widget.dismissible) {
-        _launches = await widget.launches();
+        _launches = widget.launches();
         setState(() {
           deleted = 0;
         });
@@ -62,7 +61,7 @@ class LaunchListState extends State<LaunchList> {
         ),
       );
     }
-    print(_launches.map((e) => "${e.id}:${e.launchPower}").toList());
+    //print(_launches.map((e) => "${e.id}:${e.launchPower}").toList());
     return ListView(
       primary: false,
       shrinkWrap: true,

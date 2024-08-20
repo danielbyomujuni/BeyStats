@@ -1,5 +1,4 @@
 import 'package:bey_stats/battlepass/database_observer.dart';
-import 'package:bey_stats/widgets/database_instance.dart';
 import 'package:bey_stats/widgets/info_card.dart';
 import 'package:bey_stats/widgets/launch_list.dart';
 import 'package:flutter/material.dart';
