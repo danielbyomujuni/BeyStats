@@ -30,7 +30,7 @@ class LaunchPowerCard extends StatelessWidget {
         subtitle: Text(
           "Session ${launch.sessionNumber}",
           style: TextStyle(
-            color: Theme.of(context).colorScheme.onTertiary,
+            color: Theme.of(context).colorScheme.inversePrimary,
           ),
         ),
         trailing: FormatDateTime(launchDate: launch.launchDate),
