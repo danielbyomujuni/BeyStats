@@ -10,7 +10,6 @@ abstract class AbstractBattlePass {
   Future<BattlePassLaunchData?> getLaunchDataFromBattlePass();
   Future<void> clearBattlePassData();
   Future<void> disconnectFromBattlePass();
-
 }
 
 class BattlePass extends AbstractBattlePass {
@@ -25,8 +24,8 @@ class BattlePass extends AbstractBattlePass {
   static List<String> readBuffer = [];
   static Completer<void> readLock = Completer<void>();
 
-
-  static Future<void> connectToBattlePass(BattlepassBleDevice battlepass) async {
+  static Future<void> connectToBattlePass(
+      BattlepassBleDevice battlepass) async {
     BattlePass.battlepassDevice = battlepass.device;
     if (BattlePass.battlepassDevice != null) {
       await BattlePass.battlepassDevice!.connect();
@@ -42,9 +41,8 @@ class BattlePass extends AbstractBattlePass {
       BattlePass.readCharacteristic = mainService.characteristics[1];
       BattlePass.writeCharacteristic = mainService.characteristics[0];
 
-      final subscription = BattlePass
-          .readCharacteristic!.onValueReceived
-          .listen((value) {
+      final subscription =
+          BattlePass.readCharacteristic!.onValueReceived.listen((value) {
         //print(convertIntListToHexString(value));
         readBuffer.add(convertIntListToHexString(value));
       });
@@ -65,7 +63,7 @@ class BattlePass extends AbstractBattlePass {
     }
   }
 
-@override
+  @override
   Future<BattlePassHeader?> getHeaderFromBattlePass() async {
     if (BattlePass.battlepassDevice == null) {
       return null;
@@ -81,7 +79,11 @@ class BattlePass extends AbstractBattlePass {
 
     await BattlePass.writeCharacteristic!
         .write([headerByte], withoutResponse: true);
-    await waitWhile(() => readBuffer.length != 1);
+    await waitWhile(() => readBuffer.length != 1)
+        .timeout(const Duration(seconds: 10), onTimeout: () {
+      readBuffer.clear();
+      throw Exception("Lost connection to Battlepass");
+    });
 
     var header = readBuffer[0];
     readBuffer.clear();
@@ -93,7 +95,7 @@ class BattlePass extends AbstractBattlePass {
     return BattlePassHeader(maxLaunchSpeed, launchCount, pageCount);
   }
 
-@override
+  @override
   Future<BattlePassLaunchData?> getLaunchDataFromBattlePass() async {
     var header = await getHeaderFromBattlePass();
     if (header == null) {
@@ -103,8 +105,16 @@ class BattlePass extends AbstractBattlePass {
     await BattlePass.writeCharacteristic!
         .write([getDataByte], withoutResponse: true);
 
-    await waitWhile(() => readBuffer.isEmpty);
-    await waitWhile(() => !readBuffer.last.startsWith(header.pageCount));
+    await waitWhile(() => readBuffer.isEmpty)
+        .timeout(const Duration(seconds: 10), onTimeout: () {
+      readBuffer.clear();
+      throw Exception("Lost connection to Battlepass");
+    });
+    await waitWhile(() => !readBuffer.last.startsWith(header.pageCount))
+        .timeout(const Duration(seconds: 10), onTimeout: () {
+      readBuffer.clear();
+      throw Exception("Lost connection to Battlepass");
+    });
 
     var launches = readBuffer.map((str) => str.substring(2)).join();
     readBuffer.clear();
@@ -122,14 +132,19 @@ class BattlePass extends AbstractBattlePass {
     await BattlePass.writeCharacteristic!
         .write([clearDataByte], withoutResponse: true);
 
-    await waitWhile(() => readBuffer.length < 2);
+    await waitWhile(() => readBuffer.length < 2)
+        .timeout(const Duration(seconds: 10), onTimeout: () {
+      readBuffer.clear();
+      throw Exception("Lost connection to Battlepass");
+    });
     //print(readBuffer[1]);
     var pageCount = getBytes(readBuffer[1], 22, 1);
-    await waitWhile(() => !readBuffer.last.startsWith(pageCount));
+    await waitWhile(() => !readBuffer.last.startsWith(pageCount))
+        .timeout(const Duration(seconds: 10), onTimeout: () {
+      readBuffer.clear();
+      throw Exception("Lost connection to Battlepass");
+    });
 
     readBuffer.clear();
   }
-
-
-
 }

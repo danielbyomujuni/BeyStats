@@ -14,7 +14,10 @@ class OnboardingTurnon extends StatelessWidget {
         const Text("Turn on the Battlepass", style: TextStyle(fontSize: 20.0)),
         const Text(
             "Press the button on the Bey Battlepass for about 1 second."),
-        const Spacer(),
+        Expanded(
+            child: Card(
+                color: Theme.of(context).colorScheme.inversePrimary,
+                child: const Image(image: AssetImage('assets/turn_on.png')))),
         const Text("The LED will glow green"),
         Row(children: [
           Expanded(

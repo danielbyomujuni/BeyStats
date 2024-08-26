@@ -12,7 +12,10 @@ class OnboardingPairing extends StatelessWidget {
     return Column(
       children: [
         const Text("Communicate", style: TextStyle(fontSize: 20.0)),
-        const Spacer(),
+        Expanded(
+            child: Card(
+                color: Theme.of(context).colorScheme.inversePrimary,
+                child: const Image(image: AssetImage('assets/pair.png')))),
         const Text(
             "Press the button on the Bey Battlepass for about 1 second."),
         const Text("The LED will then flash Green and Orange in Sequence"),

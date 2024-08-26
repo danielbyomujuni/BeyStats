@@ -13,7 +13,11 @@ class OnboardingRemoveBey extends StatelessWidget {
       children: [
         const Text("Remove Bey from Launcher",
             style: TextStyle(fontSize: 20.0)),
-        const Spacer(),
+        Expanded(
+            child: Card(
+                color: Theme.of(context).colorScheme.inversePrimary,
+                child:
+                    const Image(image: AssetImage('assets/remove_bey.png')))),
         const Text("Communication is unavailable when a bey is attach"),
         Row(children: [
           Expanded(

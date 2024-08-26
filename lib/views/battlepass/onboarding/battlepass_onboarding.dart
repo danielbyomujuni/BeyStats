@@ -1,3 +1,4 @@
+import 'package:bey_stats/views/battlepass/onboarding/error_onboarding.dart';
 import 'package:bey_stats/views/battlepass/onboarding/onboarding_pairing.dart';
 import 'package:bey_stats/views/battlepass/onboarding/onboarding_remove_bey.dart';
 import 'package:bey_stats/views/battlepass/onboarding/onboarding_scanning.dart';
@@ -27,6 +28,12 @@ class BattlepassOnboardingState extends State<BattlepassOnboarding> {
         duration: const Duration(milliseconds: 100), curve: Curves.decelerate);
   }
 
+  void errorModalPage() {
+    pageIndex = 6;
+    _pageController.animateToPage(5,
+        duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+  }
+
   @override
   void initState() {
     _pageController = PageController(initialPage: 0);
@@ -34,8 +41,10 @@ class BattlepassOnboardingState extends State<BattlepassOnboarding> {
     pages.add(OnboardingTurnon(nextModalPage, widget._closeModal));
     pages.add(OnboardingRemoveBey(nextModalPage, widget._closeModal));
     pages.add(OnboardingPairing(nextModalPage, widget._closeModal));
-    pages.add(OnboardingScanning(nextModalPage, widget._closeModal));
+    pages.add(
+        OnboardingScanning(nextModalPage, widget._closeModal, errorModalPage));
     pages.add(StatsOnboarding(() {}, widget._closeModal));
+    pages.add(ErrorOnboarding(widget._closeModal));
 
     super.initState();
   }

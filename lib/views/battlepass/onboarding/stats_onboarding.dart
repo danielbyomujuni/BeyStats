@@ -62,10 +62,19 @@ class StatsOnboardingState extends State<StatsOnboarding> {
                     !scoreSnapshot.hasData ||
                     snapshot.data == null ||
                     scoreSnapshot.data == null) {
-                  
                   logger.e(snapshot.error);
                   logger.e(scoreSnapshot.error);
-                  return const Text("Unable to get Data from Battlepass");
+                  return Column(children: [
+                    Expanded(
+                        child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: Icon(
+                              Icons.error,
+                              color: Theme.of(context).colorScheme.error,
+                            ))),
+                    const Text("Unable to get Data from Battlepass"),
+                    const Text("Check your Connection and Try Again")
+                  ]);
                 }
 
                 var speedPercentage = snapshot.data!.header.maxLaunchSpeed /
