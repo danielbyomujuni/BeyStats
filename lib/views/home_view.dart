@@ -3,6 +3,7 @@ import 'package:bey_stats/widgets/info_card.dart';
 import 'package:bey_stats/widgets/launch_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -28,27 +29,27 @@ class HomeView extends StatelessWidget {
                 primary: false,
                 children: [
                   InfoCard(
-                    title: 'All Time',
-                    subtitle: 'Launch Power',
+                    title: AppLocalizations.of(context)!.allTimeInfo,
+                    subtitle: AppLocalizations.of(context)!.launchPowerLabel,
                     unit: ' LP',
                     value: notifier.allTimeMax,
                   ),
                   InfoCard(
-                    title: 'Last Session',
-                    subtitle: 'Launch Power',
+                    title: AppLocalizations.of(context)!.lastSessionInfo,
+                    subtitle: AppLocalizations.of(context)!.launchPowerLabel,
                     unit: ' LP',
                     value: notifier.sessionMax,
                   ),
                   InfoCard(
-                    title: 'Launch Count',
-                    subtitle: 'Total Launches',
-                    unit: ' Launches',
+                    title: AppLocalizations.of(context)!.launchCountLabel,
+                    subtitle: AppLocalizations.of(context)!.totalLaunchesLabel,
+                    unit: ' ${AppLocalizations.of(context)!.launchesLabel}',
                     value: notifier.launchCount,
                   ),
                   InfoCard(
-                    title: 'Session Count',
-                    subtitle: 'Total Sessions',
-                    unit: ' Sessions',
+                    title: AppLocalizations.of(context)!.sessionCountInfo,
+                    subtitle: AppLocalizations.of(context)!.totalSessionsLabel,
+                    unit: ' ${AppLocalizations.of(context)!.sessionsLabel}',
                     value: notifier.sessionCount,
                   ),
                 ]),
@@ -63,11 +64,12 @@ class HomeView extends StatelessWidget {
                 child: Padding(
                     padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 30.0),
                     child: Column(children: [
-                      const Padding(
-                          padding: EdgeInsets.all(10.0),
+                      Padding(
+                          padding: const EdgeInsets.all(10.0),
                           child: Text(
-                              style: TextStyle(fontSize: 20),
-                              "Top 5 Launches")),
+                            AppLocalizations.of(context)!.topFiveLaunchesInfo,
+                            style: const TextStyle(fontSize: 20),
+                          )),
                       LaunchList(
                         launches: () => notifier.topFive,
                       )

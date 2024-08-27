@@ -7,6 +7,7 @@ lint:
   image: instrumentisto/flutter:3.24.0
   stage: lint
   script:
+    - flutter gen-l10n
     - flutter analyze
 
 tests:
@@ -15,5 +16,6 @@ tests:
   image: instrumentisto/flutter:3.24.0
   stage: test
   script:
+  - flutter gen-l10n
   - flutter test
 
