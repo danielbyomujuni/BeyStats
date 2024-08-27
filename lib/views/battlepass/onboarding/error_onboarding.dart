@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ErrorOnboarding extends StatelessWidget {
   final VoidCallback _cancel;
@@ -10,7 +11,8 @@ class ErrorOnboarding extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text("Error! (Try again)", style: TextStyle(fontSize: 20.0)),
+        Text(AppLocalizations.of(context)!.errorTryAgain,
+            style: const TextStyle(fontSize: 20.0)),
         Expanded(
             child: FittedBox(
                 fit: BoxFit.fill,
@@ -24,7 +26,7 @@ class ErrorOnboarding extends StatelessWidget {
                 onPressed: () {
                   _cancel();
                 },
-                child: const Text('Close')))
+                child: Text(AppLocalizations.of(context)!.close_label)))
       ],
     );
   }

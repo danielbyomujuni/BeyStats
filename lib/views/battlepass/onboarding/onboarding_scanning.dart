@@ -1,6 +1,7 @@
 import 'package:bey_stats/views/battlepass/battlepass_scanner.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OnboardingScanning extends StatelessWidget {
   final VoidCallback _goNext;
@@ -15,7 +16,8 @@ class OnboardingScanning extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text("Scanning", style: TextStyle(fontSize: 20.0)),
+        Text(AppLocalizations.of(context)!.scanningTitle,
+            style: const TextStyle(fontSize: 20.0)),
         Expanded(child: BattlepassScanner(_goNext)),
         kDebugMode
             ? Row(
@@ -31,14 +33,16 @@ class OnboardingScanning extends StatelessWidget {
                           onPressed: () {
                             _error();
                           },
-                          child: const Text('Error'))),
+                          child:
+                              Text(AppLocalizations.of(context)!.errorLabel))),
                   const SizedBox(width: 10.0),
                   Expanded(
                       child: OutlinedButton(
                           onPressed: () {
                             _cancel();
                           },
-                          child: const Text('Cancel')))
+                          child:
+                              Text(AppLocalizations.of(context)!.cancelLabel)))
                 ],
               )
             : SizedBox(
@@ -47,7 +51,7 @@ class OnboardingScanning extends StatelessWidget {
                     onPressed: () {
                       _cancel();
                     },
-                    child: const Text('Cancel')))
+                    child: Text(AppLocalizations.of(context)!.cancelLabel)))
       ],
     );
   }

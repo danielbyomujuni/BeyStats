@@ -4,6 +4,7 @@ import 'package:bey_stats/widgets/database_instance.dart';
 import 'package:bey_stats/widgets/launch_power_card.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LaunchList extends StatefulWidget {
   final List<LaunchData> Function() launches;
@@ -53,7 +54,7 @@ class LaunchListState extends State<LaunchList> {
     if (_launches.isEmpty) {
       return Center(
         child: Text(
-          'No Launches',
+          AppLocalizations.of(context)!.noLaunchesLabel,
           style: TextStyle(
             color: Theme.of(context).colorScheme.secondary,
             fontSize: 18,

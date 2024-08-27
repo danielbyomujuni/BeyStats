@@ -12,7 +12,7 @@ class InfoCard extends StatelessWidget {
       required this.title,
       required this.subtitle,
       required this.value,
-      required this.unit, 
+      required this.unit,
       this.onTap});
 
   @override
@@ -24,24 +24,30 @@ class InfoCard extends StatelessWidget {
         splashColor: Theme.of(context).splashColor,
         onTap: () {
           debugPrint('Card tapped.');
-          if (onTap != null) {onTap!();}
+          if (onTap != null) {
+            onTap!();
+          }
         },
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(
-              overflow: TextOverflow.fade,
-              title,
-              style: const TextStyle(fontSize: 16),
-            ),
-            Text(
-              subtitle,
-              style: TextStyle(
-                fontSize: 12,
-                color: Theme.of(context).colorScheme.outline,
-              ),
-            ),
+            FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  overflow: TextOverflow.fade,
+                  title,
+                  style: const TextStyle(fontSize: 16),
+                )),
+            FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
+                )),
             const Spacer(),
             Align(
               alignment: Alignment.bottomRight,
