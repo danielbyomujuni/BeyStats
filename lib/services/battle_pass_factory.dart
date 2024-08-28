@@ -20,6 +20,7 @@ class BattlePassFactory extends AbstractBattlePassFactory {
 
   @override
   Future<void> scanForBattlePass() async {
+    FlutterBluePlus.setLogLevel(LogLevel.verbose);
     var logger = Logger();
     try {
       logger.i("Scanning");

@@ -33,13 +33,28 @@ class BattlePass extends AbstractBattlePass {
       List<BluetoothService> services =
           await BattlePass.battlepassDevice!.discoverServices();
 
-      var mainService = services[0];
-      if (services[0].uuid.str.startsWith("00001")) {
-        mainService = services[1];
+      BluetoothService? mainService;
+
+      for (var service in services) {
+        if (service.uuid.str.startsWith("00001") ||
+            service.serviceUuid.str.startsWith("1800") ||
+            service.serviceUuid.str.startsWith("1801") ||
+            service.serviceUuid.str.startsWith("180a")) {
+          continue;
+        }
+        mainService ??= service;
+        break;
+      }
+
+      if (mainService == null) {
+        throw Exception("Unable to get Bluetooth characteristics");
       }
 
       BattlePass.readCharacteristic = mainService.characteristics[1];
       BattlePass.writeCharacteristic = mainService.characteristics[0];
+
+      //print(mainService.characteristics[1]);
+      //print(mainService.characteristics[0]);
 
       final subscription =
           BattlePass.readCharacteristic!.onValueReceived.listen((value) {
