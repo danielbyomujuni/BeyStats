@@ -13,7 +13,7 @@ Widget getFooter(
   return AnimatedBottomNavigationBar(
     activeColor: Theme.of(context).colorScheme.primary,
     splashColor: Theme.of(context).splashColor,
-    inactiveColor: Colors.black.withOpacity(0.5),
+    inactiveColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
     backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
     icons: iconItems,
     activeIndex: pageIndex,
