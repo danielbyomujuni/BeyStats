@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:bey_stats/views/battlepass/battlepass_modal.dart';
 import 'home_view.dart';
 import 'navigation_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Root extends StatefulWidget {
   const Root({super.key});
@@ -24,7 +25,7 @@ class RootState extends State<Root> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Beycombat Logger'),
+        title: Text(AppLocalizations.of(context)!.bey_stats),
       ),
       body: getBody(),
       bottomNavigationBar: getFooter(context, pageIndex, selectedTab),

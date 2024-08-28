@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OnboardingTurnon extends StatelessWidget {
   final VoidCallback _goNext;
@@ -11,18 +12,21 @@ class OnboardingTurnon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text("Turn on the Battlepass", style: TextStyle(fontSize: 20.0)),
-        const Text(
-            "Press the button on the Bey Battlepass for about 1 second."),
-        const Spacer(),
-        const Text("The LED will glow green"),
+        Text(AppLocalizations.of(context)!.turnOnBattlePassTitle,
+            style: const TextStyle(fontSize: 20.0)),
+        Text(AppLocalizations.of(context)!.turnOnBattlePassDescription1),
+        Expanded(
+            child: Card(
+                color: Theme.of(context).colorScheme.inversePrimary,
+                child: const Image(image: AssetImage('assets/turn_on.png')))),
+        Text(AppLocalizations.of(context)!.turnOnBattlePassDescription2),
         Row(children: [
           Expanded(
               child: FilledButton(
             onPressed: () async {
               _goNext();
             },
-            child: const Text('OK'),
+            child: Text(AppLocalizations.of(context)!.okLabel),
           )),
           const SizedBox(width: 15.0),
           Expanded(
@@ -30,7 +34,7 @@ class OnboardingTurnon extends StatelessWidget {
             onPressed: () {
               _cancel();
             },
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.cancelLabel),
           ))
         ])
       ],

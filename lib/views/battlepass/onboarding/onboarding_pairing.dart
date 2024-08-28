@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OnboardingPairing extends StatelessWidget {
   final VoidCallback _goNext;
@@ -11,18 +12,21 @@ class OnboardingPairing extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text("Communicate", style: TextStyle(fontSize: 20.0)),
-        const Spacer(),
-        const Text(
-            "Press the button on the Bey Battlepass for about 1 second."),
-        const Text("The LED will then flash Green and Orange in Sequence"),
+        Text(AppLocalizations.of(context)!.comunicateTitle,
+            style: const TextStyle(fontSize: 20.0)),
+        Expanded(
+            child: Card(
+                color: Theme.of(context).colorScheme.inversePrimary,
+                child: const Image(image: AssetImage('assets/pair.png')))),
+        Text(AppLocalizations.of(context)!.pairBattlePass_1),
+        Text(AppLocalizations.of(context)!.pairBattlePass_2),
         Row(children: [
           Expanded(
               child: FilledButton(
             onPressed: () async {
               _goNext();
             },
-            child: const Text('OK'),
+            child: Text(AppLocalizations.of(context)!.okLabel),
           )),
           const SizedBox(width: 15.0),
           Expanded(
@@ -30,7 +34,7 @@ class OnboardingPairing extends StatelessWidget {
             onPressed: () {
               _cancel();
             },
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.close_label),
           ))
         ])
       ],

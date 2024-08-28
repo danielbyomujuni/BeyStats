@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OnboardingRemoveBey extends StatelessWidget {
   final VoidCallback _goNext;
@@ -11,17 +12,21 @@ class OnboardingRemoveBey extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text("Remove Bey from Launcher",
-            style: TextStyle(fontSize: 20.0)),
-        const Spacer(),
-        const Text("Communication is unavailable when a bey is attach"),
+        Text(AppLocalizations.of(context)!.removeBeyTitle,
+            style: const TextStyle(fontSize: 20.0)),
+        Expanded(
+            child: Card(
+                color: Theme.of(context).colorScheme.inversePrimary,
+                child:
+                    const Image(image: AssetImage('assets/remove_bey.png')))),
+        Text(AppLocalizations.of(context)!.removeBeyDescription),
         Row(children: [
           Expanded(
               child: FilledButton(
             onPressed: () async {
               _goNext();
             },
-            child: const Text('OK'),
+            child: Text(AppLocalizations.of(context)!.okLabel),
           )),
           const SizedBox(width: 15.0),
           Expanded(
@@ -29,7 +34,7 @@ class OnboardingRemoveBey extends StatelessWidget {
             onPressed: () {
               _cancel();
             },
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.close_label),
           ))
         ])
       ],

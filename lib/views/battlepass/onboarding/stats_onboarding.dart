@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StatsOnboarding extends StatefulWidget {
   final VoidCallback goNext;
@@ -39,7 +40,8 @@ class StatsOnboardingState extends State<StatsOnboarding> {
 
     return Column(
       children: [
-        const Text("Results", style: TextStyle(fontSize: 20.0)),
+        Text(AppLocalizations.of(context)!.resultsTitle,
+            style: const TextStyle(fontSize: 20.0)),
         Expanded(
           child: FutureBuilder<int>(future: () async {
             var data =
@@ -62,10 +64,19 @@ class StatsOnboardingState extends State<StatsOnboarding> {
                     !scoreSnapshot.hasData ||
                     snapshot.data == null ||
                     scoreSnapshot.data == null) {
-                  
                   logger.e(snapshot.error);
                   logger.e(scoreSnapshot.error);
-                  return const Text("Unable to get Data from Battlepass");
+                  return Column(children: [
+                    Expanded(
+                        child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: Icon(
+                              Icons.error,
+                              color: Theme.of(context).colorScheme.error,
+                            ))),
+                    Text(AppLocalizations.of(context)!.battlepassError1),
+                    Text(AppLocalizations.of(context)!.battlepassError2)
+                  ]);
                 }
 
                 var speedPercentage = snapshot.data!.header.maxLaunchSpeed /
@@ -97,12 +108,13 @@ class StatsOnboardingState extends State<StatsOnboarding> {
                               150 + (min(1.0, speedPercentage) + 0.01) * 240,
                           radiusFactor: 0.9,
                           annotations: <GaugeAnnotation>[
-                            const GaugeAnnotation(
+                            GaugeAnnotation(
                                 angle: 270,
                                 positionFactor: 0.18,
                                 verticalAlignment: GaugeAlignment.far,
-                                widget: Text('Max Launch Power:',
-                                    style: TextStyle(fontSize: 19))),
+                                widget: Text(
+                                    "${AppLocalizations.of(context)!.maxLaunchPowerLabel}:",
+                                    style: const TextStyle(fontSize: 19))),
                             GaugeAnnotation(
                                 angle: 270,
                                 positionFactor: 0.1,
@@ -115,7 +127,7 @@ class StatsOnboardingState extends State<StatsOnboarding> {
                                 positionFactor: 0,
                                 verticalAlignment: GaugeAlignment.near,
                                 widget: Text(
-                                    'Launch Count: ${snapshot.data!.header.launchCount}',
+                                    '${AppLocalizations.of(context)!.launchCountLabel}: ${snapshot.data!.header.launchCount}',
                                     style: TextStyle(
                                         fontSize: 15,
                                         color: Theme.of(context)
@@ -150,7 +162,7 @@ class StatsOnboardingState extends State<StatsOnboarding> {
                           // clear
                           widget.cancel();
                         },
-                        child: const Text('SAVE'),
+                        child: Text(AppLocalizations.of(context)!.saveLabel),
                       )),
                       const SizedBox(width: 15.0),
                       Expanded(
@@ -158,7 +170,7 @@ class StatsOnboardingState extends State<StatsOnboarding> {
                         onPressed: () {
                           widget.cancel();
                         },
-                        child: const Text('Cancel'),
+                        child: Text(AppLocalizations.of(context)!.cancelLabel),
                       ))
                     ])
                   ],
