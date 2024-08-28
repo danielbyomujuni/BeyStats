@@ -47,12 +47,24 @@ class LaunchPowerCard extends StatelessWidget {
           }
         },
         direction: DismissDirection.endToStart,
-        background: Container(
-          color: Theme.of(context).colorScheme.error,
-          alignment: Alignment.centerRight,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: const Icon(Icons.delete, color: Colors.white),
-        ),
+        background: Padding(
+            padding: const EdgeInsets.fromLTRB(
+              0,
+              5.0,
+              5.0,
+              5.0,
+            ),
+            child: Container(
+              clipBehavior: Clip.hardEdge,
+              color: Theme.of(context).colorScheme.error,
+              alignment: Alignment.centerRight,
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                Radius.circular(10.0),
+              )),
+              padding: const EdgeInsets.all(10.0),
+              child: const Icon(Icons.delete, color: Colors.white),
+            )),
         child: card,
       );
     } else {
