@@ -1,4 +1,4 @@
-package com.example.bey_combat_logger
+package com.nekosyndicate.bey_stats
 
 import io.flutter.embedding.android.FlutterActivity
 
