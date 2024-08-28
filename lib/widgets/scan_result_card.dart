@@ -10,11 +10,10 @@ class ScanResultCard extends StatefulWidget {
   final AbstractBattlePassFactory factory;
 
   const ScanResultCard(
-      {Key? key,
+      {super.key,
       required this.battlepass,
       required this.factory,
-      required this.onPair})
-      : super(key: key);
+      required this.onPair});
 
   @override
   State<ScanResultCard> createState() => _ScanResultCardState();

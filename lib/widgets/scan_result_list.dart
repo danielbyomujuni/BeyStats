@@ -2,7 +2,6 @@ import 'package:bey_stats/services/battle_pass_factory.dart';
 import 'package:bey_stats/structs/battlepass_ble_device.dart';
 import 'package:bey_stats/widgets/scan_result_card.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 
 class ScanResultList extends StatelessWidget {
   final VoidCallback onPair;
@@ -17,7 +16,6 @@ class ScanResultList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var logger = Logger();
     return ListView.builder(
       shrinkWrap: true,
       itemCount: battlepassItems.length,

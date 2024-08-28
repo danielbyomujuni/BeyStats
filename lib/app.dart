@@ -1,4 +1,3 @@
-import 'package:bey_stats/colourSchemes/Ilinnuc_colorscheme.dart';
 import 'package:bey_stats/colourSchemes/base_color.dart';
 import 'package:bey_stats/views/root.dart';
 import 'package:flutter/material.dart';
