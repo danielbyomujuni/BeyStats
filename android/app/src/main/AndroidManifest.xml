@@ -19,7 +19,7 @@ https://developer.android.com/about/versions/12/features/bluetooth-permissions -
 
 
     <application
-        android:label="bey_stats"
+        android:label="Bey Stats"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
