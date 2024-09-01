@@ -73,7 +73,19 @@ class HomeView extends StatelessWidget {
                       LaunchList(
                         launches: () => notifier.topFive,
                       )
-                    ])))
+                    ]))),
+            const SizedBox(
+              height: 10.0,
+            ),
+            FilledButton(
+                onPressed: () {},
+                child: const Row(children: [
+                  Icon(Icons.emoji_events),
+                  Text("Achievements")
+                ])),
+            const SizedBox(
+              height: 10.0,
+            ),
           ])));
         },
       ),
