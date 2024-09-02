@@ -78,7 +78,7 @@ class HomeView extends StatelessWidget {
             const SizedBox(
               height: 10.0,
             ),
-            FilledButton(
+            /*FilledButton(
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -93,7 +93,7 @@ class HomeView extends StatelessWidget {
                 ])),
             const SizedBox(
               height: 10.0,
-            ),
+            ),*/
           ])));
         },
       ),
