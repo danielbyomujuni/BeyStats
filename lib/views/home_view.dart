@@ -1,4 +1,5 @@
 import 'package:bey_stats/battlepass/database_observer.dart';
+import 'package:bey_stats/views/blank_view.dart';
 import 'package:bey_stats/widgets/info_card.dart';
 import 'package:bey_stats/widgets/launch_list.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +79,14 @@ class HomeView extends StatelessWidget {
               height: 10.0,
             ),
             FilledButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BlankView(),
+                    ),
+                  );
+                },
                 child: const Row(children: [
                   Icon(Icons.emoji_events),
                   Text("Achievements")
