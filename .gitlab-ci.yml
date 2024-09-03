@@ -19,3 +19,39 @@ tests:
   - flutter gen-l10n
   - flutter test
 
+build-container:       # This job runs in the build stage, which runs first.
+  stage: deploy
+  #only:
+  #  - main
+  needs:
+    - tests
+    - lint
+  image: 
+    name: gcr.io/kaniko-project/executor:v1.14.0-debug
+    entrypoint: [""]
+  tags:
+    - build-container
+  script:
+    - cd api
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}"
+
+deploy-container:
+  image: debian:latest
+  needs:
+    - build-container
+  stage: deploy
+  only:
+    - main
+  before_script:
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo $SSH_PRIVATE_KEY
+    - chmod 400 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+  script:
+    ssh -oStrictHostKeyChecking=no daniel@192.168.1.76 "cd ~/dockerfiles/beystats; sudo docker compose pull; sudo docker compose up -d; exit"
