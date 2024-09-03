@@ -1,4 +1,5 @@
 import 'package:bey_stats/views/blank_view.dart';
+import 'package:bey_stats/views/settings/report_bug_view.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,11 @@ class SettingsView extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Text("Debug", textAlign: TextAlign.left)),
                 OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const ReportBugView(),
+                    ));
+                  },
                   child: const Row(
                     children: [Icon(Icons.bug_report), Text("Report Bug")],
                   ),
