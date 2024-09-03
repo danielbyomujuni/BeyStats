@@ -1,7 +1,6 @@
 import 'package:bey_stats/views/blank_view.dart';
 import 'package:bey_stats/views/settings_view.dart';
 import 'package:bey_stats/views/stats_view.dart';
-import 'package:bey_stats/widgets/sub_root.dart';
 import 'package:flutter/material.dart';
 import 'package:bey_stats/views/battlepass/battlepass_modal.dart';
 import 'home_view.dart';

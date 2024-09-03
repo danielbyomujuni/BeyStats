@@ -2,11 +2,9 @@ import 'dart:convert';
 
 import 'package:bey_stats/services/bey_stats_api.dart';
 import 'package:bey_stats/structs/battlepass_debug.dart';
-import 'package:bey_stats/views/blank_view.dart';
 import 'package:bey_stats/views/settings/battlepass_bug_modal.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logger/logger.dart';
 
 class ReportBugView extends StatefulWidget {

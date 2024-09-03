@@ -3,7 +3,6 @@ import 'package:bey_stats/views/battlepass/onboarding/error_onboarding.dart';
 import 'package:bey_stats/views/battlepass/onboarding/onboarding_pairing.dart';
 import 'package:bey_stats/views/battlepass/onboarding/onboarding_remove_bey.dart';
 import 'package:bey_stats/views/battlepass/onboarding/onboarding_turnon.dart';
-import 'package:bey_stats/views/blank_view.dart';
 import 'package:bey_stats/views/settings/battlepass_bug_scanning.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

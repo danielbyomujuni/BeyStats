@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:bey_stats/services/battle_pass.dart';
 import 'package:bey_stats/structs/battlepass_debug.dart';
 import 'package:bey_stats/views/battlepass/battlepass_scanner.dart';

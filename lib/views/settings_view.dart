@@ -1,4 +1,3 @@
-import 'package:bey_stats/views/blank_view.dart';
 import 'package:bey_stats/views/settings/report_bug_view.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
 import 'package:flutter/material.dart';
