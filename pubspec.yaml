@@ -54,6 +54,7 @@ dependencies:
   automatic_animated_list: ^1.1.0
   flutter_swipe_action_cell: ^3.1.3
   crypto: ^3.0.5
+  http: ^1.2.2
   flutter_localizations:
     sdk: flutter
 

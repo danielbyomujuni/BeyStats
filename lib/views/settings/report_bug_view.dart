@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:bey_stats/services/bey_stats_api.dart';
+import 'package:bey_stats/structs/battlepass_debug.dart';
 import 'package:bey_stats/views/blank_view.dart';
 import 'package:bey_stats/views/settings/battlepass_bug_modal.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
@@ -14,6 +18,7 @@ class ReportBugView extends StatefulWidget {
 
 class ReportBugViewState extends State<ReportBugView> {
   String bugDescription = "";
+  BattlepassDebug? debugBattleData;
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +55,12 @@ class ReportBugViewState extends State<ReportBugView> {
               const SizedBox(
                 height: 4.0,
               ),
-              const Align(
+              Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Battle Pass Logs (Optional)",
+                  child: Text(
+                      debugBattleData == null
+                          ? "Battle Pass Logs (Optional)"
+                          : "Battle Pass Logs [Captured]",
                       textAlign: TextAlign.left)),
               const SizedBox(
                 height: 2.0,
@@ -65,7 +73,11 @@ class ReportBugViewState extends State<ReportBugView> {
                             context: context,
                             builder: (BuildContext context) {
                               return BattlepassBugModal(
-                                  () => Navigator.pop(context));
+                                  () => Navigator.pop(context), (debugData) {
+                                setState(() {
+                                  debugBattleData = debugData;
+                                });
+                              });
                             });
                       },
                       child: const Text("Connect to Battlepass"))),
@@ -85,6 +97,14 @@ class ReportBugViewState extends State<ReportBugView> {
                   child: FilledButton(
                       onPressed: () {
                         logger.i(bugDescription);
+                        if (debugBattleData != null) {
+                          logger.i(jsonEncode(debugBattleData!.toJson()));
+                        }
+
+                        BeyStatsApi.setBugReport("""{
+                          "decription": "$bugDescription",
+                          ${debugBattleData == null ? "" : '"battle_pass_data": "${jsonEncode(debugBattleData!.toJson())}"'}
+                        }""");
                       },
                       child: const Text("Send"))),
               const SizedBox(

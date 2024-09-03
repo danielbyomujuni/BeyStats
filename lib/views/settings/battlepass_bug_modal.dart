@@ -1,15 +1,18 @@
+import 'package:bey_stats/structs/battlepass_debug.dart';
 import 'package:bey_stats/views/battlepass/onboarding/error_onboarding.dart';
 import 'package:bey_stats/views/battlepass/onboarding/onboarding_pairing.dart';
 import 'package:bey_stats/views/battlepass/onboarding/onboarding_remove_bey.dart';
 import 'package:bey_stats/views/battlepass/onboarding/onboarding_turnon.dart';
 import 'package:bey_stats/views/blank_view.dart';
+import 'package:bey_stats/views/settings/battlepass_bug_scanning.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class BattlepassBugModal extends StatefulWidget {
+  final Function(BattlepassDebug) _debugFunction;
   final VoidCallback _closeModal;
 
-  const BattlepassBugModal(this._closeModal, {super.key});
+  const BattlepassBugModal(this._closeModal, this._debugFunction, {super.key});
 
   @override
   BattlepassBugModalState createState() => BattlepassBugModalState();
@@ -40,8 +43,8 @@ class BattlepassBugModalState extends State<BattlepassBugModal> {
     pages.add(OnboardingTurnon(nextModalPage, widget._closeModal));
     pages.add(OnboardingRemoveBey(nextModalPage, widget._closeModal));
     pages.add(OnboardingPairing(nextModalPage, widget._closeModal));
-    pages.add(const BlankView());
-    //OnboardingScanning(nextModalPage, widget._closeModal, errorModalPage));
+    pages.add(BattlepassBugScanning(
+        widget._debugFunction, widget._closeModal, errorModalPage));
     pages.add(ErrorOnboarding(widget._closeModal));
 
     super.initState();
