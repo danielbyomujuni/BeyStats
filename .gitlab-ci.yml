@@ -43,8 +43,8 @@ deploy-container:
   needs:
     - build-container
   stage: deploy
-  only:
-    - main
+ # only:
+ #   - main
   before_script:
     - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
