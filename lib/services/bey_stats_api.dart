@@ -5,7 +5,7 @@ import 'package:logger/logger.dart';
 class BeyStatsApi {
   static setBugReport(String json) async {
     var logger = Logger();
-    final url = Uri.parse('http://192.168.1.175:8080/issues');
+    final url = Uri.parse('https://beystats.nekosyndicate.com/issues');
 
     try {
       // Send the JSON string as the body of the POST request
