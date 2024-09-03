@@ -32,10 +32,9 @@ build-container:       # This job runs in the build stage, which runs first.
   tags:
     - build-container
   script:
-    - cd api
     - /kaniko/executor
-      --context "${CI_PROJECT_DIR}"
-      --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+      --context "${CI_PROJECT_DIR}/api"
+      --dockerfile "${CI_PROJECT_DIR}/api/Dockerfile"
       --destination "${CI_REGISTRY_IMAGE}"
 
 deploy-container:
