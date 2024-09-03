@@ -2,6 +2,7 @@ import 'package:bey_stats/views/blank_view.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:logger/logger.dart';
 
 class ReportBugView extends StatefulWidget {
   const ReportBugView({super.key});
@@ -11,8 +12,12 @@ class ReportBugView extends StatefulWidget {
 }
 
 class ReportBugViewState extends State<ReportBugView> {
+  String bugDescription = "";
+
   @override
   Widget build(BuildContext context) {
+    var logger = Logger();
+
     return SubRoot(
       subTitle: "Bug Report",
       child: Padding(
@@ -27,15 +32,19 @@ class ReportBugViewState extends State<ReportBugView> {
               ),
               Card(
                   color: Theme.of(context).colorScheme.tertiary,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: TextField(
-                      keyboardType: TextInputType.name,
-                      textInputAction: TextInputAction.done,
-                      maxLines: 8, //or null
-                      decoration: InputDecoration.collapsed(
-                          hintText: "Describe the bug here"),
-                    ),
+                        keyboardType: TextInputType.name,
+                        textInputAction: TextInputAction.done,
+                        maxLines: 8, //or null
+                        decoration: const InputDecoration.collapsed(
+                            hintText: "Describe the bug here"),
+                        onChanged: (value) {
+                          setState(() {
+                            bugDescription = value;
+                          });
+                        }),
                   )),
               const SizedBox(
                 height: 4.0,
@@ -66,7 +75,10 @@ class ReportBugViewState extends State<ReportBugView> {
               SizedBox(
                   width: double.infinity,
                   child: FilledButton(
-                      onPressed: () {}, child: const Text("Send"))),
+                      onPressed: () {
+                        logger.i(bugDescription);
+                      },
+                      child: const Text("Send"))),
               const SizedBox(
                 height: 25.0,
               ),
