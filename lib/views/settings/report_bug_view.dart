@@ -1,4 +1,5 @@
 import 'package:bey_stats/views/blank_view.dart';
+import 'package:bey_stats/views/settings/battlepass_bug_modal.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -59,7 +60,14 @@ class ReportBugViewState extends State<ReportBugView> {
               SizedBox(
                   width: double.infinity,
                   child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showModalBottomSheet<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return BattlepassBugModal(
+                                  () => Navigator.pop(context));
+                            });
+                      },
                       child: const Text("Connect to Battlepass"))),
               const SizedBox(
                 height: 4.0,
