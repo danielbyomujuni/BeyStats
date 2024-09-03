@@ -1,4 +1,5 @@
 import 'package:bey_stats/views/blank_view.dart';
+import 'package:bey_stats/views/settings_view.dart';
 import 'package:bey_stats/views/stats_view.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class RootState extends State<Root> {
             tooltip: 'Setting Icon',
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const SubRoot(subTitle: "Settings"),
+                builder: (context) => const SettingsView(),
               ));
             },
           ), //IconButton
