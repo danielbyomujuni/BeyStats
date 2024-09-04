@@ -56,12 +56,12 @@ class LaunchPowerCard extends StatelessWidget {
             ),
             child: Container(
               clipBehavior: Clip.hardEdge,
-              color: Theme.of(context).colorScheme.error,
               alignment: Alignment.centerRight,
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                Radius.circular(10.0),
-              )),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.error,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10.0),
+                  )),
               padding: const EdgeInsets.all(10.0),
               child: const Icon(Icons.delete, color: Colors.white),
             )),
