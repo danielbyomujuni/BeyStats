@@ -1,12 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:bey_stats/services/bey_stats_api.dart';
 import 'package:bey_stats/structs/battlepass_debug.dart';
 import 'package:bey_stats/views/settings/battlepass_bug_modal.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class ReportBugView extends StatefulWidget {
   const ReportBugView({super.key});
@@ -114,10 +117,34 @@ class ReportBugViewState extends State<ReportBugView> {
 
                                       if (!context.mounted) return;
 
+                                      var device = "";
+                                      DeviceInfoPlugin deviceInfo =
+                                          DeviceInfoPlugin();
+                                      if (Platform.isAndroid) {
+                                        var androidInfo =
+                                            await deviceInfo.androidInfo;
+
+                                        device +=
+                                            '"model": "${androidInfo.model},"';
+                                        device +=
+                                            '"version": "${androidInfo.version.release}"';
+                                      } else if (Platform.isIOS) {
+                                        var iosInfo = await deviceInfo.iosInfo;
+
+                                        device +=
+                                            '"model": "${iosInfo.utsname.machine}",';
+                                        device +=
+                                            '"version": "${iosInfo.systemVersion}"';
+                                      }
+                                      PackageInfo packageInfo =
+                                          await PackageInfo.fromPlatform();
+
                                       var id = "";
                                       try {
                                         id = await BeyStatsApi.setBugReport("""{
                             "decription": "${_bugDescription.text}",
+                            "app_version": "${packageInfo.version}"
+                            "device" : { $device }
                             ${debugBattleData == null ? "" : '"battle_pass_data": "${jsonEncode(debugBattleData!.toJson())}"'}
                           }""");
                                       } catch (err) {
