@@ -1,3 +1,5 @@
+import 'package:bey_stats/views/blank_view.dart';
+import 'package:bey_stats/views/settings_view.dart';
 import 'package:bey_stats/views/stats_view.dart';
 import 'package:flutter/material.dart';
 import 'package:bey_stats/views/battlepass/battlepass_modal.dart';
@@ -17,15 +19,28 @@ class RootState extends State<Root> {
   List<Widget> pages = [
     const HomeView(),
     const StatsView(),
-    //const LaunchPowerChart(),
-    //ProfileView()
+    const BlankView(),
+    const BlankView(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 1.0,
         title: Text(AppLocalizations.of(context)!.bey_stats),
+        actions: <Widget>[
+          //IconButton
+          IconButton(
+            icon: const Icon(Icons.settings),
+            tooltip: 'Setting Icon',
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const SettingsView(),
+              ));
+            },
+          ), //IconButton
+        ],
       ),
       body: getBody(),
       bottomNavigationBar: getFooter(context, pageIndex, selectedTab),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bey_stats/battlepass/battlepass_models.dart';
 import 'package:bey_stats/battlepass/battlepass_utils.dart';
 import 'package:bey_stats/structs/battlepass_ble_device.dart';
+import 'package:bey_stats/structs/battlepass_debug.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
 abstract class AbstractBattlePass {
@@ -161,5 +162,49 @@ class BattlePass extends AbstractBattlePass {
     });
 
     readBuffer.clear();
+  }
+
+  Future<BattlepassDebug> getDebugInformation() async {
+    if (battlepassDevice == null) {
+      throw Exception("connection error");
+    }
+
+    BattlepassDebug data = BattlepassDebug();
+
+    List<BluetoothService> services =
+        await battlepassDevice!.discoverServices();
+
+    for (var serve in services) {
+      ServiceDebug service = ServiceDebug(serve.serviceUuid.str);
+      for (var characteristics in serve.characteristics) {
+        service.addCharacteristic(
+            CharacteristicDebug(characteristics.characteristicUuid.str));
+      }
+      data.addService(service);
+    }
+
+    BluetoothService? mainService;
+    for (var service in services) {
+      if (service.uuid.str.startsWith("00001") ||
+          service.serviceUuid.str.startsWith("1800") ||
+          service.serviceUuid.str.startsWith("1801") ||
+          service.serviceUuid.str.startsWith("180a")) {
+        continue;
+      }
+      mainService ??= service;
+      break;
+    }
+
+    if (mainService == null) {
+      return data;
+    }
+
+    data.setMainService(mainService.uuid.str);
+    data.setReadCharacteristic(
+        mainService.characteristics[1].characteristicUuid.str);
+    data.setWriteCharacteristic(
+        mainService.characteristics[0].characteristicUuid.str);
+
+    return data;
   }
 }

@@ -6,8 +6,8 @@ Widget getFooter(
   List<IconData> iconItems = [
     Icons.home,
     Icons.analytics,
-    //Icons.show_chart,
-    //Icons.person,
+    //Icons.lock,
+    //Icons.lock,
   ];
 
   return AnimatedBottomNavigationBar(

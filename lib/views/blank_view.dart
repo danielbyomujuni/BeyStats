@@ -6,6 +6,14 @@ class BlankView extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const SizedBox.shrink();
+    return Center(
+      child: Text(
+        'Nothing Here (Yet)',
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.inversePrimary,
+          fontSize: 18,
+        ),
+      ),
+    );
   }
 }

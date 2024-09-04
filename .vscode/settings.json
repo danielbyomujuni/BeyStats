@@ -1,5 +1,13 @@
 {
     "java.project.sourcePaths": [
         "lib/battlepass"
-    ]
+    ],
+    "configurations": [
+        {
+          "name": "Flutter",
+          "request": "launch",
+          "type": "dart",
+          "flutterMode": "profile"
+        }
+      ]
 }
