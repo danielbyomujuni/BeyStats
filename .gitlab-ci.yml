@@ -21,8 +21,8 @@ tests:
 
 build-container:       # This job runs in the build stage, which runs first.
   stage: deploy
-  #only:
-  #  - main
+  only:
+    - main
   needs:
     - tests
     - lint
@@ -42,8 +42,8 @@ deploy-container:
   needs:
     - build-container
   stage: deploy
- # only:
- #   - main
+  only:
+    - main
   before_script:
     - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
