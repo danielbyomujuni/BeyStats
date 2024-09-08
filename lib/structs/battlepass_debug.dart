@@ -7,6 +7,7 @@ class BattlepassDebug {
   String? writeCharacteristic;
   BattlePassLaunchData? debugLaunchData;
   BattlePassHeader? debugHeaderData;
+  List<String> errors = [];
 
   void addService(ServiceDebug service) {
     services.add(service);
@@ -32,13 +33,18 @@ class BattlepassDebug {
     debugHeaderData = headerdata;
   }
 
+  void addErrorToLog(String err) {
+    errors.add(err);
+  }
+
   Map<String, dynamic> toJson() => {
         'services': services.map((e) => e.toJson()).toList(),
         'mainService': mainService,
         'readCharacteristic': readCharacteristic,
         'writeCharacteristic': writeCharacteristic,
         'debugHeaderData': debugHeaderData?.toJson() ?? "NULL",
-        'debugLaunchData': debugLaunchData?.toJson() ?? "NULL"
+        'debugLaunchData': debugLaunchData?.toJson() ?? "NULL",
+        'errors': errors
       };
 }
 

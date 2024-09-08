@@ -246,6 +246,7 @@ class BattlePass extends AbstractBattlePass {
       var launchData = await getLaunchDataFromBattlePass();
       data.setLaunchData(launchData!);
     } catch (err) {
+      data.addErrorToLog(err.toString());
       //skiped
     }
 
