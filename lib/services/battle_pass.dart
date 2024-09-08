@@ -99,12 +99,13 @@ class BattlePass extends AbstractBattlePass {
             () => readBuffer.length != 1 || battlepassDevice!.isDisconnected)
         .timeout(const Duration(seconds: 60), onTimeout: () {
       readBuffer.clear();
-      throw Exception("Lost connection to Battlepass");
+      throw Exception("Timed Out While getting Header Info");
     });
 
     if (battlepassDevice!.isDisconnected) {
       readBuffer.clear();
-      throw Exception("Lost connection to Battlepass");
+      throw Exception(
+          "Lost connection to Battlepass While getting Header Info");
     }
 
     var header = readBuffer[0];
@@ -131,12 +132,13 @@ class BattlePass extends AbstractBattlePass {
             () => readBuffer.isEmpty || battlepassDevice!.isDisconnected)
         .timeout(const Duration(seconds: 60), onTimeout: () {
       readBuffer.clear();
-      throw Exception("Lost connection to Battlepass");
+      throw Exception("Timed Out While Getting First Launch Data");
     });
 
     if (battlepassDevice!.isDisconnected) {
       readBuffer.clear();
-      throw Exception("Lost connection to Battlepass");
+      throw Exception(
+          "Lost connection to Battlepass While Getting First Launch Data");
     }
 
     await waitWhile(() =>
@@ -144,12 +146,13 @@ class BattlePass extends AbstractBattlePass {
             battlepassDevice!.isDisconnected)
         .timeout(const Duration(seconds: 60), onTimeout: () {
       readBuffer.clear();
-      throw Exception("Lost connection to Battlepass");
+      throw Exception("Timed Out While Getting Launch Data");
     });
 
     if (battlepassDevice!.isDisconnected) {
       readBuffer.clear();
-      throw Exception("Lost connection to Battlepass");
+      throw Exception(
+          "Lost connection to Battlepass While Getting Launch Data");
     }
 
     var launches = readBuffer.map((str) => str.substring(2)).join();
@@ -172,12 +175,13 @@ class BattlePass extends AbstractBattlePass {
             () => readBuffer.length < 2 || battlepassDevice!.isDisconnected)
         .timeout(const Duration(seconds: 60), onTimeout: () {
       readBuffer.clear();
-      throw Exception("Lost connection to Battlepass");
+      throw Exception("Timed Out While Clearing Battlepass");
     });
 
     if (battlepassDevice!.isDisconnected) {
       readBuffer.clear();
-      throw Exception("Lost connection to Battlepass");
+      throw Exception(
+          "Lost connection to Battlepass While Clearing Battlepass");
     }
 
     //print(readBuffer[1]);
@@ -187,12 +191,13 @@ class BattlePass extends AbstractBattlePass {
             battlepassDevice!.isDisconnected)
         .timeout(const Duration(seconds: 60), onTimeout: () {
       readBuffer.clear();
-      throw Exception("Lost connection to Battlepass");
+      throw Exception("Timed Out While Verifying Battlepass Data");
     });
 
     if (battlepassDevice!.isDisconnected) {
       readBuffer.clear();
-      throw Exception("Lost connection to Battlepass");
+      throw Exception(
+          "Lost connection to Battlepass While Verifying Battlepass Data");
     }
 
     readBuffer.clear();
