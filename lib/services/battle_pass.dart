@@ -240,6 +240,9 @@ class BattlePass extends AbstractBattlePass {
         mainService.characteristics[0].characteristicUuid.str);
 
     try {
+      var headerData = await getHeaderFromBattlePass();
+      data.setHeaderData(headerData!);
+
       var launchData = await getLaunchDataFromBattlePass();
       data.setLaunchData(launchData!);
     } catch (err) {
