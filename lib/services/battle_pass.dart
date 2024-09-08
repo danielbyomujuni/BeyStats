@@ -114,7 +114,7 @@ class BattlePass extends AbstractBattlePass {
     var launchCount = int.parse(getBytes(header, 18, 2), radix: 16);
     var pageCount = getBytes(header, 22, 1);
 
-    return BattlePassHeader(maxLaunchSpeed, launchCount, pageCount);
+    return BattlePassHeader(maxLaunchSpeed, launchCount, pageCount, header);
   }
 
   @override
@@ -160,7 +160,7 @@ class BattlePass extends AbstractBattlePass {
         .map((str) => int.parse(getBytes(str, 0, 2), radix: 16))
         .toList();
 
-    return BattlePassLaunchData(header, launchPoints);
+    return BattlePassLaunchData(header, launchPoints, launches);
   }
 
   @override
@@ -238,6 +238,13 @@ class BattlePass extends AbstractBattlePass {
         mainService.characteristics[1].characteristicUuid.str);
     data.setWriteCharacteristic(
         mainService.characteristics[0].characteristicUuid.str);
+
+    try {
+      var launchData = await getLaunchDataFromBattlePass();
+      data.setLaunchData(launchData!);
+    } catch (err) {
+      //skiped
+    }
 
     return data;
   }

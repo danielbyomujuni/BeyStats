@@ -1,8 +1,11 @@
+import 'package:bey_stats/battlepass/battlepass_models.dart';
+
 class BattlepassDebug {
   List<ServiceDebug> services = [];
   String? mainService;
   String? readCharacteristic;
   String? writeCharacteristic;
+  BattlePassLaunchData? debugLaunchData;
 
   void addService(ServiceDebug service) {
     services.add(service);
@@ -20,11 +23,16 @@ class BattlepassDebug {
     writeCharacteristic = characteristic;
   }
 
+  void setLaunchData(BattlePassLaunchData launchdata) {
+    debugLaunchData = launchdata;
+  }
+
   Map<String, dynamic> toJson() => {
         'services': services.map((e) => e.toJson()).toList(),
         'mainService': mainService,
         'readCharacteristic': readCharacteristic,
         'writeCharacteristic': writeCharacteristic,
+        'debugLaunchData': debugLaunchData?.toJson() ?? "NULL"
       };
 }
 
