@@ -96,7 +96,7 @@ class BattlePass extends AbstractBattlePass {
     await BattlePass.writeCharacteristic!
         .write([headerByte], withoutResponse: true);
     await waitWhile(
-            () => readBuffer.length != 1 || battlepassDevice!.isDisconnected)
+            () => readBuffer.length != 1 && battlepassDevice!.isConnected)
         .timeout(const Duration(seconds: 60), onTimeout: () {
       readBuffer.clear();
       throw Exception("Timed Out While getting Header Info");
@@ -128,8 +128,7 @@ class BattlePass extends AbstractBattlePass {
     await BattlePass.writeCharacteristic!
         .write([getDataByte], withoutResponse: true);
 
-    await waitWhile(
-            () => readBuffer.isEmpty || battlepassDevice!.isDisconnected)
+    await waitWhile(() => readBuffer.isEmpty && battlepassDevice!.isConnected)
         .timeout(const Duration(seconds: 60), onTimeout: () {
       readBuffer.clear();
       throw Exception("Timed Out While Getting First Launch Data");
@@ -142,8 +141,8 @@ class BattlePass extends AbstractBattlePass {
     }
 
     await waitWhile(() =>
-            !readBuffer.last.startsWith(header.pageCount) ||
-            battlepassDevice!.isDisconnected)
+            !readBuffer.last.startsWith(header.pageCount) &&
+            battlepassDevice!.isConnected)
         .timeout(const Duration(seconds: 60), onTimeout: () {
       readBuffer.clear();
       throw Exception("Timed Out While Getting Launch Data");
@@ -172,7 +171,7 @@ class BattlePass extends AbstractBattlePass {
         .write([clearDataByte], withoutResponse: true);
 
     await waitWhile(
-            () => readBuffer.length < 2 || battlepassDevice!.isDisconnected)
+            () => readBuffer.length < 2 && battlepassDevice!.isConnected)
         .timeout(const Duration(seconds: 60), onTimeout: () {
       readBuffer.clear();
       throw Exception("Timed Out While Clearing Battlepass");
@@ -187,8 +186,8 @@ class BattlePass extends AbstractBattlePass {
     //print(readBuffer[1]);
     var pageCount = getBytes(readBuffer[1], 22, 1);
     await waitWhile(() =>
-            !readBuffer.last.startsWith(pageCount) ||
-            battlepassDevice!.isDisconnected)
+            !readBuffer.last.startsWith(pageCount) &&
+            battlepassDevice!.isConnected)
         .timeout(const Duration(seconds: 60), onTimeout: () {
       readBuffer.clear();
       throw Exception("Timed Out While Verifying Battlepass Data");
