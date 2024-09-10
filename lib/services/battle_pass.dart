@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bey_stats/battlepass/battlepass_models.dart';
 import 'package:bey_stats/battlepass/battlepass_utils.dart';
@@ -135,17 +136,21 @@ class BattlePass extends AbstractBattlePass {
     });
 
     if (battlepassDevice!.isDisconnected) {
-      readBuffer.clear();
-      throw Exception(
+      var error = Exception(
           "Lost connection to Battlepass While Getting First Launch Data");
+      readBuffer.clear();
+      throw error;
     }
 
     await waitWhile(() =>
             !readBuffer.last.startsWith(header.pageCount) &&
             battlepassDevice!.isConnected)
         .timeout(const Duration(seconds: 60), onTimeout: () {
+      var error = Exception(
+          '''"{ error": "Timed Out While Getting Launch Data",
+          "stack" : ${jsonEncode(readBuffer)} }''');
       readBuffer.clear();
-      throw Exception("Timed Out While Getting Launch Data");
+      throw error;
     });
 
     if (battlepassDevice!.isDisconnected) {
@@ -250,7 +255,7 @@ class BattlePass extends AbstractBattlePass {
       var launchData = await getLaunchDataFromBattlePass();
       data.setLaunchData(launchData!);
     } catch (err) {
-      data.addErrorToLog(err.toString());
+      data.addErrorToLog(jsonEncode(err.toString()));
       //skiped
     }
 
