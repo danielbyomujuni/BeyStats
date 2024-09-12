@@ -114,7 +114,7 @@ class BattlePass extends AbstractBattlePass {
 
     var maxLaunchSpeed = int.parse(getBytes(header, 14, 2), radix: 16);
     var launchCount = int.parse(getBytes(header, 18, 2), radix: 16);
-    var pageCount = getBytes(header, 22, 1);
+    var pageCount = 'b7';//getBytes(header, 22, 1);
 
     return BattlePassHeader(maxLaunchSpeed, launchCount, pageCount, header);
   }
