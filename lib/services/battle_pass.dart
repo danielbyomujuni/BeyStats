@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bey_stats/battlepass/battlepass_models.dart';
 import 'package:bey_stats/battlepass/battlepass_utils.dart';
@@ -95,20 +96,27 @@ class BattlePass extends AbstractBattlePass {
 
     await BattlePass.writeCharacteristic!
         .write([headerByte], withoutResponse: true);
-    await waitWhile(() => readBuffer.length != 1)
-        .timeout(const Duration(seconds: 10), onTimeout: () {
+    await waitWhile(
+            () => readBuffer.length != 1 && battlepassDevice!.isConnected)
+        .timeout(const Duration(seconds: 60), onTimeout: () {
       readBuffer.clear();
-      throw Exception("Lost connection to Battlepass");
+      throw Exception("Timed Out While getting Header Info");
     });
+
+    if (battlepassDevice!.isDisconnected) {
+      readBuffer.clear();
+      throw Exception(
+          "Lost connection to Battlepass While getting Header Info");
+    }
 
     var header = readBuffer[0];
     readBuffer.clear();
 
     var maxLaunchSpeed = int.parse(getBytes(header, 14, 2), radix: 16);
     var launchCount = int.parse(getBytes(header, 18, 2), radix: 16);
-    var pageCount = getBytes(header, 22, 1);
+    var pageCount = 'b7';//getBytes(header, 22, 1);
 
-    return BattlePassHeader(maxLaunchSpeed, launchCount, pageCount);
+    return BattlePassHeader(maxLaunchSpeed, launchCount, pageCount, header);
   }
 
   @override
@@ -121,16 +129,35 @@ class BattlePass extends AbstractBattlePass {
     await BattlePass.writeCharacteristic!
         .write([getDataByte], withoutResponse: true);
 
-    await waitWhile(() => readBuffer.isEmpty)
-        .timeout(const Duration(seconds: 10), onTimeout: () {
+    await waitWhile(() => readBuffer.isEmpty && battlepassDevice!.isConnected)
+        .timeout(const Duration(seconds: 60), onTimeout: () {
       readBuffer.clear();
-      throw Exception("Lost connection to Battlepass");
+      throw Exception("Timed Out While Getting First Launch Data");
     });
-    await waitWhile(() => !readBuffer.last.startsWith(header.pageCount))
-        .timeout(const Duration(seconds: 10), onTimeout: () {
+
+    if (battlepassDevice!.isDisconnected) {
+      var error = Exception(
+          "Lost connection to Battlepass While Getting First Launch Data");
       readBuffer.clear();
-      throw Exception("Lost connection to Battlepass");
+      throw error;
+    }
+
+    await waitWhile(() =>
+            !readBuffer.last.startsWith(header.pageCount) &&
+            battlepassDevice!.isConnected)
+        .timeout(const Duration(seconds: 60), onTimeout: () {
+      var error = Exception(
+          '''"{ error": "Timed Out While Getting Launch Data",
+          "stack" : ${jsonEncode(readBuffer)} }''');
+      readBuffer.clear();
+      throw error;
     });
+
+    if (battlepassDevice!.isDisconnected) {
+      readBuffer.clear();
+      throw Exception(
+          "Lost connection to Battlepass While Getting Launch Data");
+    }
 
     var launches = readBuffer.map((str) => str.substring(2)).join();
     readBuffer.clear();
@@ -140,7 +167,7 @@ class BattlePass extends AbstractBattlePass {
         .map((str) => int.parse(getBytes(str, 0, 2), radix: 16))
         .toList();
 
-    return BattlePassLaunchData(header, launchPoints);
+    return BattlePassLaunchData(header, launchPoints, launches);
   }
 
   @override
@@ -148,18 +175,34 @@ class BattlePass extends AbstractBattlePass {
     await BattlePass.writeCharacteristic!
         .write([clearDataByte], withoutResponse: true);
 
-    await waitWhile(() => readBuffer.length < 2)
-        .timeout(const Duration(seconds: 10), onTimeout: () {
+    await waitWhile(
+            () => readBuffer.length < 2 && battlepassDevice!.isConnected)
+        .timeout(const Duration(seconds: 60), onTimeout: () {
       readBuffer.clear();
-      throw Exception("Lost connection to Battlepass");
+      throw Exception("Timed Out While Clearing Battlepass");
     });
+
+    if (battlepassDevice!.isDisconnected) {
+      readBuffer.clear();
+      throw Exception(
+          "Lost connection to Battlepass While Clearing Battlepass");
+    }
+
     //print(readBuffer[1]);
     var pageCount = getBytes(readBuffer[1], 22, 1);
-    await waitWhile(() => !readBuffer.last.startsWith(pageCount))
-        .timeout(const Duration(seconds: 10), onTimeout: () {
+    await waitWhile(() =>
+            !readBuffer.last.startsWith(pageCount) &&
+            battlepassDevice!.isConnected)
+        .timeout(const Duration(seconds: 60), onTimeout: () {
       readBuffer.clear();
-      throw Exception("Lost connection to Battlepass");
+      throw Exception("Timed Out While Verifying Battlepass Data");
     });
+
+    if (battlepassDevice!.isDisconnected) {
+      readBuffer.clear();
+      throw Exception(
+          "Lost connection to Battlepass While Verifying Battlepass Data");
+    }
 
     readBuffer.clear();
   }
@@ -204,6 +247,17 @@ class BattlePass extends AbstractBattlePass {
         mainService.characteristics[1].characteristicUuid.str);
     data.setWriteCharacteristic(
         mainService.characteristics[0].characteristicUuid.str);
+
+    try {
+      var headerData = await getHeaderFromBattlePass();
+      data.setHeaderData(headerData!);
+
+      var launchData = await getLaunchDataFromBattlePass();
+      data.setLaunchData(launchData!);
+    } catch (err) {
+      data.addErrorToLog(jsonEncode(err.toString()));
+      //skiped
+    }
 
     return data;
   }

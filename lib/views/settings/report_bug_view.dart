@@ -143,8 +143,8 @@ class ReportBugViewState extends State<ReportBugView> {
                                       try {
                                         id = await BeyStatsApi.setBugReport("""{
                             "decription": "${_bugDescription.text}",
-                            "app_version": "${packageInfo.version}"
-                            "device" : { $device }
+                            "app_version": "${packageInfo.version}",
+                            "device" : { ${jsonEncode(device)} },
                             ${debugBattleData == null ? "" : '"battle_pass_data": "${jsonEncode(debugBattleData!.toJson())}"'}
                           }""");
                                       } catch (err) {
