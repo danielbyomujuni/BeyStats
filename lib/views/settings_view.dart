@@ -1,4 +1,5 @@
 import 'package:bey_stats/views/blank_view.dart';
+import 'package:bey_stats/views/settings/legal_view.dart';
 import 'package:bey_stats/views/settings/report_bug_view.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,7 @@ class SettingsView extends StatelessWidget {
                 OutlinedButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const SubRoot(child: BlankView()),
+                      builder: (context) => const LegalView(),
                     ));
                   },
                   child: const Row(
