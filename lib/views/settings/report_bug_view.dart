@@ -150,7 +150,7 @@ class ReportBugViewState extends State<ReportBugView> {
                                           ${debugBattleData == null ? '' : '"battle_pass_data": ${jsonEncode(debugBattleData!.toJson())},'}
                                           "logs": ${jsonEncode((await db.getLogs()).map((logObj) => logObj.toString()).toList())}"
                                           }""";
-                                          print(request);
+                                          Logger.debug(request);
                                         id = await BeyStatsApi.setBugReport(request);
                                       } catch (err) {
                                         //TODO Handle Err
