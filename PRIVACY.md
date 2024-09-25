@@ -4,45 +4,8 @@
 
 **BeyStats** ("the App") is committed to protecting your privacy. This Privacy Policy explains how we handle your data when you use our app.
 
-**1. Data Collection**  
-We do not collect or store any personal data externally during regular app usage. The only time data is collected is when you file a bug report. The data collected is solely for debugging purposes and is deleted once the issue has been reviewed and resolved. The bug report data includes the following:
-
-```json
-{
-  "description": "",
-  "app_version": "",
-  "device": "",
-  "battle_pass_data": {
-    "services": [{
-      "uuid": "",
-      "characteristics": [{
-        "uuid": ""
-      }]
-    }],
-    "mainService": "",
-    "readCharacteristic": "",
-    "writeCharacteristic": "",
-    "debugLaunchData": {
-      "header": {
-        "maxLaunchSpeed": 0,
-        "launchCount": 0,
-        "pageCount": "",
-        "raw": ""
-      },
-      "launches": [0],
-      "raw": ""
-    },
-    "debugHeaderData": {
-      "maxLaunchSpeed": 0,
-      "launchCount": 0,
-      "pageCount": "",
-      "raw": ""
-    },
-    "errors": [""]
-  },
-  "logs": [""]
-}
-```
+**1. Data Collection**
+We do not collect or store any personal data externally during regular app usage. Data is only collected when you file a bug report for debugging purposes. This data is deleted after it has been reviewed and the issue is resolved.
 
 **2. Third-Party Services**  
 The App does not use any third-party services that require sharing your personal data.
