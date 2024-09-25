@@ -1,6 +1,7 @@
 import 'package:bey_stats/views/blank_view.dart';
 import 'package:bey_stats/views/settings/legal_view.dart';
-import 'package:bey_stats/views/settings/report_bug_view.dart';
+import 'package:bey_stats/views/settings/bugreporting/report_bug_view.dart';
+import 'package:bey_stats/views/settings/log_viewer.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
 import 'package:flutter/material.dart';
 
@@ -68,6 +69,16 @@ class SettingsView extends StatelessWidget {
                     children: [Icon(Icons.gavel),SizedBox(width: 20), Text("Legal")],
                   ),
                 ),
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const LogViewer(),
+                    ));
+                  },
+                  child: const Row(
+                    children: [Icon(Icons.terminal),SizedBox(width: 20), Text("View Logs")],
+                  ),
+                )
               ],
             )));
   }
