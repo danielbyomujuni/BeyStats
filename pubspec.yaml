@@ -56,6 +56,8 @@ dependencies:
   http: ^1.2.2
   device_info_plus: ^10.1.2
   package_info_plus: ^8.0.2
+  flutter_markdown: ^0.7.3+1
+  accordion: ^2.6.0
   flutter_localizations:
     sdk: flutter
 
@@ -87,6 +89,8 @@ flutter:
      - assets/pair.png
      - assets/remove_bey.png
      - assets/turn_on.png
+     - assets/privacy.md
+     - assets/license.md
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
