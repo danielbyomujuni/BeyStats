@@ -7,6 +7,7 @@ class LogViewer extends StatefulWidget {
   const LogViewer({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LogViewerState createState() => _LogViewerState();
 }
 
@@ -19,13 +20,7 @@ class _LogViewerState extends State<LogViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'My Device Info',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('My Device Info'),
-        ),
-        body: FutureBuilder<List<LogObject>>(
+    return SubRoot(child: FutureBuilder<List<LogObject>>(
           future: () async {
             DatabaseInstance database = await DatabaseInstance.getInstance();
             return database.getLogs();
@@ -52,7 +47,6 @@ class _LogViewerState extends State<LogViewer> {
             }
           },
         ),
-      ),
     );
   }
 }
