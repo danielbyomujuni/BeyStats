@@ -20,7 +20,9 @@ class _LogViewerState extends State<LogViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return SubRoot(child: FutureBuilder<List<LogObject>>(
+    return SubRoot(
+      subTitle: "Logs",
+      child: FutureBuilder<List<LogObject>>(
           future: () async {
             DatabaseInstance database = await DatabaseInstance.getInstance();
             return database.getLogs();

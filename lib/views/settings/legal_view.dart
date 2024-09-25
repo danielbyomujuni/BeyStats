@@ -9,7 +9,9 @@ class LegalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SubRoot(child: FutureBuilder<Map<String, String>>(
+    return SubRoot(
+      subTitle: "Legal",
+      child: FutureBuilder<Map<String, String>>(
       future: () async {
         AssetBundle cxt = DefaultAssetBundle.of(context);
 
