@@ -3,12 +3,13 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:bey_stats/services/bey_stats_api.dart';
+import 'package:bey_stats/services/database_instance.dart';
+import 'package:bey_stats/services/logger.dart';
 import 'package:bey_stats/structs/battlepass_debug.dart';
 import 'package:bey_stats/views/settings/battlepass_bug_modal.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class ReportBugView extends StatefulWidget {
@@ -24,7 +25,6 @@ class ReportBugViewState extends State<ReportBugView> {
 
   @override
   Widget build(BuildContext context) {
-    var logger = Logger();
 
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
@@ -109,13 +109,15 @@ class ReportBugViewState extends State<ReportBugView> {
                                 width: double.infinity,
                                 child: FilledButton(
                                     onPressed: () async {
-                                      logger.i(_bugDescription.text);
+                                      Logger.debug("Bug Report Description: ${_bugDescription.text}");
                                       if (debugBattleData != null) {
-                                        logger.i(jsonEncode(
-                                            debugBattleData!.toJson()));
+                                        Logger.debug("Debug Battle Data: ${jsonEncode(
+                                            debugBattleData!.toJson())}");
                                       }
 
                                       if (!context.mounted) return;
+
+                                      DatabaseInstance db = await DatabaseInstance.getInstance();
 
                                       var device = "";
                                       DeviceInfoPlugin deviceInfo =
@@ -141,12 +143,15 @@ class ReportBugViewState extends State<ReportBugView> {
 
                                       var id = "";
                                       try {
-                                        id = await BeyStatsApi.setBugReport("""{
-                            "decription": "${_bugDescription.text}",
-                            "app_version": "${packageInfo.version}",
-                            "device" : { ${jsonEncode(device)} },
-                            ${debugBattleData == null ? "" : '"battle_pass_data": "${jsonEncode(debugBattleData!.toJson())}"'}
-                          }""");
+                                        String request = """{
+                                          "decription": "${_bugDescription.text}",
+                                          "app_version": "${packageInfo.version}",
+                                          "device" : { ${jsonEncode(device)} },
+                                          ${debugBattleData == null ? '' : '"battle_pass_data": ${jsonEncode(debugBattleData!.toJson())},'}
+                                          "logs": ${jsonEncode((await db.getLogs()).map((logObj) => logObj.toString()).toList())}"
+                                          }""";
+                                          print(request);
+                                        id = await BeyStatsApi.setBugReport(request);
                                       } catch (err) {
                                         //TODO Handle Err
                                       }

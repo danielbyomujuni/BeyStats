@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:bey_stats/services/battle_pass.dart';
+import 'package:bey_stats/services/logger.dart';
 import 'package:bey_stats/structs/battlepass_ble_device.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:logger/logger.dart';
 
 abstract class AbstractBattlePassFactory extends GetxController {
   Future<void> scanForBattlePass();
@@ -20,9 +20,8 @@ class BattlePassFactory extends AbstractBattlePassFactory {
 
   @override
   Future<void> scanForBattlePass() async {
-    var logger = Logger();
     try {
-      logger.i("Scanning");
+      Logger.info("Scanning for Battlepass");
 
       FlutterBluePlus.onScanResults.listen(
         (results) async {
@@ -31,19 +30,19 @@ class BattlePassFactory extends AbstractBattlePassFactory {
             currentList.add(BattlepassBleDevice.fromScanResult(r));
             battlepassStream.add(currentList);
 
-            logger.i(
+            Logger.info(
                 '${r.device.remoteId}: "${r.advertisementData.advName}" found!');
           }
         },
-        onError: (e) => logger.e(e),
+        onError: (e) => Logger.error(e.toString()),
       );
       await FlutterBluePlus.adapterState
           .where((val) => val == BluetoothAdapterState.on)
           .first;
       await FlutterBluePlus.startScan(withNames: ["BEYBLADE_TOOL01"]);
-      logger.i("Scanning done");
+      Logger.info("Scanning Complete");
     } catch (err) {
-      logger.i("Scanning Error");
+      Logger.error("Scanning Error");
       rethrow;
     }
   }

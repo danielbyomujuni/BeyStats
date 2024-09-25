@@ -1,9 +1,8 @@
 import 'package:bey_stats/services/battle_pass_factory.dart';
+import 'package:bey_stats/services/logger.dart';
 import 'package:bey_stats/structs/battlepass_ble_device.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:logger/logger.dart';
-
 class ScanResultCard extends StatefulWidget {
   final VoidCallback onPair;
   final BattlepassBleDevice battlepass;
@@ -29,8 +28,6 @@ class _ScanResultCardState extends State<ScanResultCard> {
 
   @override
   Widget build(BuildContext context) {
-    var logger = Logger();
-
     return Card(
       color: Theme.of(context).colorScheme.surfaceContainer,
       elevation: 2,
@@ -44,7 +41,7 @@ class _ScanResultCardState extends State<ScanResultCard> {
           setState(() {
             _selected = true;
           });
-          logger.i("Connect");
+          Logger.info("Connecting to Battle Pass");
           await widget.factory.connectToBattlePass(widget.battlepass);
           widget.onPair();
         },

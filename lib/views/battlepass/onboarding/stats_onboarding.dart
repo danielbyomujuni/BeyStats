@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:bey_stats/battlepass/battlepass_models.dart';
 import 'package:bey_stats/services/battle_pass.dart';
-import 'package:bey_stats/widgets/database_instance.dart';
+import 'package:bey_stats/services/database_instance.dart';
+import 'package:bey_stats/services/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -36,8 +36,6 @@ class StatsOnboardingState extends State<StatsOnboarding> {
 
   @override
   Widget build(BuildContext context) {
-    var logger = Logger();
-
     return Column(
       children: [
         Text(AppLocalizations.of(context)!.resultsTitle,
@@ -64,8 +62,8 @@ class StatsOnboardingState extends State<StatsOnboarding> {
                     !scoreSnapshot.hasData ||
                     snapshot.data == null ||
                     scoreSnapshot.data == null) {
-                  logger.e(snapshot.error);
-                  logger.e(scoreSnapshot.error);
+                  Logger.error(snapshot.error.toString());
+                  Logger.error(scoreSnapshot.error.toString());
                   return Column(children: [
                     Expanded(
                         child: FittedBox(
@@ -82,7 +80,7 @@ class StatsOnboardingState extends State<StatsOnboarding> {
                 var speedPercentage = snapshot.data!.header.maxLaunchSpeed /
                     (scoreSnapshot.data! + 1);
 
-                logger.d(min(1.0, speedPercentage));
+                Logger.debug("Launch Percentage: ${min(1.0, speedPercentage)}");
                 return Column(
                   children: [
                     SfRadialGauge(
@@ -154,9 +152,9 @@ class StatsOnboardingState extends State<StatsOnboarding> {
                         onPressed: () async {
                           var db = await DatabaseInstance.getInstance();
                           await db.saveLaunches(snapshot.data!.launches);
-                          logger.d(await db.getLaunches());
-                          logger.d(await db.getSessionTimeMax());
-                          logger.d(await db.getAllTimeMax());
+                          Logger.debug("Launches: ${await db.getLaunches()}");
+                          Logger.debug("Session Max: ${await db.getSessionTimeMax()}");
+                          Logger.debug("All time Max: ${await db.getAllTimeMax()}");
 
                           await BattlePass().clearBattlePassData();
                           // clear
