@@ -1,5 +1,6 @@
 import 'package:bey_stats/battlepass/database_observer.dart';
 import 'package:bey_stats/structs/launch_data.dart';
+import 'package:bey_stats/structs/log_object.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseInstance {
@@ -15,6 +16,10 @@ class DatabaseInstance {
       //create the tables
       await db.execute(
           "CREATE TABLE IF NOT EXISTS 'standard_launches' (id INTEGER PRIMARY KEY,session_number INTEGER, launch_power INTEGER, launch_date datetime default current_timestamp);");
+      await db.execute(
+          "CREATE TABLE IF NOT EXISTS 'logs' (id INTEGER PRIMARY KEY, log_time datetime default current_timestamp, log_type TEXT, log_message TEXT);");
+
+      
       _instance = DatabaseInstance._(db);
     }
     return _instance!;
@@ -130,14 +135,33 @@ class DatabaseInstance {
     return launches.toList();
   }
 
+  Future<void> writeLog(LogObject log) async {
+
+    await _database.execute("INSERT INTO 'logs' ('log_time', 'log_type', 'log_message') VALUES (\"${log.getDateTimeString()}\",\"${log.getType()}\", \"${log.getMessage()}\")");
+  }
+
+  Future<void> clearLogs() async {
+    await _database.execute("DROP TABLE 'logs';");
+    await _database.execute(
+        "CREATE TABLE IF NOT EXISTS 'logs' (id INTEGER PRIMARY KEY, log_time datetime default current_timestamp, log_type TEXT, log_message TEXT);");
+  }
+
+  Future<List<LogObject>> getLogs() async {
+    var result = await _database
+        .rawQuery("SELECT * FROM 'logs';");
+    var logs = result.map((log) {
+      return LogObject.time(log['log_type'] as String, log['log_message'] as String, DateTime.parse(log['log_time'] as String));
+    });
+    return logs.toList();
+  }
+
   Future<void> clearDatabase() async {
     await _database.execute("DROP TABLE 'standard_launches';");
     await _database.execute(
         "CREATE TABLE IF NOT EXISTS 'standard_launches' (id INTEGER PRIMARY KEY,session_number INTEGER, launch_power INTEGER, launch_date datetime default current_timestamp);");
-
-    //await _database.execute(
-    //    "UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'standard_launches';");
-  }
+    await clearLogs();
+    }
+  
 
   Future<void> deleteLaunchData(LaunchData launch) async {
     await _database

@@ -32,7 +32,7 @@ class RootState extends State<Root> {
         actions: <Widget>[
           //IconButton
           IconButton(
-            icon: const Icon(Icons.settings),
+            icon: const Icon(Icons.menu),
             tooltip: 'Setting Icon',
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(

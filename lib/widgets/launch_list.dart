@@ -1,9 +1,9 @@
 import 'package:bey_stats/battlepass/database_observer.dart';
+import 'package:bey_stats/services/logger.dart';
 import 'package:bey_stats/structs/launch_data.dart';
-import 'package:bey_stats/widgets/database_instance.dart';
+import 'package:bey_stats/services/database_instance.dart';
 import 'package:bey_stats/widgets/launch_power_card.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LaunchList extends StatefulWidget {
@@ -44,7 +44,7 @@ class LaunchListState extends State<LaunchList> {
       _launches.remove(launch);
     });
 
-    Logger().d("delete launch");
+    Logger.debug("Deleting Launch");
     var db = await DatabaseInstance.getInstance();
     await db.deleteLaunchData(launch);
   }

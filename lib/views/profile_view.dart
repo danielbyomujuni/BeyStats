@@ -1,4 +1,4 @@
-import 'package:bey_stats/widgets/database_instance.dart';
+import 'package:bey_stats/services/database_instance.dart';
 import 'package:flutter/material.dart';
 
 class ProfileView extends StatelessWidget {
