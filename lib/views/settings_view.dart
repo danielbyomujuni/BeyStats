@@ -10,11 +10,11 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final options = [
-      const _SettingsOption(
+      /*const _SettingsOption(
         label: "Support The Developer",
         icon: Icons.volunteer_activism,
         destination: DeveloperSupportView(),
-      ),
+      ),*/
       /*const _SettingsOption(
         label: "Experiments",
         icon: Icons.science,
