@@ -48,6 +48,7 @@ class _LogViewerState extends State<LogViewer> {
   );
             }
           },
+          
         ),
     );
   }

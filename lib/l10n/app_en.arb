@@ -30,5 +30,6 @@
   "turnOnBattlePassDescription2": "The LED will glow green",
   "resultsTitle": "Results",
   "battlepassError1": "Unable to get Data from Battlepass",
-  "battlepassError2": "Check your Connection and Try Again"
+  "battlepassError2": "Check your Connection and Try Again",
+  "legalDescription": "Review our Privacy Policy and License Agreement for details on data use and software terms."
 }
