@@ -6,7 +6,7 @@ import 'package:bey_stats/services/bey_stats_api.dart';
 import 'package:bey_stats/services/database_instance.dart';
 import 'package:bey_stats/services/logger.dart';
 import 'package:bey_stats/structs/battlepass_debug.dart';
-import 'package:bey_stats/views/settings/battlepass_bug_modal.dart';
+import 'package:bey_stats/views/settings/bugreporting/battlepass_bug_modal.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
