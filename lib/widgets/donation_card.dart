@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
@@ -10,7 +8,7 @@ class DonationCard extends StatefulWidget {
   final String appStoreId;
 
   const DonationCard({
-
+    super.key, 
     required this.amount,
     required this.color,
     required this.appStoreId,
@@ -42,8 +40,8 @@ class _DonationCardState extends State<DonationCard> {
       child: InkWell(
         splashColor: Theme.of(context).splashColor,
         onTap: () async {
-          Set<String> _product = <String>{widget.appStoreId};
-          final ProductDetailsResponse response = await InAppPurchase.instance.queryProductDetails(_product);
+          Set<String> product = <String>{widget.appStoreId};
+          final ProductDetailsResponse response = await InAppPurchase.instance.queryProductDetails(product);
           if (response.notFoundIDs.isNotEmpty) {
             // Handle the error.
           }

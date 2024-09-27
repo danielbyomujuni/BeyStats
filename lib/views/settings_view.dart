@@ -1,4 +1,3 @@
-import 'package:bey_stats/views/settings/developer_support_view.dart';
 import 'package:bey_stats/views/settings/legal_view.dart';
 import 'package:bey_stats/views/settings/bugreporting/report_bug_view.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
