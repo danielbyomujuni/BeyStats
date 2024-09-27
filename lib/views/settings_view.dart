@@ -1,4 +1,4 @@
-import 'package:bey_stats/views/blank_view.dart';
+import 'package:bey_stats/views/settings/developer_support_view.dart';
 import 'package:bey_stats/views/settings/legal_view.dart';
 import 'package:bey_stats/views/settings/bugreporting/report_bug_view.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
@@ -13,23 +13,23 @@ class SettingsView extends StatelessWidget {
       const _SettingsOption(
         label: "Support The Developer",
         icon: Icons.volunteer_activism,
-        destination: SubRoot(child: BlankView()),
+        destination: DeveloperSupportView(),
       ),
-      const _SettingsOption(
+      /*const _SettingsOption(
         label: "Experiments",
         icon: Icons.science,
         destination: SubRoot(child: BlankView()),
-      ),
+      ),*/
       const _SettingsOption(
         label: "Report Bug",
         icon: Icons.bug_report,
         destination: ReportBugView(),
       ),
-      const _SettingsOption(
+      /*const _SettingsOption(
         label: "Data Management",
         icon: Icons.data_object,
         destination: SubRoot(child: BlankView()),
-      ),
+      ),*/
       const _SettingsOption(
         label: "Legal",
         icon: Icons.gavel,
