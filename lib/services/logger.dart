@@ -25,5 +25,6 @@ class Logger {
       db.writeLog(logObject);
     });
     log(logObject.toString());
+    if (kDebugMode) { print(logObject.toString()); }
   }
 }
