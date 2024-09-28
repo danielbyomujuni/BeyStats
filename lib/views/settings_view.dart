@@ -1,4 +1,5 @@
 import 'package:bey_stats/views/settings/developer_support_view.dart';
+import 'package:bey_stats/views/settings/experiments_view.dart';
 import 'package:bey_stats/views/settings/legal_view.dart';
 import 'package:bey_stats/views/settings/bugreporting/report_bug_view.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
@@ -9,17 +10,20 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final options = [
+    final generalOptions = [
       const _SettingsOption(
         label: "Support The Developer",
         icon: Icons.volunteer_activism,
         destination: DeveloperSupportView(),
       ),
-      /*const _SettingsOption(
+    ];
+
+    final advancedOptions = [
+      const _SettingsOption(
         label: "Experiments",
         icon: Icons.science,
-        destination: SubRoot(child: BlankView()),
-      ),*/
+        destination: ExperimentsView(),
+      ),
       const _SettingsOption(
         label: "Report Bug",
         icon: Icons.bug_report,
@@ -44,8 +48,16 @@ class SettingsView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            ...generalOptions.map((option) => OutlinedButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => option.destination),
+              ),
+              child: Row(
+                children: [Icon(option.icon), const SizedBox(width: 20), Text(option.label)],
+              ),
+            )),
             const Text("Advanced", textAlign: TextAlign.left),
-            ...options.map((option) => OutlinedButton(
+            ...advancedOptions.map((option) => OutlinedButton(
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => option.destination),
               ),
