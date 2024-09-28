@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
@@ -8,7 +9,7 @@ class DonationCard extends StatefulWidget {
   final String appStoreId;
 
   const DonationCard({
-    super.key, 
+    super.key,
     required this.amount,
     required this.color,
     required this.appStoreId,
@@ -20,14 +21,14 @@ class DonationCard extends StatefulWidget {
 }
 
 class _DonationCardState extends State<DonationCard> {
-
+  final InAppPurchase _inAppPurchase = InAppPurchase.instance;
 
   @override
   void initState() {
     super.initState();
   }
 
-    @override
+  @override
   void dispose() {
     super.dispose();
   }
@@ -41,15 +42,17 @@ class _DonationCardState extends State<DonationCard> {
         splashColor: Theme.of(context).splashColor,
         onTap: () async {
           Set<String> product = <String>{widget.appStoreId};
-          final ProductDetailsResponse response = await InAppPurchase.instance.queryProductDetails(product);
+          final ProductDetailsResponse response =
+              await _inAppPurchase.queryProductDetails(product);
           if (response.notFoundIDs.isNotEmpty) {
             // Handle the error.
           }
           List<ProductDetails> products = response.productDetails;
 
-
-          final ProductDetails productDetails = products.first; // Saved earlier from queryProductDetails().
-          final PurchaseParam purchaseParam = PurchaseParam(productDetails: productDetails);
+          final ProductDetails productDetails =
+              products.first; // Saved earlier from queryProductDetails().
+          final PurchaseParam purchaseParam =
+              PurchaseParam(productDetails: productDetails);
           InAppPurchase.instance.buyConsumable(purchaseParam: purchaseParam);
         },
         child: Center(

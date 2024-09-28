@@ -9,7 +9,7 @@ class DeveloperSupportView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SubRoot(
-      subTitle: "Legal",
+      subTitle: "Support the Dev",
       child: Column( children:[
               Card(
                 margin: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
