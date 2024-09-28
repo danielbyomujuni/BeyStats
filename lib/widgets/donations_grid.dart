@@ -1,6 +1,6 @@
 import 'dart:async';
-
 import 'package:bey_stats/services/logger.dart';
+import 'package:bey_stats/services/purchase_service.dart';
 import 'package:bey_stats/widgets/donation_card.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -14,73 +14,54 @@ class DonationGrid extends StatefulWidget {
 }
 
 class _DonationGridState extends State<DonationGrid> {
+  final Map<String, String> products = {
+    "beystats_five_dollar_donation": "\$5 Donation",
+    "beystats_ten_dollar_donation": "\$10 Donation",
+    "beystats_twenty_five_dollar_donation": "\$25 Donation"
+  };
 
-  final Map<String, String> products = {"beystats_five_dollar_donation":"\$5 Donation","beystats_ten_dollar_donation":"\$10 Donation","beystats_twenty_five_dollar_donation":"\$25 Donation"};
+  late final PurchaseService _purchaseService;
 
-  final InAppPurchase _inAppPurchase = InAppPurchase.instance;
-  late StreamSubscription<List<PurchaseDetails>> _subscription;
-  // You can add state variables here if needed
   @override
   void initState() {
-    final Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
-    _subscription = purchaseUpdated.listen((purchaseDetailsList) {
-      _listenToPurchaseUpdated(purchaseDetailsList);
-    }, onDone: () {
-      _subscription.cancel();
-    }, onError: (error) {
-      _subscription.cancel();
-    }) as StreamSubscription<List<PurchaseDetails>>;
-
     super.initState();
+    _purchaseService = PurchaseService(
+      onPurchaseUpdate: _onPurchaseUpdated,
+    );
   }
 
   @override
   void dispose() {
-    _subscription.cancel();
+    _purchaseService.dispose();
     super.dispose();
   }
 
-  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
-    // ignore: avoid_function_literals_in_foreach_calls
-    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
-      if (purchaseDetails.status == PurchaseStatus.pending) {
-        //_showPendingUI();
-      } else {
-        if (purchaseDetails.status == PurchaseStatus.error) {
-          //_handleError(purchaseDetails.error!);
-          return;
-        } else if (purchaseDetails.status == PurchaseStatus.purchased ||
-            purchaseDetails.status == PurchaseStatus.restored) {
-          Logger.debug(purchaseDetails.status.name);
-          _showMyDialog(products[purchaseDetails.productID]!);
-        }
-        if (purchaseDetails.pendingCompletePurchase) {
-          await _inAppPurchase.completePurchase(purchaseDetails);
-        }
-      }
-    });
+  void _onPurchaseUpdated(PurchaseDetails purchaseDetails) {
+    if (purchaseDetails.status == PurchaseStatus.purchased ||
+        purchaseDetails.status == PurchaseStatus.restored) {
+      Logger.debug(purchaseDetails.status.name);
+      _showThankYouDialog(products[purchaseDetails.productID]!);
+    }
   }
 
-  Future<void> _showMyDialog(String donationType) async {
+  Future<void> _showThankYouDialog(String donationType) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: true, // user must tap button!
+      barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Thank you For Supporting Beystats'),
+          title: const Text('Thank You for Supporting BeyStats'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text("Thank you for you $donationType"),
+                Text("Thank you for your $donationType"),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
               child: const Text('Close'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => Navigator.of(context).pop(),
             ),
           ],
         );

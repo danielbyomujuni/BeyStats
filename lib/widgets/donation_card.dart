@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
-//beystats_five_dollar_donation
 class DonationCard extends StatefulWidget {
   final int amount;
   final Color color;
@@ -23,42 +22,13 @@ class _DonationCardState extends State<DonationCard> {
   final InAppPurchase _inAppPurchase = InAppPurchase.instance;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Card(
       color: widget.color,
       clipBehavior: Clip.hardEdge,
       child: InkWell(
         splashColor: Theme.of(context).splashColor,
-        onTap: () async {
-          Set<String> product = <String>{widget.appStoreId};
-          final ProductDetailsResponse response =
-              await _inAppPurchase.queryProductDetails(product);
-          if (response.notFoundIDs.isNotEmpty) {
-            // Handle the error.
-            return;
-          }
-          List<ProductDetails> products = response.productDetails;
-
-          try {
-            final ProductDetails productDetails =
-                products.first; // Saved earlier from queryProductDetails().
-            final PurchaseParam purchaseParam =
-                PurchaseParam(productDetails: productDetails);
-            InAppPurchase.instance.buyConsumable(purchaseParam: purchaseParam);
-          } catch (e) {
-            // This Line is Intentionally Blank
-          }
-        },
+        onTap: _handleTap,
         child: Center(
           child: Text(
             '\$${widget.amount}',
@@ -67,5 +37,26 @@ class _DonationCardState extends State<DonationCard> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleTap() async {
+    final Set<String> productIds = {widget.appStoreId};
+    final ProductDetailsResponse response = await _inAppPurchase.queryProductDetails(productIds);
+
+    if (response.notFoundIDs.isNotEmpty) {
+      // Handle the error if the product is not found
+      return;
+    }
+
+    if (response.productDetails.isNotEmpty) {
+      final ProductDetails productDetails = response.productDetails.first;
+      final PurchaseParam purchaseParam = PurchaseParam(productDetails: productDetails);
+      
+      try {
+        await _inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
+      } catch (e) {
+        // Handle purchase error
+      }
+    }
   }
 }
