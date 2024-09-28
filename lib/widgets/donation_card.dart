@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
@@ -46,14 +45,19 @@ class _DonationCardState extends State<DonationCard> {
               await _inAppPurchase.queryProductDetails(product);
           if (response.notFoundIDs.isNotEmpty) {
             // Handle the error.
+            return;
           }
           List<ProductDetails> products = response.productDetails;
 
-          final ProductDetails productDetails =
-              products.first; // Saved earlier from queryProductDetails().
-          final PurchaseParam purchaseParam =
-              PurchaseParam(productDetails: productDetails);
-          InAppPurchase.instance.buyConsumable(purchaseParam: purchaseParam);
+          try {
+            final ProductDetails productDetails =
+                products.first; // Saved earlier from queryProductDetails().
+            final PurchaseParam purchaseParam =
+                PurchaseParam(productDetails: productDetails);
+            InAppPurchase.instance.buyConsumable(purchaseParam: purchaseParam);
+          } catch (e) {
+            // This Line is Intentionally Blank
+          }
         },
         child: Center(
           child: Text(

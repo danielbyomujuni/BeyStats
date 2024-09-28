@@ -48,6 +48,7 @@ class _DonationGridState extends State<DonationGrid> {
       } else {
         if (purchaseDetails.status == PurchaseStatus.error) {
           //_handleError(purchaseDetails.error!);
+          return;
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
             purchaseDetails.status == PurchaseStatus.restored) {
           Logger.debug(purchaseDetails.status.name);
