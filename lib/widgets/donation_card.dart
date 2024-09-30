@@ -22,6 +22,11 @@ class _DonationCardState extends State<DonationCard> {
   final InAppPurchase _inAppPurchase = InAppPurchase.instance;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Card(
       color: widget.color,

@@ -1,4 +1,4 @@
-import 'package:bey_stats/app_states/experiments.dart';
+import 'package:bey_stats/app_states/experiment_state.dart';
 import 'package:bey_stats/colourSchemes/base_color.dart';
 import 'package:bey_stats/views/root.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +32,9 @@ class _AppState extends State<App> {
         colorScheme: theme,
       ),
       debugShowCheckedModeBanner: false,
-      home: BlocProvider(
-        create: (_) => Experiments(),
+      home: BlocProvider<ExperimentState>(
+        lazy: false,
+        create: (context) => ExperimentState(),
         child: const Root(),
       ),
     );
