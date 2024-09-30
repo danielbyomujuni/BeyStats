@@ -18,8 +18,9 @@ class DatabaseInstance {
           "CREATE TABLE IF NOT EXISTS 'standard_launches' (id INTEGER PRIMARY KEY,session_number INTEGER, launch_power INTEGER, launch_date datetime default current_timestamp);");
       await db.execute(
           "CREATE TABLE IF NOT EXISTS 'logs' (id INTEGER PRIMARY KEY, log_time datetime default current_timestamp, log_type TEXT, log_message TEXT);");
+      await db.execute(
+          "CREATE TABLE IF NOT EXISTS 'experiments_status' (experiment_id TEXT NOT NULL PRIMARY KEY, is_enabled INT DEFAULT 0 NOT NULL);");
 
-      
       _instance = DatabaseInstance._(db);
     }
     return _instance!;
@@ -136,8 +137,8 @@ class DatabaseInstance {
   }
 
   Future<void> writeLog(LogObject log) async {
-
-    await _database.execute("INSERT INTO 'logs' ('log_time', 'log_type', 'log_message') VALUES (\"${log.getDateTimeString()}\",\"${log.getType()}\", \"${log.getMessage()}\")");
+    await _database.execute(
+        "INSERT INTO 'logs' ('log_time', 'log_type', 'log_message') VALUES (\"${log.getDateTimeString()}\",\"${log.getType()}\", \"${log.getMessage()}\")");
   }
 
   Future<void> clearLogs() async {
@@ -147,21 +148,41 @@ class DatabaseInstance {
   }
 
   Future<List<LogObject>> getLogs() async {
-    var result = await _database
-        .rawQuery("SELECT * FROM 'logs';");
+    var result = await _database.rawQuery("SELECT * FROM 'logs';");
     var logs = result.map((log) {
-      return LogObject.time(log['log_type'] as String, log['log_message'] as String, DateTime.parse(log['log_time'] as String));
+      return LogObject.time(
+          log['log_type'] as String,
+          log['log_message'] as String,
+          DateTime.parse(log['log_time'] as String));
     });
     return logs.toList();
   }
+
+  Future<Map<String, bool>> getExperiments() async {
+    var result =
+        await _database.rawQuery("SELECT * FROM 'experiments_status';");
+    Map<String, bool> experimentsMap = {
+      for (var entry in result)
+        entry['experiment_id'] as String: entry['is_enabled'] as int == 1
+    };
+    return experimentsMap;
+  }
+
+  Future<void> setExperiment(String experimentId, bool value) async {
+    await _database.execute(
+        "INSERT INTO experiments_status(experiment_id, is_enabled) VALUES(?, ?) ON CONFLICT(experiment_id) DO UPDATE SET is_enabled = ? WHERE experiment_id = ?;",
+          [experimentId, value ? 1 : 0, experimentId, value ? 1 : 0]
+        );
+  }
+
+
 
   Future<void> clearDatabase() async {
     await _database.execute("DROP TABLE 'standard_launches';");
     await _database.execute(
         "CREATE TABLE IF NOT EXISTS 'standard_launches' (id INTEGER PRIMARY KEY,session_number INTEGER, launch_power INTEGER, launch_date datetime default current_timestamp);");
     await clearLogs();
-    }
-  
+  }
 
   Future<void> deleteLaunchData(LaunchData launch) async {
     await _database

@@ -39,10 +39,12 @@ class _ExperimentsViewState extends State<ExperimentsView> {
           Expanded(
             child: BlocBuilder<ExperimentState, Map<String, bool>>(
               builder: (context, experiment) => ListView.builder(
+                padding: const EdgeInsets.all(10.0),
                 itemCount: ExperimentState.getExperiments().length,
                 itemBuilder: (listContext, index) {
                   final item = ExperimentState.getExperiments()[index];
                   return Card(
+                    color: Theme.of(context).colorScheme.surfaceContainer,
                     child: ListTile(
                       key: item.toKey(),
                       title: Text(item.getName()),
