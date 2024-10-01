@@ -2,7 +2,7 @@
 
 import 'dart:developer';
 
-import 'package:bey_stats/services/database_instance.dart';
+import 'package:bey_stats/services/database/log_database.dart';
 import 'package:bey_stats/structs/log_object.dart';
 import 'package:flutter/foundation.dart';
 
@@ -21,7 +21,7 @@ class Logger {
   }
 
   static void _internalLog(LogObject logObject) {
-    DatabaseInstance.getInstance().then((db) {
+    LogDatabase.getInstance().then((db) {
       db.writeLog(logObject);
     });
     log(logObject.toString());

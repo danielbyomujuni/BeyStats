@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:bey_stats/services/database_instance.dart';
+import 'package:bey_stats/services/database/experiments_database.dart';
 import 'package:bey_stats/services/logger.dart';
 import 'package:bey_stats/structs/experiment.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ class ExperimentState extends Cubit<Map<String, bool>> {
   static const String COLLECTION_ID = "collection_system";
 
   ExperimentState() : super({COLLECTION_ID: false}) {
-    DatabaseInstance.getInstance().then((database) async {
+    ExperimentsDatabase.getInstance().then((database) async {
         final experiments = await database.getExperiments();
         emit(experiments);
     });
@@ -22,7 +22,7 @@ class ExperimentState extends Cubit<Map<String, bool>> {
     updatedState[key] = isOn;
     emit(updatedState);
 
-    DatabaseInstance.getInstance().then((db) {
+    ExperimentsDatabase.getInstance().then((db) {
       db.setExperiment(key, isOn);
     });
   }

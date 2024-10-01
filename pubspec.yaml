@@ -62,6 +62,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_bloc: ^8.1.6
+  meta: ^1.15.0
 
 dev_dependencies:
   flutter_test:

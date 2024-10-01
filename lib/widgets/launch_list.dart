@@ -1,7 +1,7 @@
 import 'package:bey_stats/battlepass/database_observer.dart';
+import 'package:bey_stats/services/database/launches_database.dart';
 import 'package:bey_stats/services/logger.dart';
 import 'package:bey_stats/structs/launch_data.dart';
-import 'package:bey_stats/services/database_instance.dart';
 import 'package:bey_stats/widgets/launch_power_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -45,7 +45,7 @@ class LaunchListState extends State<LaunchList> {
     });
 
     Logger.debug("Deleting Launch");
-    var db = await DatabaseInstance.getInstance();
+    var db = await LaunchesDatabase.getInstance();
     await db.deleteLaunchData(launch);
   }
 
