@@ -1,7 +1,11 @@
+import 'package:bey_stats/services/inAppPurchases/donation_counter.dart';
+import 'package:bey_stats/services/inAppPurchases/donation_notifer.dart';
+import 'package:bey_stats/widgets/donationWidgets/donations_list.dart';
 import 'package:bey_stats/widgets/donations_grid.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class DeveloperSupportView extends StatelessWidget {
   const DeveloperSupportView({super.key});
@@ -25,7 +29,15 @@ class DeveloperSupportView extends StatelessWidget {
                   ],
                 )))
               ),
-              const DonationGrid()
+              //const DonationGrid()
+              
+              ChangeNotifierProvider<DonationNotifer>(
+                create: (context) => DonationNotifer(
+                DonationCounter(),
+                ),
+                lazy: false,
+                child: DonationsList(),
+              ),
               
             
             ])
