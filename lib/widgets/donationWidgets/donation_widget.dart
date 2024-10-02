@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 class DonationWidget extends StatelessWidget {
   final PurchasableProduct product;
   final VoidCallback onPressed;
+  final Color? color;
 
   const DonationWidget({
     super.key, 
     required this.product,
-    required this.onPressed,
+    required this.onPressed, 
+    this.color,
   });
 
   @override
@@ -18,22 +20,19 @@ class DonationWidget extends StatelessWidget {
     if (product.status == DonationStatus.purchased) {
       title += ' (purchased)';
     }
-    return InkWell(
+    return  Card(
+      color: color ?? Theme.of(context).colorScheme.primary,
+      clipBehavior: Clip.hardEdge,
+      child: InkWell(
+        splashColor: Theme.of(context).splashColor,
         onTap: onPressed,
-        child: ListTile(
-          title: Text(
-            title,
+        child: Center(
+          child: Text(
+            '${product.price}',
+            style: const TextStyle(fontSize: 24, color: Colors.white),
           ),
-          subtitle: Text(product.description),
-          trailing: Text(_trailing()),
-        ));
-  }
-
-  String _trailing() {
-    return switch (product.status) {
-      DonationStatus.purchasable => product.price,
-      DonationStatus.purchased => 'purchased',
-      DonationStatus.pending => 'buying...'
-    };
+        ),
+      ),
+    );
   }
 }

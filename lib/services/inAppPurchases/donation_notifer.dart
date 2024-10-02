@@ -5,6 +5,7 @@ import 'package:bey_stats/services/inAppPurchases/donation_options.dart';
 import 'package:bey_stats/services/inAppPurchases/in_app_purchases_service.dart';
 import 'package:bey_stats/services/inAppPurchases/purchasable_product.dart';
 import 'package:bey_stats/services/inAppPurchases/store_state.dart';
+import 'package:bey_stats/services/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
@@ -14,6 +15,7 @@ class DonationNotifer extends ChangeNotifier {
   final iapConnection = InAppPurchasesService.instance;
   List<PurchasableProduct> products = [];
   StoreState storeState = StoreState.loading;
+  void Function()? purchaseEvent;
 
   DonationNotifer(this.dontaionAmount) {
     final purchaseUpdated = iapConnection.purchaseStream;
@@ -43,7 +45,6 @@ class DonationNotifer extends ChangeNotifier {
     for (var purchaseDetails in purchaseDetailsList) {
       await _handlePurchase(purchaseDetails);
     }
-    notifyListeners();
   }
 
   Future<void> _handlePurchase(PurchaseDetails purchaseDetails) async {
@@ -55,10 +56,14 @@ class DonationNotifer extends ChangeNotifier {
         }
       }
     }
-
     if (purchaseDetails.pendingCompletePurchase) {
       await iapConnection.completePurchase(purchaseDetails);
+      //Logger.debug("Completed Purchase");
+      if (purchaseEvent != null) {
+        purchaseEvent!();
+      }
     }
+    notifyListeners();
   }
 
   void _updateStreamOnDone() {
@@ -77,13 +82,18 @@ class DonationNotifer extends ChangeNotifier {
       return;
     }
     final ids = DonationOptions.getSetOfID();
+    await iapConnection.isAvailable();
     final response = await iapConnection.queryProductDetails(ids);
     for (var element in response.notFoundIDs) {
       debugPrint('Purchase $element not found');
     }
-    products =
-        response.productDetails.map((e) => PurchasableProduct(e)).toList();
+    products = response.productDetails.map((e) => PurchasableProduct(e)).toList();
+    products.sort((a, b) => b.title.compareTo(a.title));
     storeState = StoreState.available;
     notifyListeners();
+  }
+
+  void setOnPurchaseEvent(void Function() event) {
+    purchaseEvent = event;
   }
 }
