@@ -9,6 +9,10 @@ class LaunchesDatabase extends DatabaseCore {
     DatabaseCore core = await DatabaseCore.getInstance();
     return LaunchesDatabase._(core.database);
   }
+  
+   static void setInstance(DatabaseCore newDatabase) {
+    DatabaseCore.setInstance(newDatabase);
+  }
 
   Future<void> saveLaunches(List<int> launches) async {
     if (launches.isEmpty) {

@@ -45,37 +45,41 @@ class _DonationGridState extends State<DonationGrid> {
   }
 
   Future<void> _showThankYouDialog(String donationType) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Thank You for Supporting BeyStats'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text("Thank you for your $donationType"),
-              ],
-            ),
+  if (!mounted) return; // Ensure the widget is still in the widget tree
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Thank You for Supporting BeyStats'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text("Thank you for your $donationType"),
+            ],
           ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Close'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
-      },
-    );
-  }
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Close'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      );
+    },
+  );
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        children: [
-          AspectRatio(
+    
+
+@override
+Widget build(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.all(10.0),
+    child: Column(
+      children: [
+        Expanded(
+          child: AspectRatio(
             aspectRatio: 2 / 1,
             child: DonationCard(
               amount: 5,
@@ -83,30 +87,32 @@ class _DonationGridState extends State<DonationGrid> {
               appStoreId: "beystats_five_dollar_donation",
             ),
           ),
-          AspectRatio(
-            aspectRatio: 2 / 1,
-            child: Row(
-              children: [
-                Expanded(
-                  child: DonationCard(
-                    amount: 10,
-                    color: Theme.of(context).colorScheme.secondary,
-                    appStoreId: "beystats_ten_dollar_donation",
-                  ),
+        ),
+        const SizedBox(height: 10),
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: DonationCard(
+                  amount: 10,
+                  color: Theme.of(context).colorScheme.secondary,
+                  appStoreId: "beystats_ten_dollar_donation",
                 ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: DonationCard(
-                    amount: 25,
-                    color: Theme.of(context).colorScheme.secondary,
-                    appStoreId: "beystats_twenty_five_dollar_donation",
-                  ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: DonationCard(
+                  amount: 25,
+                  color: Theme.of(context).colorScheme.secondary,
+                  appStoreId: "beystats_twenty_five_dollar_donation",
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
+
 }

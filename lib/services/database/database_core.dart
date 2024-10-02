@@ -17,6 +17,10 @@ class DatabaseCore {
     return _instance!;
   }
 
+  static void setInstance(DatabaseCore newDatabase) {
+    _instance = newDatabase;
+  }
+
   static Future<void> _createTables(Database db) async {
     await db.execute(
         "CREATE TABLE IF NOT EXISTS 'standard_launches' (id INTEGER PRIMARY KEY, session_number INTEGER, launch_power INTEGER, launch_date datetime default current_timestamp);");

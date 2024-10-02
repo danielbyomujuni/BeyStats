@@ -4,10 +4,10 @@ import 'package:bey_stats/structs/launch_data.dart';
 import 'package:flutter/material.dart';
 
 class DatabaseObserver extends ChangeNotifier {
-  static final DatabaseObserver _instance = DatabaseObserver._internal();
+  static DatabaseObserver instance = DatabaseObserver._internal();
 
   factory DatabaseObserver() {
-    return _instance;
+    return instance;
   }
 
   DatabaseObserver._internal();

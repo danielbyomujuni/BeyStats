@@ -26,6 +26,9 @@ class LaunchListState extends State<LaunchList> {
 
   @override
   void initState() {
+    _launches = widget.launches();
+
+
     super.initState();
     DatabaseObserver().addListener(() async {
       final newLaunches = widget.launches();
