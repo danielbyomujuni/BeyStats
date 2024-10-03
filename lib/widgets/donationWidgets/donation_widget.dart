@@ -1,4 +1,3 @@
-import 'package:bey_stats/services/inAppPurchases/donation_status.dart';
 import 'package:bey_stats/services/inAppPurchases/purchasable_product.dart';
 import 'package:flutter/material.dart';
 
@@ -16,10 +15,6 @@ class DonationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var title = product.title;
-    if (product.status == DonationStatus.purchased) {
-      title += ' (purchased)';
-    }
     return  Card(
       color: color ?? Theme.of(context).colorScheme.primary,
       clipBehavior: Clip.hardEdge,
@@ -28,7 +23,7 @@ class DonationWidget extends StatelessWidget {
         onTap: onPressed,
         child: Center(
           child: Text(
-            '${product.price}',
+            product.price,
             style: const TextStyle(fontSize: 24, color: Colors.white),
           ),
         ),

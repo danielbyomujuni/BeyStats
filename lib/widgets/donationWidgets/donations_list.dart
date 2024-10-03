@@ -1,12 +1,8 @@
-import 'dart:collection';
-
 import 'package:bey_stats/services/inAppPurchases/donation_notifer.dart';
-import 'package:bey_stats/services/inAppPurchases/donation_status.dart';
 import 'package:bey_stats/services/logger.dart';
 import 'package:bey_stats/widgets/donationWidgets/donation_widget.dart';
 import 'package:bey_stats/widgets/donationWidgets/thank_you_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 
 class DonationsList extends StatelessWidget {

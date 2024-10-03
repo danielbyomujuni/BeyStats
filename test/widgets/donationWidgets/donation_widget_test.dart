@@ -47,7 +47,7 @@ void main() {
           price: "\$9.99",
           rawPrice: 9.99
         )
-    );;
+    );
 
     // Act
     await tester.pumpWidget(

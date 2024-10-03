@@ -5,7 +5,6 @@ import 'package:bey_stats/services/inAppPurchases/donation_options.dart';
 import 'package:bey_stats/services/inAppPurchases/in_app_purchases_service.dart';
 import 'package:bey_stats/services/inAppPurchases/purchasable_product.dart';
 import 'package:bey_stats/services/inAppPurchases/store_state.dart';
-import 'package:bey_stats/services/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
