@@ -1,28 +1,17 @@
-import 'package:bey_stats/battlepass/database_observer.dart';
 import 'package:bey_stats/structs/launch_data.dart';
-import 'package:bey_stats/structs/log_object.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:bey_stats/battlepass/database_observer.dart';
+import 'database_core.dart';
 
-class DatabaseInstance {
-  static DatabaseInstance? _instance;
-  final Database _database;
+class LaunchesDatabase extends DatabaseCore {
+  LaunchesDatabase._(super.database): super.connect();
 
-  DatabaseInstance._(this._database);
-
-  static Future<DatabaseInstance> getInstance() async {
-    if (_instance == null) {
-      var db = await openDatabase('bey_combat_logger.db');
-
-      //create the tables
-      await db.execute(
-          "CREATE TABLE IF NOT EXISTS 'standard_launches' (id INTEGER PRIMARY KEY,session_number INTEGER, launch_power INTEGER, launch_date datetime default current_timestamp);");
-      await db.execute(
-          "CREATE TABLE IF NOT EXISTS 'logs' (id INTEGER PRIMARY KEY, log_time datetime default current_timestamp, log_type TEXT, log_message TEXT);");
-
-      
-      _instance = DatabaseInstance._(db);
-    }
-    return _instance!;
+  static Future<LaunchesDatabase> getInstance() async {
+    DatabaseCore core = await DatabaseCore.getInstance();
+    return LaunchesDatabase._(core.database);
+  }
+  
+   static void setInstance(DatabaseCore newDatabase) {
+    DatabaseCore.setInstance(newDatabase);
   }
 
   Future<void> saveLaunches(List<int> launches) async {
@@ -38,14 +27,14 @@ class DatabaseInstance {
 
     query = query.substring(0, query.length - 1);
     query += ";";
-    await _database.execute(query);
+    await database.execute(query);
 
     final obs = DatabaseObserver();
     obs.updateMaxValues();
   }
 
   Future<List<int>> getLaunches() async {
-    var result = await _database
+    var result = await database
         .rawQuery("SELECT launch_power FROM 'standard_launches';");
     var launches = result.map((launch) {
       return launch["launch_power"] as int;
@@ -54,7 +43,7 @@ class DatabaseInstance {
   }
 
   Future<List<LaunchData>> getLaunchData() async {
-    var result = await _database.rawQuery(
+    var result = await database.rawQuery(
         "SELECT id, launch_power, session_number,launch_date FROM 'standard_launches' ORDER BY id DESC;");
 
     var launches = result.map((res) {
@@ -70,7 +59,7 @@ class DatabaseInstance {
   }
 
   Future<int> getAllTimeMax() async {
-    var result = await _database.rawQuery(
+    var result = await database.rawQuery(
         "select coalesce(max(launch_power),0) as value FROM standard_launches;");
     if (result.isEmpty ||
         result[0]["value"] == Null ||
@@ -82,7 +71,7 @@ class DatabaseInstance {
   }
 
   Future<int> getSessionTimeMax() async {
-    var result = await _database.rawQuery(
+    var result = await database.rawQuery(
         "select coalesce(max(launch_power),0) as value  FROM standard_launches WHERE session_number = (SELECT max(session_number) FROM standard_launches);");
     if (result.isEmpty ||
         result[0]["value"] == Null ||
@@ -94,7 +83,7 @@ class DatabaseInstance {
   }
 
   Future<int> getSessionCount() async {
-    var result = await _database.rawQuery(
+    var result = await database.rawQuery(
         "SELECT max(session_number) as value FROM standard_launches;");
 
     if (result.isEmpty ||
@@ -107,7 +96,7 @@ class DatabaseInstance {
   }
 
   Future<int> getLaunchCount() async {
-    var result = await _database
+    var result = await database
         .rawQuery("SELECT count(*) as value FROM standard_launches;");
     if (result.isEmpty ||
         result[0]["value"] == Null ||
@@ -118,7 +107,7 @@ class DatabaseInstance {
   }
 
   Future<List<LaunchData>> getTopFive() async {
-    var result = await _database.rawQuery(
+    var result = await database.rawQuery(
         "SELECT id, launch_power, session_number,launch_date FROM 'standard_launches' ORDER BY launch_power DESC LIMIT 5;");
 
     if (result.isEmpty) {
@@ -135,36 +124,8 @@ class DatabaseInstance {
     return launches.toList();
   }
 
-  Future<void> writeLog(LogObject log) async {
-
-    await _database.execute("INSERT INTO 'logs' ('log_time', 'log_type', 'log_message') VALUES (\"${log.getDateTimeString()}\",\"${log.getType()}\", \"${log.getMessage()}\")");
-  }
-
-  Future<void> clearLogs() async {
-    await _database.execute("DROP TABLE 'logs';");
-    await _database.execute(
-        "CREATE TABLE IF NOT EXISTS 'logs' (id INTEGER PRIMARY KEY, log_time datetime default current_timestamp, log_type TEXT, log_message TEXT);");
-  }
-
-  Future<List<LogObject>> getLogs() async {
-    var result = await _database
-        .rawQuery("SELECT * FROM 'logs';");
-    var logs = result.map((log) {
-      return LogObject.time(log['log_type'] as String, log['log_message'] as String, DateTime.parse(log['log_time'] as String));
-    });
-    return logs.toList();
-  }
-
-  Future<void> clearDatabase() async {
-    await _database.execute("DROP TABLE 'standard_launches';");
-    await _database.execute(
-        "CREATE TABLE IF NOT EXISTS 'standard_launches' (id INTEGER PRIMARY KEY,session_number INTEGER, launch_power INTEGER, launch_date datetime default current_timestamp);");
-    await clearLogs();
-    }
-  
-
-  Future<void> deleteLaunchData(LaunchData launch) async {
-    await _database
+    Future<void> deleteLaunchData(LaunchData launch) async {
+    await database
         .execute("DELETE FROM 'standard_launches' WHERE id = ${launch.id};");
 
     final obs = DatabaseObserver();

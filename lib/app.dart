@@ -1,6 +1,8 @@
+import 'package:bey_stats/app_states/experiment_state.dart';
 import 'package:bey_stats/colourSchemes/base_color.dart';
 import 'package:bey_stats/views/root.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class App extends StatefulWidget {
@@ -30,7 +32,11 @@ class _AppState extends State<App> {
         colorScheme: theme,
       ),
       debugShowCheckedModeBanner: false,
-      home: const Root(),
+      home: BlocProvider<ExperimentState>(
+        lazy: false,
+        create: (context) => ExperimentState(),
+        child: const Root(),
+      ),
     );
   }
 }

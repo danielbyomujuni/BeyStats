@@ -1,3 +1,5 @@
+import 'package:bey_stats/app_states/experiment_state.dart';
+import 'package:bey_stats/services/neko_router.dart';
 import 'package:bey_stats/views/blank_view.dart';
 import 'package:bey_stats/views/settings_view.dart';
 import 'package:bey_stats/views/stats_view.dart';
@@ -24,6 +26,11 @@ class RootState extends State<Root> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -35,15 +42,14 @@ class RootState extends State<Root> {
             icon: const Icon(Icons.menu),
             tooltip: 'Setting Icon',
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const SettingsView(),
-              ));
+              NekoRouter.push<ExperimentState>(context, const SettingsView(),
+              );
             },
           ), //IconButton
         ],
       ),
       body: getBody(),
-      bottomNavigationBar: getFooter(context, pageIndex, selectedTab),
+      bottomNavigationBar: Footer(pageIndex: pageIndex, selectedTab: selectedTab),
       floatingActionButton: const BattlepassModal(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

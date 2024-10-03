@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:bey_stats/battlepass/battlepass_models.dart';
 import 'package:bey_stats/services/battle_pass.dart';
-import 'package:bey_stats/services/database_instance.dart';
+import 'package:bey_stats/services/database/launches_database.dart';
 import 'package:bey_stats/services/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -43,7 +43,7 @@ class StatsOnboardingState extends State<StatsOnboarding> {
         Expanded(
           child: FutureBuilder<int>(future: () async {
             var data =
-                await (await DatabaseInstance.getInstance()).getAllTimeMax();
+                await (await LaunchesDatabase.getInstance()).getAllTimeMax();
             return data;
           }(), builder:
               (BuildContext context, AsyncSnapshot<int> scoreSnapshot) {
@@ -150,7 +150,7 @@ class StatsOnboardingState extends State<StatsOnboarding> {
                       Expanded(
                           child: FilledButton(
                         onPressed: () async {
-                          var db = await DatabaseInstance.getInstance();
+                          var db = await LaunchesDatabase.getInstance();
                           await db.saveLaunches(snapshot.data!.launches);
                           Logger.debug("Launches: ${await db.getLaunches()}");
                           Logger.debug("Session Max: ${await db.getSessionTimeMax()}");

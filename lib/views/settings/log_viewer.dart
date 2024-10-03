@@ -1,4 +1,4 @@
-import 'package:bey_stats/services/database_instance.dart';
+import 'package:bey_stats/services/database/log_database.dart';
 import 'package:bey_stats/structs/log_object.dart';
 import 'package:flutter/material.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
@@ -24,7 +24,7 @@ class _LogViewerState extends State<LogViewer> {
       subTitle: "Logs",
       child: FutureBuilder<List<LogObject>>(
           future: () async {
-            DatabaseInstance database = await DatabaseInstance.getInstance();
+            LogDatabase database = await LogDatabase.getInstance();
             return database.getLogs();
             }(),
           builder: (BuildContext context, AsyncSnapshot<List<LogObject>> snapshot) {

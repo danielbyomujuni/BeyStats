@@ -61,6 +61,8 @@ dependencies:
   in_app_purchase: ^3.2.0
   flutter_localizations:
     sdk: flutter
+  flutter_bloc: ^8.1.6
+  meta: ^1.15.0
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +74,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+  mockito: ^5.2.0
+  build_runner: ^2.3.0
+  in_app_purchase_platform_interface: ^1.4.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

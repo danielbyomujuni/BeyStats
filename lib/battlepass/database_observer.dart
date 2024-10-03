@@ -1,13 +1,13 @@
-import 'package:bey_stats/services/database_instance.dart';
+import 'package:bey_stats/services/database/launches_database.dart';
 import 'package:bey_stats/structs/launch_data.dart';
 
 import 'package:flutter/material.dart';
 
 class DatabaseObserver extends ChangeNotifier {
-  static final DatabaseObserver _instance = DatabaseObserver._internal();
+  static DatabaseObserver instance = DatabaseObserver._internal();
 
   factory DatabaseObserver() {
-    return _instance;
+    return instance;
   }
 
   DatabaseObserver._internal();
@@ -29,7 +29,7 @@ class DatabaseObserver extends ChangeNotifier {
   List<LaunchData> get topFive => _topFive;
 
   Future<void> updateMaxValues() async {
-    var db = await DatabaseInstance.getInstance();
+    var db = await LaunchesDatabase.getInstance();
     _allTimeMax = await db.getAllTimeMax();
     _sessionMax = await db.getSessionTimeMax();
     _sessionCount = await db.getSessionCount();

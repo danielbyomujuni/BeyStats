@@ -16,8 +16,23 @@ tests:
   image: instrumentisto/flutter:3.24.0
   stage: test
   script:
+  - dart run build_runner build --delete-conflicting-outputs
   - flutter gen-l10n
   - flutter test
+
+coverage:
+  needs:
+    - tests
+  image: instrumentisto/flutter:3.24.0
+  stage: test
+  script:
+  - apt-get update && apt-get install -y lcov
+  - dart run build_runner build --delete-conflicting-outputs
+  - flutter gen-l10n
+  - flutter test --coverage
+  - lcov --list coverage/lcov.info
+  - genhtml coverage/lcov.info --output=coverage
+  coverage: '/\s*lines\.*:\s*([\d\.]+%)/'
 
 build-container:       # This job runs in the build stage, which runs first.
   stage: deploy
@@ -26,6 +41,7 @@ build-container:       # This job runs in the build stage, which runs first.
   needs:
     - tests
     - lint
+    - coverage
   image: 
     name: gcr.io/kaniko-project/executor:v1.14.0-debug
     entrypoint: [""]

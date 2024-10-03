@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:bey_stats/services/bey_stats_api.dart';
-import 'package:bey_stats/services/database_instance.dart';
+import 'package:bey_stats/services/database/log_database.dart';
 import 'package:bey_stats/services/logger.dart';
 import 'package:bey_stats/structs/battlepass_debug.dart';
 import 'package:bey_stats/views/settings/bugreporting/battlepass_bug_modal.dart';
@@ -117,7 +117,7 @@ class ReportBugViewState extends State<ReportBugView> {
 
                                       if (!context.mounted) return;
 
-                                      DatabaseInstance db = await DatabaseInstance.getInstance();
+                                      LogDatabase db = await LogDatabase.getInstance();
 
                                       var device = "";
                                       DeviceInfoPlugin deviceInfo =

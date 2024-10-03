@@ -1,3 +1,5 @@
+import 'package:bey_stats/app_states/experiment_state.dart';
+import 'package:bey_stats/services/neko_router.dart';
 import 'package:bey_stats/views/settings/developer_support_view.dart';
 import 'package:bey_stats/views/settings/experiments_view.dart';
 import 'package:bey_stats/views/settings/legal_view.dart';
@@ -58,9 +60,7 @@ class SettingsView extends StatelessWidget {
             )),
             const Text("Advanced", textAlign: TextAlign.left),
             ...advancedOptions.map((option) => OutlinedButton(
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => option.destination),
-              ),
+              onPressed: () => NekoRouter.push<ExperimentState>(context, option.destination),
               child: Row(
                 children: [Icon(option.icon), const SizedBox(width: 20), Text(option.label)],
               ),

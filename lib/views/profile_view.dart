@@ -1,4 +1,5 @@
-import 'package:bey_stats/services/database_instance.dart';
+
+import 'package:bey_stats/services/database/database_core.dart';
 import 'package:flutter/material.dart';
 
 class ProfileView extends StatelessWidget {
@@ -12,7 +13,7 @@ class ProfileView extends StatelessWidget {
         const Spacer(),
         ElevatedButton(
             onPressed: () async {
-              await (await DatabaseInstance.getInstance()).clearDatabase();
+              await (await DatabaseCore.getInstance()).clearTables();
             },
             child: const Text("Delete Data"))
       ],

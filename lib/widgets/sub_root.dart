@@ -6,6 +6,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class SubRoot extends StatefulWidget {
   final Widget? child;
   final String? subTitle;
+
+  
   const SubRoot({super.key, this.child, this.subTitle});
 
   @override
