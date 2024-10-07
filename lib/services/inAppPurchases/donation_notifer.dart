@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bey_stats/services/database/donation_database.dart';
 import 'package:bey_stats/services/inAppPurchases/donation_counter.dart';
 import 'package:bey_stats/services/inAppPurchases/donation_options.dart';
 import 'package:bey_stats/services/inAppPurchases/in_app_purchases_service.dart';
@@ -47,10 +48,13 @@ class DonationNotifer extends ChangeNotifier {
   }
 
   Future<void> _handlePurchase(PurchaseDetails purchaseDetails) async {
+    double current_product_price = 0.0;
+
     if (purchaseDetails.status == PurchaseStatus.purchased) {
       for (var option in DonationOptions.getOptions()) {
         if (purchaseDetails.productID == option.getID()) {
           dontaionAmount.add(option.getValue());
+          current_product_price = option.getValue();
           break;
         }
       }
@@ -59,6 +63,8 @@ class DonationNotifer extends ChangeNotifier {
       await iapConnection.completePurchase(purchaseDetails);
       //Logger.debug("Completed Purchase");
       if (purchaseEvent != null) {
+        DonationDatabase db = await DonationDatabase.getInstance();
+        db.addDonation(current_product_price);
         purchaseEvent!();
       }
     }

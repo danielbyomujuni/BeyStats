@@ -1,5 +1,6 @@
 import 'package:bey_stats/services/inAppPurchases/donation_counter.dart';
 import 'package:bey_stats/services/inAppPurchases/donation_notifer.dart';
+import 'package:bey_stats/widgets/donationWidgets/contribution_widget.dart';
 import 'package:bey_stats/widgets/donationWidgets/donations_list.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class DeveloperSupportView extends StatelessWidget {
         subTitle: "Support the Dev",
         child: SingleChildScrollView(
             child: Column(children: [
+            
           Card(
               margin: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
               color: Theme.of(context).colorScheme.surfaceContainer,
@@ -38,7 +40,10 @@ class DeveloperSupportView extends StatelessWidget {
               DonationCounter(),
             ),
             lazy: false,
-            child: const DonationsList(),
+            child: const Column(children: [
+              ContributionWidget(),
+              DonationsList()
+            ],),
           ),
         ])));
   }

@@ -1,5 +1,10 @@
+//import 'dart:io';
+
+//import 'package:bey_stats/services/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:sqflite/sqflite.dart';
+//import 'package:path/path.dart' as p;
+//import 'package:path_provider/path_provider.dart';
 
 class DatabaseCore {
   static DatabaseCore? _instance;
@@ -28,6 +33,9 @@ class DatabaseCore {
         "CREATE TABLE IF NOT EXISTS 'logs' (id INTEGER PRIMARY KEY, log_time datetime default current_timestamp, log_type TEXT, log_message TEXT);");
     await db.execute(
         "CREATE TABLE IF NOT EXISTS 'experiments_status' (experiment_id TEXT NOT NULL PRIMARY KEY, is_enabled INT DEFAULT 0 NOT NULL);");
+    await db.execute(
+        "CREATE TABLE IF NOT EXISTS 'donations' (id INTEGER PRIMARY KEY, purchase_time datetime default current_timestamp, donation_amount REAL NOT NULL);");
+    
   }
 
   Future<void> clearTables() async {
@@ -35,10 +43,12 @@ class DatabaseCore {
         DROP TABLE IF EXISTS 'standard_launches'; 
         DROP TABLE IF EXISTS 'logs'; 
         DROP TABLE IF EXISTS 'experiments_status'; 
+        DROP TABLE IF EXISTS 'donations'; 
         """);
     await _createTables(database);
   }
 
   @protected
   Database get database => _database;
+
 }

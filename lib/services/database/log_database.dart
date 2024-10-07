@@ -11,7 +11,7 @@ class LogDatabase extends DatabaseCore {
 
   Future<void> writeLog(LogObject log) async {
     await database.execute(
-        "INSERT INTO 'logs' ('log_time', 'log_type', 'log_message') VALUES (\"${log.getDateTimeString()}\",\"${log.getType()}\", \"${log.getMessage()}\")");
+        "INSERT INTO 'logs' ('log_time', 'log_type', 'log_message') VALUES (\"${log.getDateTimeString()}\",\"${log.getType()}\", \"${log.getMessage()}\");");
   }
 
   Future<void> clearLogs() async {

@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ExperimentState extends Cubit<Map<String, bool>> {
 
   static const String COLLECTION_ID = "collection_system";
+  static const String DONATION_EXPERIMENT = "total_donation_experiment";
 
   ExperimentState() : super({COLLECTION_ID: false}) {
     ExperimentsDatabase.getInstance().then((database) async {
@@ -41,13 +42,24 @@ class ExperimentState extends Cubit<Map<String, bool>> {
     BlocProvider.of<ExperimentState>(context)._setExperiment(COLLECTION_ID, isOnState);
   }
 
+  static bool isTotalDonationExperimentOn(BuildContext context) {
+    //Logger.debug("Retreved Collection Experiment State");
+    return BlocProvider.of<ExperimentState>(context)._isExperimentOn(DONATION_EXPERIMENT);
+  }
+
+  static void setTotalDonationExperiment(BuildContext context, bool isOnState) {
+    BlocProvider.of<ExperimentState>(context)._setExperiment(DONATION_EXPERIMENT, isOnState);
+  }
+
   static String getCollectionID() {
     return COLLECTION_ID;
   }
 
   static List<Experiment> getExperiments() {
     return [
-      Experiment(COLLECTION_ID, "Collection System", ExperimentState.setCollectionExperiment, ExperimentState.isCollectionExperimentOn)];
+      Experiment(COLLECTION_ID, "Collection System", ExperimentState.setCollectionExperiment, ExperimentState.isCollectionExperimentOn),
+      Experiment(DONATION_EXPERIMENT, "Total Donation Experiment", ExperimentState.setTotalDonationExperiment, ExperimentState.isTotalDonationExperimentOn)
+      ];
     
   }
 

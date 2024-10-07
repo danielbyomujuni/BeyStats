@@ -51,9 +51,7 @@ class SettingsView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ...generalOptions.map((option) => OutlinedButton(
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => option.destination),
-              ),
+              onPressed: () => NekoRouter.push<ExperimentState>(context, option.destination),
               child: Row(
                 children: [Icon(option.icon), const SizedBox(width: 20), Text(option.label)],
               ),
