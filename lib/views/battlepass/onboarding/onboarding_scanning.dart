@@ -7,8 +7,9 @@ class OnboardingScanning extends StatelessWidget {
   final VoidCallback _goNext;
   final VoidCallback _cancel;
   final VoidCallback _error;
+  final VoidCallback _debugResults;
 
-  const OnboardingScanning(this._goNext, this._cancel, this._error,
+  const OnboardingScanning(this._goNext, this._cancel, this._error, this._debugResults,
       {super.key});
 
   // This widget is the root of your application.
@@ -35,6 +36,19 @@ class OnboardingScanning extends StatelessWidget {
                           },
                           child:
                               Text(AppLocalizations.of(context)!.errorLabel))),
+                  Expanded(
+                      child: FilledButton(
+                          style: FilledButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
+                          ),
+                          onPressed: () {
+                            _debugResults();
+                          },
+                          child:
+                              const Text("Debug Results"))),
                   const SizedBox(width: 10.0),
                   Expanded(
                       child: OutlinedButton(
