@@ -1,4 +1,5 @@
 import 'package:bey_stats/services/inAppPurchases/donation_notifer.dart';
+import 'package:bey_stats/services/inAppPurchases/purchasable_product.dart';
 import 'package:bey_stats/services/logger.dart';
 import 'package:bey_stats/widgets/donationWidgets/donation_widget.dart';
 import 'package:bey_stats/widgets/donationWidgets/thank_you_dialog.dart';
@@ -16,7 +17,9 @@ class DonationsList extends StatelessWidget {
     List<Widget> buttons = [];
 
     for (var index = 0; index < products.length; index++) {
+    
       if ((index % 3) == 0 || index == products.length - 1) {
+        Logger.debug("${products[index].price}:${products[index].title}");
         buttons.add(AspectRatio(
             aspectRatio: 2 / 1,
             child: DonationWidget(
@@ -29,6 +32,11 @@ class DonationsList extends StatelessWidget {
                   purchases.buy(products[index]);
                 })));
       } else {
+        PurchasableProduct firstProduct = products[index + 1];
+        PurchasableProduct secondProduct = products[index];
+
+        Logger.debug("fir: ${firstProduct.price}:${firstProduct.title}");
+        Logger.debug("sec: ${secondProduct.price}:${secondProduct.title}");
         buttons.add(const SizedBox(height: 10));
         buttons.add(
           AspectRatio(
@@ -38,27 +46,29 @@ class DonationsList extends StatelessWidget {
                   Expanded(
                       child: DonationWidget(
                           color: Theme.of(context).colorScheme.secondary,
-                          product: products[index+ 1],
+                          product: firstProduct,
                           onPressed: () {
                             purchases.setOnPurchaseEvent(() {
                               Logger.debug("Purchase Complete");
                               ThankYouDialog()
-                                  .show(context, products[index+ 1].title);
+                                  .show(context, firstProduct.title);
                             });
-                            purchases.buy(products[index+ 1]);
+                            Logger.debug("Buying: ${firstProduct.title}");
+                            purchases.buy(firstProduct);
                           })),
                   const SizedBox(width: 10),
                   Expanded(
                       child: DonationWidget(
                           color: Theme.of(context).colorScheme.secondary,
-                          product: products[index],
+                          product: secondProduct,
                           onPressed: () {
                             purchases.setOnPurchaseEvent(() {
                               Logger.debug("Purchase Complete");
                               ThankYouDialog()
-                                  .show(context, products[index].title);
+                                  .show(context, secondProduct.title);
                             });
-                            purchases.buy(products[index]);
+                            Logger.debug("Buying: ${secondProduct.price}");
+                            purchases.buy(secondProduct);
                           }))
                 ],
               )),

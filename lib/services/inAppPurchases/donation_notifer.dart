@@ -6,6 +6,7 @@ import 'package:bey_stats/services/inAppPurchases/donation_options.dart';
 import 'package:bey_stats/services/inAppPurchases/in_app_purchases_service.dart';
 import 'package:bey_stats/services/inAppPurchases/purchasable_product.dart';
 import 'package:bey_stats/services/inAppPurchases/store_state.dart';
+import 'package:bey_stats/services/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
@@ -35,9 +36,10 @@ class DonationNotifer extends ChangeNotifier {
 
   Future<void> buy(PurchasableProduct product) async {
     final purchaseParam = PurchaseParam(productDetails: product.productDetails);
-    
+
     //Everything is consumable for adding anything else
     // https://codelabs.developers.google.com/codelabs/flutter-in-app-purchases#7
+    Logger.debug("Buying Product");
     await iapConnection.buyConsumable(purchaseParam: purchaseParam);
   }
 
@@ -48,35 +50,37 @@ class DonationNotifer extends ChangeNotifier {
   }
 
   Future<void> _handlePurchase(PurchaseDetails purchaseDetails) async {
-    double current_product_price = 0.0;
+      double currentProductPrice = 0.0;
 
-    if (purchaseDetails.status == PurchaseStatus.purchased) {
-      for (var option in DonationOptions.getOptions()) {
-        if (purchaseDetails.productID == option.getID()) {
-          dontaionAmount.add(option.getValue());
-          current_product_price = option.getValue();
-          break;
+      if (purchaseDetails.status == PurchaseStatus.purchased) {
+        Logger.debug("Checking the order");
+        for (var option in DonationOptions.getOptions()) {
+          if (purchaseDetails.productID == option.getID()) {
+            dontaionAmount.add(option.getValue());
+            currentProductPrice = option.getValue();
+            DonationDatabase db = await DonationDatabase.getInstance();
+            db.addDonation(currentProductPrice);
+            purchaseEvent!();
+            break;
+          }
         }
       }
-    }
-    if (purchaseDetails.pendingCompletePurchase) {
-      await iapConnection.completePurchase(purchaseDetails);
-      //Logger.debug("Completed Purchase");
-      if (purchaseEvent != null) {
-        DonationDatabase db = await DonationDatabase.getInstance();
-        db.addDonation(current_product_price);
-        purchaseEvent!();
+      if (purchaseDetails.pendingCompletePurchase) {
+        Logger.debug("Trying to Purchase");
+        await iapConnection.completePurchase(purchaseDetails);
       }
-    }
-    notifyListeners();
+      notifyListeners();
   }
 
   void _updateStreamOnDone() {
+    Logger.debug("Stream is Done");
     _subscription.cancel();
   }
 
   void _updateStreamOnError(dynamic error) {
     //Handle error here
+    Logger.error("error handler called: $error");
+    _subscription.cancel();
   }
 
   Future<void> loadPurchases() async {
@@ -92,7 +96,8 @@ class DonationNotifer extends ChangeNotifier {
     for (var element in response.notFoundIDs) {
       debugPrint('Purchase $element not found');
     }
-    products = response.productDetails.map((e) => PurchasableProduct(e)).toList();
+    products =
+        response.productDetails.map((e) => PurchasableProduct(e)).toList();
     products.sort((a, b) => b.title.compareTo(a.title));
     storeState = StoreState.available;
     notifyListeners();
@@ -101,4 +106,5 @@ class DonationNotifer extends ChangeNotifier {
   void setOnPurchaseEvent(void Function() event) {
     purchaseEvent = event;
   }
+  
 }
