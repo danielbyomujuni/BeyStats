@@ -10,6 +10,7 @@ class ExperimentState extends Cubit<Map<String, bool>> {
 
   static const String COLLECTION_ID = "collection_system";
   static const String DONATION_EXPERIMENT = "total_donation_experiment";
+  static const String DATA_MANAGER_EXPERIMENT = "data_manager_experiment";
 
   ExperimentState() : super({COLLECTION_ID: false}) {
     ExperimentsDatabase.getInstance().then((database) async {
@@ -51,6 +52,15 @@ class ExperimentState extends Cubit<Map<String, bool>> {
     BlocProvider.of<ExperimentState>(context)._setExperiment(DONATION_EXPERIMENT, isOnState);
   }
 
+  static bool isDataMangementExperimentOn(BuildContext context) {
+    //Logger.debug("Retreved Collection Experiment State");
+    return BlocProvider.of<ExperimentState>(context)._isExperimentOn(DATA_MANAGER_EXPERIMENT);
+  }
+
+  static void setDataMangementExperiment(BuildContext context, bool isOnState) {
+    BlocProvider.of<ExperimentState>(context)._setExperiment(DATA_MANAGER_EXPERIMENT, isOnState);
+  }
+
   static String getCollectionID() {
     return COLLECTION_ID;
   }
@@ -58,7 +68,8 @@ class ExperimentState extends Cubit<Map<String, bool>> {
   static List<Experiment> getExperiments() {
     return [
       Experiment(COLLECTION_ID, "Collection System", ExperimentState.setCollectionExperiment, ExperimentState.isCollectionExperimentOn),
-      Experiment(DONATION_EXPERIMENT, "Total Donation Experiment", ExperimentState.setTotalDonationExperiment, ExperimentState.isTotalDonationExperimentOn)
+      Experiment(DONATION_EXPERIMENT, "Total Donation Experiment", ExperimentState.setTotalDonationExperiment, ExperimentState.isTotalDonationExperimentOn),
+      Experiment(DATA_MANAGER_EXPERIMENT, "Data Manager Experiment", ExperimentState.setDataMangementExperiment, ExperimentState.isDataMangementExperimentOn)
       ];
     
   }

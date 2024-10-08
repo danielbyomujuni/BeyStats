@@ -21,7 +21,7 @@ class SettingsView extends StatelessWidget {
       ),
     ];
 
-    final advancedOptions = [
+    List<_SettingsOption> advancedOptions = [
       const _SettingsOption(
         label: "Experiments",
         icon: Icons.science,
@@ -32,17 +32,21 @@ class SettingsView extends StatelessWidget {
         icon: Icons.bug_report,
         destination: ReportBugView(),
       ),
-      const _SettingsOption(
-        label: "Data Management",
-        icon: Icons.data_object,
-        destination: DataManagementView(),
-      ),
+      
       const _SettingsOption(
         label: "Legal",
         icon: Icons.gavel,
         destination: LegalView(),
       ),
     ];
+
+    if (ExperimentState.isDataMangementExperimentOn(context)) {
+      advancedOptions.add(const _SettingsOption(
+        label: "Data Management",
+        icon: Icons.data_object,
+        destination: DataManagementView(),
+      ));
+    }
 
     return SubRoot(
       subTitle: "Settings",
@@ -81,4 +85,7 @@ class _SettingsOption {
     required this.icon,
     required this.destination,
   });
+
+  
 }
+

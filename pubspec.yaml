@@ -66,6 +66,8 @@ dependencies:
   path: ^1.9.0
   path_provider: ^2.1.4
   money_formatter: ^0.0.6
+  share_plus: ^10.0.2
+  file_picker: ^8.1.2
 
 dev_dependencies:
   flutter_test:
