@@ -1,4 +1,4 @@
-import 'package:bey_stats/services/database/datamanager.dart';
+import 'package:bey_stats/services/datamanager.dart';
 import 'package:bey_stats/services/logger.dart';
 import 'package:bey_stats/widgets/sub_root.dart';
 import 'package:flutter/material.dart';
