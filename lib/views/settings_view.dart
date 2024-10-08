@@ -1,5 +1,6 @@
 import 'package:bey_stats/app_states/experiment_state.dart';
 import 'package:bey_stats/services/neko_router.dart';
+import 'package:bey_stats/views/settings/data_management_view.dart';
 import 'package:bey_stats/views/settings/developer_support_view.dart';
 import 'package:bey_stats/views/settings/experiments_view.dart';
 import 'package:bey_stats/views/settings/legal_view.dart';
@@ -31,11 +32,11 @@ class SettingsView extends StatelessWidget {
         icon: Icons.bug_report,
         destination: ReportBugView(),
       ),
-      /*const _SettingsOption(
+      const _SettingsOption(
         label: "Data Management",
         icon: Icons.data_object,
-        destination: SubRoot(child: BlankView()),
-      ),*/
+        destination: DataManagementView(),
+      ),
       const _SettingsOption(
         label: "Legal",
         icon: Icons.gavel,

@@ -33,5 +33,6 @@
   "battlepassError2": "Check your Connection and Try Again",
   "legalDescription": "Review our Privacy Policy and License Agreement for details on data use and software terms.",
   "supportDevDescription": "Thank you for using BeyStats! Your donation helps us improve the app and keep it free for everyone. No stable feature will ever be pay-gated—donations are completely optional and ensure continued development. Your support is greatly appreciated!",
-  "experimentsDescription": "Enable or disable experimental features in development. Provide feedback on these work-in-progress options to help us improve the app!"
+  "experimentsDescription": "Enable or disable experimental features in development. Provide feedback on these work-in-progress options to help us improve the app!",
+  "dataManagementDescription": "Clear, backup, or restore your app data. Manage your data securely with options to reset or recover your information as needed."
 }
