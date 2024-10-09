@@ -56,5 +56,5 @@ class _SubRootState extends State<SubRoot> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
         ));
-  }
+ }
 }

@@ -68,6 +68,8 @@ dependencies:
   money_formatter: ^0.0.6
   share_plus: ^10.0.2
   file_picker: ^8.1.2
+  mime: ^2.0.0
+  semaphore_plus: ^0.3.1
 
 dev_dependencies:
   flutter_test:

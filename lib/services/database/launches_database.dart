@@ -1,16 +1,21 @@
+import 'package:bey_stats/services/logger.dart';
 import 'package:bey_stats/structs/launch_data.dart';
 import 'package:bey_stats/battlepass/database_observer.dart';
 import 'database_core.dart';
 
-class LaunchesDatabase extends DatabaseCore {
-  LaunchesDatabase._(super.database): super.connect();
+class LaunchesDatabase {
+
+  DatabaseCore? _database;
+  LaunchesDatabase._(this._database);
+
+  static LaunchesDatabase? _donationInstance;
 
   static Future<LaunchesDatabase> getInstance() async {
-    DatabaseCore core = await DatabaseCore.getInstance();
-    return LaunchesDatabase._(core.database);
+     _donationInstance ??= LaunchesDatabase._(await DatabaseCore.getInstance());
+    return _donationInstance!;
   }
   
-   static void setInstance(DatabaseCore newDatabase) {
+  static void setInstance(DatabaseCore newDatabase) {
     DatabaseCore.setInstance(newDatabase);
   }
 
@@ -27,14 +32,14 @@ class LaunchesDatabase extends DatabaseCore {
 
     query = query.substring(0, query.length - 1);
     query += ";";
-    await database.execute(query);
+    await (await _database!.connection()).execute(query);
 
     final obs = DatabaseObserver();
     obs.updateMaxValues();
   }
 
   Future<List<int>> getLaunches() async {
-    var result = await database
+    var result = await (await _database!.connection())
         .rawQuery("SELECT launch_power FROM 'standard_launches';");
     var launches = result.map((launch) {
       return launch["launch_power"] as int;
@@ -43,7 +48,7 @@ class LaunchesDatabase extends DatabaseCore {
   }
 
   Future<List<LaunchData>> getLaunchData() async {
-    var result = await database.rawQuery(
+    var result = await (await _database!.connection()).rawQuery(
         "SELECT id, launch_power, session_number,launch_date FROM 'standard_launches' ORDER BY id DESC;");
 
     var launches = result.map((res) {
@@ -59,7 +64,7 @@ class LaunchesDatabase extends DatabaseCore {
   }
 
   Future<int> getAllTimeMax() async {
-    var result = await database.rawQuery(
+    var result = await (await _database!.connection()).rawQuery(
         "select coalesce(max(launch_power),0) as value FROM standard_launches;");
     if (result.isEmpty ||
         result[0]["value"] == Null ||
@@ -67,11 +72,12 @@ class LaunchesDatabase extends DatabaseCore {
       return 0;
     }
 
+    Logger.debug(result[0].toString());
     return result[0]["value"] as int;
   }
 
   Future<int> getSessionTimeMax() async {
-    var result = await database.rawQuery(
+    var result = await (await _database!.connection()).rawQuery(
         "select coalesce(max(launch_power),0) as value  FROM standard_launches WHERE session_number = (SELECT max(session_number) FROM standard_launches);");
     if (result.isEmpty ||
         result[0]["value"] == Null ||
@@ -83,7 +89,7 @@ class LaunchesDatabase extends DatabaseCore {
   }
 
   Future<int> getSessionCount() async {
-    var result = await database.rawQuery(
+    var result = await (await _database!.connection()).rawQuery(
         "SELECT max(session_number) as value FROM standard_launches;");
 
     if (result.isEmpty ||
@@ -96,7 +102,7 @@ class LaunchesDatabase extends DatabaseCore {
   }
 
   Future<int> getLaunchCount() async {
-    var result = await database
+    var result = await (await _database!.connection())
         .rawQuery("SELECT count(*) as value FROM standard_launches;");
     if (result.isEmpty ||
         result[0]["value"] == Null ||
@@ -107,7 +113,7 @@ class LaunchesDatabase extends DatabaseCore {
   }
 
   Future<List<LaunchData>> getTopFive() async {
-    var result = await database.rawQuery(
+    var result = await (await _database!.connection()).rawQuery(
         "SELECT id, launch_power, session_number,launch_date FROM 'standard_launches' ORDER BY launch_power DESC LIMIT 5;");
 
     if (result.isEmpty) {
@@ -125,10 +131,15 @@ class LaunchesDatabase extends DatabaseCore {
   }
 
     Future<void> deleteLaunchData(LaunchData launch) async {
-    await database
+    await (await _database!.connection())
         .execute("DELETE FROM 'standard_launches' WHERE id = ${launch.id};");
 
     final obs = DatabaseObserver();
     obs.updateMaxValues();
+  }
+
+  Future<void> signal() async {
+    final obs = DatabaseObserver();
+    await obs.updateMaxValues();
   }
 }
