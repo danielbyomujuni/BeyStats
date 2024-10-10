@@ -17,7 +17,7 @@ class _ExperimentsViewState extends State<ExperimentsView> {
   @override
   Widget build(BuildContext context) {
     return SubRoot(
-      subTitle: "Experiments",
+      subTitle: AppLocalizations.of(context)!.experimentsTitle,
       child: Column(
         children: [
           Card(

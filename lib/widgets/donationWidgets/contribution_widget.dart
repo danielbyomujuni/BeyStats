@@ -4,6 +4,7 @@ import 'package:bey_stats/services/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_formatter/money_formatter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ContributionWidget extends StatefulWidget {
   const ContributionWidget({super.key});
@@ -48,7 +49,7 @@ class _ContributionWidgetState extends State<ContributionWidget> {
       if (ExperimentState.isTotalDonationExperimentOn(context)) {
         return Column(
           children: [
-            const Text("Your Total Contribution"),
+            Text(AppLocalizations.of(context)!.yourTotalContribution),
             Text(MoneyFormatter(amount: _totalContribution)
                 .output
                 .compactSymbolOnLeft),

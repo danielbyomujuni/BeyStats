@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ThankYouDialog  {
     Future<void> show(BuildContext context, String donationType) async { // Ensure the widget is still in the widget tree
@@ -8,11 +8,11 @@ class ThankYouDialog  {
     barrierDismissible: true,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('Thank You for Supporting BeyStats'),
+        title: Text(AppLocalizations.of(context)!.thankYouForYouSupport),
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
-              Text("Thank you for your $donationType"),
+              Text("${AppLocalizations.of(context)!.thankYouForDonation} $donationType"),
             ],
           ),
         ),

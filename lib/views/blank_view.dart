@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class BlankView extends StatelessWidget {
   const BlankView({super.key});
@@ -8,7 +10,7 @@ class BlankView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        'Nothing Here (Yet)',
+        AppLocalizations.of(context)!.nothingHere,
         style: TextStyle(
           color: Theme.of(context).colorScheme.inversePrimary,
           fontSize: 18,

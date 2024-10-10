@@ -40,9 +40,9 @@ class DataManagementView extends StatelessWidget {
                       onTap: () {
                         Datamanager().downloadDatabase();
                       },
-                      child: const ListTile(
-                        title: Text("Back-Up Data"),
-                        leading: Icon(Icons.download),
+                      child: ListTile(
+                        title: Text(AppLocalizations.of(context)!.backUpDataLabel),
+                        leading: const Icon(Icons.download),
                       ))),
               Card(
                   clipBehavior: Clip.hardEdge,
@@ -56,9 +56,9 @@ class DataManagementView extends StatelessWidget {
                             return;
                           }
                           Alert().confirmDialog(context,
-                              title: "Are you sure",
+                              title: AppLocalizations.of(context)!.areYouSure,
                               description:
-                                  "This will Overwrite your exisiting data",
+                                  AppLocalizations.of(context)!.warningDataOverwrite,
                               onSuccess: () async {
                             await Datamanager().saveNewDatabase();
                             if (context.mounted) {

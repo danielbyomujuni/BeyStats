@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Alert {
   Future<void> confirmDialog(BuildContext context,
@@ -21,14 +22,14 @@ class Alert {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Okay'),
+              child: Text(AppLocalizations.of(context)!.okLabel),
               onPressed: () {
                 onSuccess();
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('Cancel'),
+              child: Text(AppLocalizations.of(context)!.cancelLabel),
               onPressed: () {
                 if (onCancel != null) {onCancel();}
                 Navigator.of(context).pop();
@@ -48,17 +49,17 @@ class Alert {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Sorry'),
-          content: const SingleChildScrollView(
+          title: Text(AppLocalizations.of(context)!.underConstructionTitle),
+          content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('This functionality is not implemented yet'),
+                Text(AppLocalizations.of(context)!.thisFunctionalityIsNotDone),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Ok'),
+              child: Text(AppLocalizations.of(context)!.okLabel),
               onPressed: () {
                 Navigator.of(context).pop();
               },

@@ -11,6 +11,7 @@ import 'package:bey_stats/widgets/sub_root.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReportBugView extends StatefulWidget {
   const ReportBugView({super.key});
@@ -29,7 +30,7 @@ class ReportBugViewState extends State<ReportBugView> {
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
       return SubRoot(
-          subTitle: "Bug Report",
+          subTitle: AppLocalizations.of(context)!.bugReportTitle,
           child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Scrollbar(
@@ -39,9 +40,9 @@ class ReportBugViewState extends State<ReportBugView> {
                             height: max(500, constraints.maxHeight - 120)),
                         child: Column(
                           children: [
-                            const Align(
+                            Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text("Bug Description",
+                                child: Text(AppLocalizations.of(context)!.bugReportDescriptionLabel,
                                     textAlign: TextAlign.left)),
                             const SizedBox(
                               height: 2.0,
@@ -55,9 +56,9 @@ class ReportBugViewState extends State<ReportBugView> {
                                       textInputAction: TextInputAction.done,
                                       maxLines: 8, //or null
                                       decoration:
-                                          const InputDecoration.collapsed(
-                                              hintText:
-                                                  "Describe the bug here"),
+                                          InputDecoration.collapsed(
+                                              hintText: AppLocalizations.of(context)!.describeBugHere
+                                          ),
                                       controller: _bugDescription,
                                       onChanged: (value) {
                                         setState(() {});
@@ -70,8 +71,8 @@ class ReportBugViewState extends State<ReportBugView> {
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                     debugBattleData == null
-                                        ? "Battle Pass Logs (Optional)"
-                                        : "Battle Pass Logs [Captured]",
+                                        ? "${AppLocalizations.of(context)!.battlepassLogsLabel} ${AppLocalizations.of(context)!.optionalTag}"
+                                        : "${AppLocalizations.of(context)!.battlepassLogsLabel} ${AppLocalizations.of(context)!.captureTag}",
                                     textAlign: TextAlign.left)),
                             const SizedBox(
                               height: 2.0,
@@ -93,7 +94,7 @@ class ReportBugViewState extends State<ReportBugView> {
                                           });
                                     },
                                     child:
-                                        const Text("Connect to Battlepass"))),
+                                        Text(AppLocalizations.of(context)!.connectToBattlePassLabel))),
                             const SizedBox(
                               height: 4.0,
                             ),

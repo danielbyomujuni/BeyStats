@@ -13,7 +13,8 @@ class DeveloperSupportView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SubRoot(
-        subTitle: "Support the Dev",
+        subTitle: AppLocalizations.of(context)!
+                              .supportTheDevTitle,
         child: SingleChildScrollView(
             child: Column(children: [
             

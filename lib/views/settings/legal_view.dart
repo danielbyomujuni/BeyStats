@@ -11,7 +11,7 @@ class LegalView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SubRoot(
-      subTitle: "Legal",
+      subTitle: AppLocalizations.of(context)!.legalTitle,
       child: FutureBuilder<Map<String, String>>(
       future: () async {
         AssetBundle cxt = DefaultAssetBundle.of(context);
@@ -29,7 +29,7 @@ class LegalView extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return const Center(child: Text('Error loading privacy policy.'));
+          return Center(child: Text(AppLocalizations.of(context)!.errorLoadingPrivacyPolicy));
         } else if (snapshot.hasData) {
           return SingleChildScrollView(
             child: Column( children:[
@@ -59,7 +59,7 @@ class LegalView extends StatelessWidget {
                 contentHorizontalPadding: 0,
                 children: [
                 AccordionSection(
-                  header: const Row(children: [Icon(Icons.lock),SizedBox(width: 20), Text("Privacy Policy")],), 
+                  header: Row(children: [const Icon(Icons.lock),const SizedBox(width: 20), Text(AppLocalizations.of(context)!.privacyPolicy)],), 
                   content: 
                   Card(color: 
                     Theme.of(context).colorScheme.primary, 
@@ -67,7 +67,7 @@ class LegalView extends StatelessWidget {
                     child:MarkdownBody(data: snapshot.data!['privacy']!),))
                   ,),
                   AccordionSection(
-                  header: const Row(children: [Icon(Icons.handshake),SizedBox(width: 20), Text("License Agreement")],), 
+                  header: Row(children: [const Icon(Icons.handshake),const SizedBox(width: 20), Text(AppLocalizations.of(context)!.licenseAgreement)],), 
                   content: 
                   Card(color: 
                     Theme.of(context).colorScheme.primary, 
@@ -79,7 +79,7 @@ class LegalView extends StatelessWidget {
             ])
           );
         } else {
-          return const Center(child: Text('No privacy policy found.'));
+          return Center(child: Text(AppLocalizations.of(context)!.noPoliciesFound));
         }
       },
     ));
