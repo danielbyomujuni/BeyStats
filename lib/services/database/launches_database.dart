@@ -5,7 +5,7 @@ import 'database_core.dart';
 
 class LaunchesDatabase {
 
-  DatabaseCore? _database;
+  final DatabaseCore? _database;
   LaunchesDatabase._(this._database);
 
   static LaunchesDatabase? _donationInstance;

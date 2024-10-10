@@ -1,6 +1,7 @@
 import 'dart:async';
 
 class Semaphore {
+  // ignore: unused_field
   final int _maxPermits;
   int _availablePermits;
   final List<Completer<void>> _waiters = [];

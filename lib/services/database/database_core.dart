@@ -3,7 +3,6 @@ import 'dart:io';
 
 //import 'package:bey_stats/services/logger.dart';
 import 'package:bey_stats/services/datamanager.dart';
-import 'package:bey_stats/services/logger.dart';
 import 'package:bey_stats/services/semaphore.dart';
 import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
@@ -36,12 +35,12 @@ class DatabaseCore {
   
     if (_instance != null) {
       flag.release();
-      print("Instance: $_instance");
+      //print("Instance: $_instance");
       return _instance!;
     }
 
     if (_instanceFuture != null) {
-      print("Future: $_instanceFuture");
+      //print("Future: $_instanceFuture");
       flag.release();
       return _instanceFuture!;
     }
@@ -54,7 +53,7 @@ class DatabaseCore {
   static Future<DatabaseCore> _createInstance() async {
       await Datamanager().recoverAndroidDB();
 
-      print("Creating Instance");
+      //print("Creating Instance");
       var db = await openDatabase(
           '${(await getApplicationDocumentsDirectory()).path}/bey_combat_logger.db');
       await _createTables(db);
@@ -104,7 +103,7 @@ class DatabaseCore {
 
       final tables = await db
           .rawQuery("SELECT name FROM sqlite_master WHERE type='table';");
-      Logger.debug("${tables}");
+      //Logger.debug("${tables}");
       List<String> tableNames =
           tables.map((entries) => entries["name"] as String).toList();
 

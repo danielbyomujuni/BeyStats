@@ -2,7 +2,7 @@ import 'database_core.dart';
 
 class ExperimentsDatabase {
 
-  DatabaseCore? _database;
+  final DatabaseCore? _database;
   ExperimentsDatabase._(this._database);
 
   static ExperimentsDatabase? _donationInstance;

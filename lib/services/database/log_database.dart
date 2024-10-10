@@ -2,7 +2,7 @@ import 'package:bey_stats/structs/log_object.dart';
 import 'database_core.dart';
 
 class LogDatabase {
-  DatabaseCore? _database;
+  final DatabaseCore? _database;
   LogDatabase._(this._database);
 
   static LogDatabase? _donationInstance;
@@ -23,7 +23,7 @@ class LogDatabase {
 
   Future<void> clearLogs() async {
     await (await _database!.connection()).execute("DROP TABLE 'logs';");
-    await (await _database!.connection()).execute(
+    await (await _database.connection()).execute(
         "CREATE TABLE IF NOT EXISTS 'logs' (id INTEGER PRIMARY KEY, log_time datetime default current_timestamp, log_type TEXT, log_message TEXT);");
   }
 

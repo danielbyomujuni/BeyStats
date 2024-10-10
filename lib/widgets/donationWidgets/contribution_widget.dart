@@ -9,6 +9,7 @@ class ContributionWidget extends StatefulWidget {
   const ContributionWidget({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ContributionWidgetState createState() => _ContributionWidgetState();
 }
 
