@@ -57,5 +57,14 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIBackgroundModes</key>
+<array>
+   <string>fetch</string>
+   <string>remote-notification</string>
+</array>
+<key>UISupportsDocumentBrowser</key>
+<true/>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Allow you to retrieve Your Stat Backups</string>
 </dict>
 </plist>
