@@ -30,6 +30,10 @@
     "turnOnBattlePassDescription2": "Le LED s'allumera en vert",
     "resultsTitle": "Résultats",
     "battlepassError1": "Impossible d'obtenir les données du Battlepass",
-    "battlepassError2": "Vérifiez votre connexion et réessayez"
+    "battlepassError2": "Vérifiez votre connexion et réessayez",
+    "legalDescription": "Consultez notre Politique de Confidentialité et l'Accord de Licence pour plus de détails sur l'utilisation des données et les conditions d'utilisation du logiciel.",
+    "supportDevDescription": "Merci d'utiliser BeyStats ! Votre don nous aide à améliorer l'application et à la maintenir gratuite pour tous. Aucune fonctionnalité stable ne sera jamais payante - les dons sont entièrement facultatifs et garantissent le développement continu. Votre soutien est grandement apprécié !",
+    "experimentsDescription": "Activez ou désactivez les fonctionnalités expérimentales en développement. Donnez votre avis sur ces options en cours pour nous aider à améliorer l'application.",
+    "dataManagementDescription": "Effacez, sauvegardez ou restaurez vos données d'application. Gérez vos données en toute sécurité avec des options pour réinitialiser ou récupérer vos informations si nécessaire."
   }
   

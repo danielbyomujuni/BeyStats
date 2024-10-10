@@ -66,5 +66,7 @@
 <true/>
 <key>NSPhotoLibraryUsageDescription</key>
 <string>Allow you to retrieve Your Stat Backups</string>
+<key>ITSAppUsesNonExemptEncryption</key>
+<false/>
 </dict>
 </plist>

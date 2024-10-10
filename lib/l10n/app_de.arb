@@ -30,5 +30,9 @@
   "turnOnBattlePassDescription2": "Die LED leuchtet grün",
   "resultsTitle": "Ergebnisse",
   "battlepassError1": "Daten vom Battlepass konnten nicht abgerufen werden",
-  "battlepassError2": "Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut"
+  "battlepassError2": "Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut",
+  "legalDescription": "Überprüfen Sie unsere Datenschutzrichtlinie und Lizenzvereinbarung für Details zur Datennutzung und Softwarebedingungen.",
+  "supportDevDescription": "Vielen Dank, dass Sie BeyStats verwenden! Ihre Spende hilft uns, die App zu verbessern und sie für alle kostenlos zu halten. Keine stabile Funktion wird jemals hinter einer Bezahlschranke stehen – Spenden sind vollständig optional und sichern die weitere Entwicklung. Ihre Unterstützung wird sehr geschätzt!",
+  "experimentsDescription": "Aktivieren oder deaktivieren Sie experimentelle Funktionen in der Entwicklung. Geben Sie Feedback zu diesen Optionen in Arbeit, um uns bei der Verbesserung der App zu helfen!",
+  "dataManagementDescription": "Löschen, sichern oder wiederherstellen Sie Ihre App-Daten. Verwalten Sie Ihre Daten sicher mit Optionen zum Zurücksetzen oder Wiederherstellen Ihrer Informationen nach Bedarf."
 }
