@@ -73,7 +73,7 @@ class DataManagementView extends StatelessWidget {
                         title: Text("Restore Data"),
                         leading: Icon(Icons.publish),
                       ))),
-              Card(
+              /*Card(
                   clipBehavior: Clip.hardEdge,
                   color: Theme.of(context).colorScheme.surfaceContainer,
                   child: InkWell(
@@ -84,7 +84,7 @@ class DataManagementView extends StatelessWidget {
                       child: const ListTile(
                         title: Text("Delete Data"),
                         leading: Icon(Icons.delete),
-                      )))
+                      )))*/
             ])));
   }
 }

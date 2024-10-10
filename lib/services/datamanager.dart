@@ -37,7 +37,8 @@ class Datamanager {
       oldTmpFile.deleteSync();
     }
 
-    Logger.debug("STUFF:${(await getApplicationDocumentsDirectory()).listSync()}");
+    Logger.debug(
+        "STUFF:${(await getApplicationDocumentsDirectory()).listSync()}");
 
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
@@ -63,12 +64,13 @@ class Datamanager {
       throw Error();
     }
 
-    File(path).copySync("${(await getApplicationDocumentsDirectory()).path}/tmp.beystats");
-
+    File(path).copySync(
+        "${(await getApplicationDocumentsDirectory()).path}/tmp.beystats");
   }
 
   Future<void> saveNewDatabase() async {
-    File tmpFile = File("${(await getApplicationDocumentsDirectory()).path}/tmp.beystats");
+    File tmpFile =
+        File("${(await getApplicationDocumentsDirectory()).path}/tmp.beystats");
     if (!tmpFile.existsSync()) {
       return;
     }
@@ -77,17 +79,17 @@ class Datamanager {
 
     Logger.debug(dir.listSync().toString());
 
-
     DatabaseCore core = await DatabaseCore.getInstance();
     DatabaseCore.lock();
     await core.close();
     Logger.debug("Database Closed");
-    File oldDbFile =
-        File("${(await getApplicationDocumentsDirectory()).path}/bey_combat_logger.db");
+    File oldDbFile = File(
+        "${(await getApplicationDocumentsDirectory()).path}/bey_combat_logger.db");
     if (oldDbFile.existsSync()) {
       oldDbFile.deleteSync();
     }
-    await tmpFile.copy("${(await getApplicationDocumentsDirectory()).path}/bey_combat_logger.db");
+    await tmpFile.copy(
+        "${(await getApplicationDocumentsDirectory()).path}/bey_combat_logger.db");
     //Logger.debug("Create new Database");
     DatabaseCore.unlock();
     final _ = await (await LaunchesDatabase.getInstance()).signal();
@@ -96,4 +98,17 @@ class Datamanager {
     //Logger.debug("Done");
   }
 
+  Future<void> recoverAndroidDB() async {
+    if (Platform.isAndroid) {
+      File oldDbFile = File(
+          "/data/data/com.nekosyndicate.bey_stats/databases/bey_combat_logger.db");
+      if (oldDbFile.existsSync()) {
+        File("${(await getApplicationDocumentsDirectory()).path}/bey_combat_logger.db")
+            .deleteSync();
+        oldDbFile.copySync(
+            "${(await getApplicationDocumentsDirectory()).path}/bey_combat_logger.db");
+        oldDbFile.deleteSync();
+      }
+    }
+  }
 }

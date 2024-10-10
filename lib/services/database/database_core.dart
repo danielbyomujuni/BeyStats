@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 //import 'package:bey_stats/services/logger.dart';
+import 'package:bey_stats/services/datamanager.dart';
 import 'package:bey_stats/services/logger.dart';
 import 'package:bey_stats/services/semaphore.dart';
 import 'package:meta/meta.dart';
@@ -51,6 +52,8 @@ class DatabaseCore {
   }
 
   static Future<DatabaseCore> _createInstance() async {
+      await Datamanager().recoverAndroidDB();
+
       print("Creating Instance");
       var db = await openDatabase(
           '${(await getApplicationDocumentsDirectory()).path}/bey_combat_logger.db');
